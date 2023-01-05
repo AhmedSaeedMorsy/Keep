@@ -1,0 +1,21 @@
+{
+      "notFound": "Not Found",
+      "welcome": "Welcome ...",
+      "en": "EN",
+      "signIn": "Sign In",
+      "login": "Login",
+      "passwordValidation": "Password is required",
+      "emailValidation": "Email is required",
+      "password": "Password",
+      "userName": "User Name",
+      "forgetPassword": "I forget my password !",
+      "jobDescription": "Job Description",
+      "businessKit": "Business Kit",
+      "fileName": "File Name",
+      "fileDescription": "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad ",
+      "download": "DOWNLOAD",
+      "view": "VIEW",
+      "qrcode": "QR CODE",
+      "share": "SHARE",
+      "dailyTask": "DAILY TASKS"
+}

@@ -1,0 +1,21 @@
+{
+      "notFound": "لا يوجد",
+      "welcome": " ...مرحبا ",
+      "en": "AR",
+      "signIn": "تسجيل الدخول",
+      "login": "تسجيل الدخول",
+      "passwordValidation": "يجب ادخال الرقم السري",
+      "emailValidation": "يجب ادخال البريد الالكتروني",
+      "userName": "البريد الالكتروني",
+      "password": "الرقم السري",
+      "forgetPassword": "نسيت كلمة السر ! ",
+      "jobDescription": "المسمى الوظيفي",
+      "businessKit": "مجموعة الأعمال",
+      "fileName": "اسم الفايل",
+      "fileDescription": "وصف الفايل",
+      "download": "تحميل",
+      "view": "عرض",
+      "qrcode": "رمز QR",
+      "share": "مشاركة",
+      "dailyTask": "المهام اليومي"
+}
