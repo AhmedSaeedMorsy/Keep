@@ -103,7 +103,7 @@ class KnowledgeScreen extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
-          AppSize.s18,
+          AppSize.s18.w,
         ),
         color: ColorManager.grey,
       ),

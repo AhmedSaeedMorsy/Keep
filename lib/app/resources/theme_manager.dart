@@ -38,7 +38,7 @@ ThemeData getAppTheme() {
       ),
       headlineMedium: getSemiBoldStyle(
         color: ColorManager.primaryColor,
-        fontSize: FontSizeManager.s26,
+        fontSize: FontSizeManager.s22.sp,
       ),
       displaySmall: getLightStyle(
         color: ColorManager.white,

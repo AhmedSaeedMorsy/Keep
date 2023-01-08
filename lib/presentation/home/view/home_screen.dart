@@ -76,6 +76,7 @@ class HomeScreen extends StatelessWidget {
                                   appearance: CircularSliderAppearance(
                                     startAngle: 270,
                                     angleRange: 360,
+                                    size: AppSize.s120.w,
                                     animDurationMultiplier: AppIntDuration.s4_5,
                                     infoProperties: InfoProperties(
                                       topLabelText: AppStrings.kpi,
@@ -84,7 +85,7 @@ class HomeScreen extends StatelessWidget {
                                           .headlineLarge!
                                           .copyWith(
                                             color: ColorManager.primaryColor,
-                                            fontSize: FontSizeManager.s28,
+                                            fontSize: FontSizeManager.s28.sp,
                                           ),
                                       topLabelStyle: Theme.of(context)
                                           .textTheme
@@ -122,20 +123,20 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
                                     onPressed: () {},
-                                    icon: const Image(
-                                      image: AssetImage(
+                                    icon: Image(
+                                      image: const AssetImage(
                                         AssetsManager.calender,
                                       ),
+                                      width: AppSize.s18.w,
                                     ),
                                   ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
+                                  InkWell(
+                                    onTap: () {},
+                                    child: Icon(
                                       Icons.arrow_back_ios,
                                       size: AppSize.s18.w,
                                     ),
@@ -146,19 +147,20 @@ class HomeScreen extends StatelessWidget {
                                         .textTheme
                                         .headlineMedium,
                                   ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
+                                  InkWell(
+                                    onTap: () {},
+                                    child: Icon(
                                       Icons.arrow_forward_ios,
                                       size: AppSize.s18.w,
                                     ),
                                   ),
                                   IconButton(
                                     onPressed: () {},
-                                    icon: const Image(
+                                    icon: Image(
                                       image: AssetImage(
                                         AssetsManager.addTask,
                                       ),
+                                      width: AppSize.s18.w,
                                     ),
                                   ),
                                 ],

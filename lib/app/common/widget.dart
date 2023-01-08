@@ -46,10 +46,8 @@ class SharedWidget {
                 color: ColorManager.primaryColor,
               ),
             ),
-            contentPadding: EdgeInsets.only(
-              top: AppPadding.p1.h,
-              left: AppPadding.p16.w
-            ),
+            contentPadding:
+                EdgeInsets.only(top: AppPadding.p1.h, left: AppPadding.p16.w),
             // hint style
             hintStyle: getBoldStyle(
               color: ColorManager.grey,
@@ -67,79 +65,88 @@ class SharedWidget {
         ),
       );
 
-      static Widget header(context)=>Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal:
-                      MediaQuery.of(context).size.width / AppPadding.p20,
-                  vertical: MediaQuery.of(context).size.height / AppPadding.p30,
-                ),
-                width: double.infinity,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: AppSize.s30.w,
-                              backgroundColor: ColorManager.white,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: MediaQuery.of(context).size.height /
-                                    AppSize.s40,
-                                horizontal: MediaQuery.of(context).size.width /
-                                    AppSize.s50,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    AppStrings.userName.tr(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineLarge,
-                                  ),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height /
-                                        AppSize.s350,
-                                  ),
-                                  Text(
-                                    AppStrings.jobDescription.tr(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        )),
-                    Align(
-                        alignment: Alignment.topRight,
-                        child: Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.notifications,
-                                color: ColorManager.white,
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.settings,
-                                color: ColorManager.white,
-                              ),
-                            ),
-                          ],
-                        ))
-                  ],
-                ),
-              );
-         
+  static Widget header(context) => Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / AppPadding.p20,
+          vertical: MediaQuery.of(context).size.height / AppPadding.p40,
+        ),
+        width: double.infinity,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.height / AppSize.s50,
+                    horizontal: MediaQuery.of(context).size.width / AppSize.s50,
+                  ),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: AppSize.s30.w,
+                        backgroundColor: ColorManager.white,
+                      ),
+                      SizedBox(
+                        width:
+                            MediaQuery.of(context).size.width / AppSize.s30.w,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AppStrings.userName.tr(),
+                            style: Theme.of(context).textTheme.headlineLarge,
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height /
+                                AppSize.s350,
+                          ),
+                          Text(
+                            AppStrings.jobDescription.tr(),
+                            style: Theme.of(context).textTheme.displaySmall,
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                )),
+            Align(
+              alignment: Alignment.topRight,
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      right: MediaQuery.of(context).size.width / AppSize.s30,
+                    ),
+                    child: InkWell(
+                      onTap: () {},
+                      child: Icon(
+                        Icons.notifications,
+                        size: AppSize.s18.w,
+                        color: ColorManager.white,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      right: MediaQuery.of(context).size.width / AppSize.s30,
+                    ),
+                    child: InkWell(
+                      onTap: () {},
+                      child: Icon(
+                        Icons.settings,
+                        size: AppSize.s18.w,
+                        color: ColorManager.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      );
 
   // static Widget noItemWidget(context) {
   //   return Column(

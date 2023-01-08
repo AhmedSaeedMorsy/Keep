@@ -22,8 +22,10 @@ class LayoutScreen extends StatelessWidget {
         ) {
           return LayoutBuilder(builder: (context, BoxConstraints constraints) {
             return Scaffold(
-              body: LayoutBloc.get(context)
-                  .currentScreen[LayoutBloc.get(context).currentIndex],
+              body: SafeArea(
+                child: LayoutBloc.get(context)
+                    .currentScreen[LayoutBloc.get(context).currentIndex],
+              ),
               bottomNavigationBar: BottomAppBar(
                 shape: const CircularNotchedRectangle(),
                 color: ColorManager.primaryColor,
