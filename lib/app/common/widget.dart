@@ -1,7 +1,9 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:keep/app/resources/assets_manager.dart';
 import 'package:keep/app/resources/font_manager.dart';
 import '../resources/color_manager.dart';
 import '../resources/language_manager.dart';
@@ -133,7 +135,9 @@ class SharedWidget {
                       right: MediaQuery.of(context).size.width / AppSize.s30,
                     ),
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        showPopupSettings(context);
+                      },
                       child: Icon(
                         Icons.settings,
                         size: AppSize.s18.w,
@@ -181,6 +185,86 @@ class SharedWidget {
   //     fontSize: FontSizeManager.s16.sp,
   //   );
   // }
+
+  static void showPopupSettings(context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return FadeInDown(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                height: AppSize.s120.h,
+                color: ColorManager.grey,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal:
+                              MediaQuery.of(context).size.width / AppSize.s18,
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            changeLanguage(context);
+                          },
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                AssetsManager.language,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width /
+                                    AppSize.s50,
+                              ),
+                              Text(
+                                AppStrings.language.tr(),
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      color: ColorManager.darkGrey,
+                      width: double.infinity,
+                      height: AppSize.s1.h,
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal:
+                              MediaQuery.of(context).size.width / AppSize.s18,
+                        ),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              AssetsManager.logOut,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width /
+                                  AppSize.s50,
+                            ),
+                            Text(
+                              AppStrings.logOut.tr(),
+                              style: Theme.of(context).textTheme.headlineMedium,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   static void changeLanguage(context) {
     changeAppLanguage();

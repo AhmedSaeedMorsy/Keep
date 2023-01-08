@@ -41,15 +41,16 @@ class KnowledgeScreen extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    color: ColorManager.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(
-                        AppSize.s40.w,
-                      ),
-                      topRight: Radius.circular(
-                        AppSize.s40.w,
-                      ),
-                    )),
+                  color: ColorManager.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(
+                      AppSize.s40.w,
+                    ),
+                    topRight: Radius.circular(
+                      AppSize.s40.w,
+                    ),
+                  ),
+                ),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal:
@@ -60,7 +61,7 @@ class KnowledgeScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Align(
-                        alignment: Alignment.topLeft,
+                        alignment: AlignmentDirectional.topStart,
                         child: Text(
                           AppStrings.businessKit.tr(),
                           style: Theme.of(context).textTheme.headlineMedium,

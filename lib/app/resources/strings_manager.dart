@@ -20,4 +20,6 @@ class AppStrings {
   static String kpi = "KPI";
   static String dailyTask = "dailyTask";
   static String taskName = "Task Name";
+  static String language = "language";
+  static String logOut = "logOut";
 }

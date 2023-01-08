@@ -32,17 +32,22 @@ class OnBoardingScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    color: ColorManager.white,
-                    child: Padding(
-                      padding: EdgeInsets.all(
-                        MediaQuery.of(context).size.width / AppSize.s80,
-                      ),
-                      child: Text(
-                        AppStrings.en.tr(),
-                        style: Theme.of(context).textTheme.displayMedium,
+                InkWell(
+                  onTap: () {
+                    SharedWidget.changeLanguage(context);
+                  },
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      color: ColorManager.white,
+                      child: Padding(
+                        padding: EdgeInsets.all(
+                          MediaQuery.of(context).size.width / AppSize.s80,
+                        ),
+                        child: Text(
+                          AppStrings.en.tr(),
+                          style: Theme.of(context).textTheme.displayMedium,
+                        ),
                       ),
                     ),
                   ),

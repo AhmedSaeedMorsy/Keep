@@ -33,20 +33,18 @@ class LayoutScreen extends StatelessWidget {
                     ? AppSize.s8.w
                     : AppSize.s5.w,
                 child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal:
-                        MediaQuery.of(context).size.height / AppSize.s120,
-                    vertical: MediaQuery.of(context).size.height / AppSize.s50,
+                  padding: EdgeInsetsDirectional.all(
+                    MediaQuery.of(context).size.width / AppSize.s25,
                   ),
-                  height: 50.h,
+                  height: AppSize.s55.h,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         flex: 2,
                         child: Container(
-                          padding: EdgeInsets.only(
-                            right:
+                          padding: EdgeInsetsDirectional.only(
+                            end:
                                 MediaQuery.of(context).size.width / AppSize.s22,
                           ),
                           child: InkWell(
@@ -70,8 +68,8 @@ class LayoutScreen extends StatelessWidget {
                       Expanded(
                         flex: 3,
                         child: Container(
-                          padding: EdgeInsets.only(
-                            right:
+                          padding: EdgeInsetsDirectional.only(
+                            end:
                                 MediaQuery.of(context).size.width / AppSize.s12,
                           ),
                           child: InkWell(
@@ -90,9 +88,9 @@ class LayoutScreen extends StatelessWidget {
                       Expanded(
                         flex: 3,
                         child: Container(
-                          padding: EdgeInsets.only(
-                            left:
-                                MediaQuery.of(context).size.width / AppSize.s12,
+                          padding: EdgeInsetsDirectional.only(
+                            start:
+                                MediaQuery.of(context).size.width / AppSize.s22,
                           ),
                           child: InkWell(
                             onTap: () {
@@ -115,8 +113,8 @@ class LayoutScreen extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: Container(
-                          padding: EdgeInsets.only(
-                            left:
+                          padding: EdgeInsetsDirectional.only(
+                            start:
                                 MediaQuery.of(context).size.width / AppSize.s22,
                           ),
                           child: InkWell(
@@ -176,3 +174,6 @@ class LayoutScreen extends StatelessWidget {
     );
   }
 }
+// horizontal:
+                        // MediaQuery.of(context).size.height / AppSize.s120,
+                    // vertical: MediaQuery.of(context).size.height / AppSize.s50,

@@ -16,4 +16,7 @@ class AssetsManager {
   static const String addTask = "$imagePath/add_task.png";
   static const String delete = "$imagePath/delete.png";
   static const String agree = "$imagePath/agree.png";
+  static const String language = "$imagePath/language.png";
+  static const String logOut = "$imagePath/log_out.png";
+
 }

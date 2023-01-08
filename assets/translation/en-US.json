@@ -1,7 +1,7 @@
 {
       "notFound": "Not Found",
       "welcome": "Welcome ...",
-      "en": "EN",
+      "en": "AR",
       "signIn": "Sign In",
       "login": "Login",
       "passwordValidation": "Password is required",
@@ -17,5 +17,7 @@
       "view": "VIEW",
       "qrcode": "QR CODE",
       "share": "SHARE",
-      "dailyTask": "DAILY TASKS"
+      "dailyTask": "DAILY TASKS",
+      "language": "Arabic",
+      "logOut": "Log Out"
 }

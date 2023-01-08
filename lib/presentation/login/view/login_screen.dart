@@ -49,7 +49,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         child: Align(
-                          alignment: Alignment.bottomLeft,
+                          alignment: AlignmentDirectional.bottomStart,
                           child: Text(
                             AppStrings.welcome.tr(),
                             style: Theme.of(context).textTheme.headlineLarge,
@@ -86,7 +86,7 @@ class LoginScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               Align(
-                                alignment: Alignment.topLeft,
+                                alignment: AlignmentDirectional.topStart,
                                 child: Text(
                                   AppStrings.login.tr(),
                                   style: Theme.of(context)

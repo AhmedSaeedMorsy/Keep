@@ -1,7 +1,7 @@
 {
       "notFound": "لا يوجد",
-      "welcome": " ...مرحبا ",
-      "en": "AR",
+      "welcome": "مرحبا ... ",
+      "en": "EN",
       "signIn": "تسجيل الدخول",
       "login": "تسجيل الدخول",
       "passwordValidation": "يجب ادخال الرقم السري",
@@ -17,5 +17,7 @@
       "view": "عرض",
       "qrcode": "رمز QR",
       "share": "مشاركة",
-      "dailyTask": "المهام اليومي"
+      "dailyTask": "المهام اليومية",
+      "language": "English",
+      "logOut": "تسجيل الخروج"
 }
