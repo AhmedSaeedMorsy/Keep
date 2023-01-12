@@ -7,10 +7,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keep/app/common/widget.dart';
 import 'package:keep/app/resources/assets_manager.dart';
 import 'package:keep/app/resources/font_manager.dart';
+import 'package:keep/presentation/layout/controller/layout_bloc.dart';
+import 'package:keep/presentation/layout/view/layout_screen.dart';
+import 'package:keep/presentation/view_knowledge/view/view_knowledge_screen.dart';
 
 import '../../../app/resources/color_manager.dart';
 import '../../../app/resources/strings_manager.dart';
 import '../../../app/resources/values_manager.dart';
+import '../../share/view/share_screen.dart';
 
 class KnowledgeScreen extends StatelessWidget {
   const KnowledgeScreen({super.key});
@@ -18,7 +22,18 @@ class KnowledgeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ColorManager.primaryColor,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          end: Alignment.bottomCenter,
+          begin: Alignment.topCenter,
+          colors: [
+            ColorManager.primaryColor,
+            ColorManager.primaryColor,
+            ColorManager.primaryColor,
+            ColorManager.white,
+          ],
+        ),
+      ),
       child: Column(
         children: [
           Expanded(
@@ -33,7 +48,7 @@ class KnowledgeScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 3,
+            flex: 4,
             child: FadeInUp(
               duration: const Duration(
                 seconds: AppIntDuration.s1,
@@ -52,11 +67,10 @@ class KnowledgeScreen extends StatelessWidget {
                   ),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal:
-                        MediaQuery.of(context).size.width / AppPadding.p12,
-                    vertical:
-                        MediaQuery.of(context).size.height / AppPadding.p30,
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / AppPadding.p30,
+                    left: MediaQuery.of(context).size.width / AppPadding.p12,
+                    right: MediaQuery.of(context).size.width / AppPadding.p12,
                   ),
                   child: Column(
                     children: [
@@ -138,7 +152,10 @@ class KnowledgeScreen extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    screen = const ViewKnowledgeScreen();
+                    LayoutBloc.get(context).changeBottomNavBar(5);
+                  },
                   child: Row(
                     children: [
                       Icon(
@@ -197,7 +214,9 @@ class KnowledgeScreen extends StatelessWidget {
               Expanded(
                 flex: 3,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    showPopupScanner(context);
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -228,7 +247,10 @@ class KnowledgeScreen extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    screen =  ShareScreen();
+                    LayoutBloc.get(context).changeBottomNavBar(5);
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -251,6 +273,36 @@ class KnowledgeScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void showPopupScanner(context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return FadeInDown(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                width: double.infinity,
+                height: AppSize.s220.h,
+                color: ColorManager.grey,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.height / AppSize.s22,
+                  ),
+                  child: const Image(
+                    image: AssetImage(
+                      AssetsManager.qrCode,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }

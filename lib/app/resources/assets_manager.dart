@@ -18,5 +18,17 @@ class AssetsManager {
   static const String agree = "$imagePath/agree.png";
   static const String language = "$imagePath/language.png";
   static const String logOut = "$imagePath/log_out.png";
+  static const String arrowLeft = "$imagePath/arrow_left.png";
+  static const String arrowRight = "$imagePath/arrow_right.png";
+  static const String qrCode = "$imagePath/qr_code.png";
+  static const String arrowUp = "$imagePath/arrow_up.png";
+  static const String arrowDown = "$imagePath/arrow_down.png";
+  static const String filter = "$imagePath/filter.png";
+  static const String facebook = "$imagePath/facebook.png";
+  static const String linkedin = "$imagePath/linkedin.png";
+  static const String instagram = "$imagePath/instagram.png";
+  static const String mapIcon = "$imagePath/map_icon.png";
+  static const String share = "$imagePath/share.png";
+
 
 }

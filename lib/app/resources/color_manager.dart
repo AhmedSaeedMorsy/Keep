@@ -8,5 +8,6 @@ class ColorManager {
   static const Color lightGrey = Color(0xffE6E6E6);
   static const Color grey = Color(0xffCCCCCC);
   static const Color greyWithOpacity = Color(0xff7B7B7B);
-  static Color error = const Color(0xffe61f34);
+  static const Color error = Color(0xffEA2D3F);
+  static const Color agree = Color(0xff44C4A1);
 }

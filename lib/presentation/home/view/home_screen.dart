@@ -7,12 +7,16 @@ import 'package:keep/app/constant/enums_extentions.dart';
 import 'package:keep/app/resources/assets_manager.dart';
 import 'package:keep/app/resources/font_manager.dart';
 import 'package:keep/app/resources/strings_manager.dart';
+import 'package:keep/presentation/add_task/view/add_task_screen.dart';
 import 'package:keep/presentation/home/controller/home_bloc.dart';
 import 'package:keep/presentation/home/controller/home_states.dart';
+import 'package:keep/presentation/layout/controller/layout_bloc.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import '../../../app/common/widget.dart';
 import '../../../app/resources/color_manager.dart';
 import '../../../app/resources/values_manager.dart';
+import '../../calender_monthly/view/calendar_monthly_screen.dart';
+import '../../layout/view/layout_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -24,7 +28,18 @@ class HomeScreen extends StatelessWidget {
       child: BlocBuilder<HomeBloc, HomeStates>(
         builder: (context, state) {
           return Container(
-            color: ColorManager.primaryColor,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                end: Alignment.bottomCenter,
+                begin: Alignment.topCenter,
+                colors: [
+                  ColorManager.primaryColor,
+                  ColorManager.primaryColor,
+                  ColorManager.primaryColor,
+                  ColorManager.white,
+                ],
+              ),
+            ),
             child: Column(
               children: [
                 Expanded(
@@ -39,7 +54,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 4,
                   child: FadeInUp(
                     duration: const Duration(
                       seconds: AppIntDuration.s1,
@@ -47,21 +62,24 @@ class HomeScreen extends StatelessWidget {
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                          color: ColorManager.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(
-                              AppSize.s40.w,
-                            ),
-                            topRight: Radius.circular(
-                              AppSize.s40.w,
-                            ),
-                          )),
+                        color: ColorManager.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(
+                            AppSize.s40.w,
+                          ),
+                          topRight: Radius.circular(
+                            AppSize.s40.w,
+                          ),
+                        ),
+                      ),
                       child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width /
-                              AppPadding.p12,
-                          vertical: MediaQuery.of(context).size.height /
+                        padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height /
                               AppPadding.p30,
+                          left: MediaQuery.of(context).size.width /
+                              AppPadding.p12,
+                          right: MediaQuery.of(context).size.width /
+                              AppPadding.p12,
                         ),
                         child: SingleChildScrollView(
                           physics: const BouncingScrollPhysics(),
@@ -76,7 +94,7 @@ class HomeScreen extends StatelessWidget {
                                   appearance: CircularSliderAppearance(
                                     startAngle: 270,
                                     angleRange: 360,
-                                    size: AppSize.s120.w,
+                                    size: AppSize.s130.w,
                                     animDurationMultiplier: AppIntDuration.s4_5,
                                     infoProperties: InfoProperties(
                                       topLabelText: AppStrings.kpi,
@@ -85,13 +103,13 @@ class HomeScreen extends StatelessWidget {
                                           .headlineLarge!
                                           .copyWith(
                                             color: ColorManager.primaryColor,
-                                            fontSize: FontSizeManager.s28.sp,
+                                            fontSize: FontSizeManager.s26.sp,
                                           ),
                                       topLabelStyle: Theme.of(context)
                                           .textTheme
                                           .headlineLarge!
                                           .copyWith(
-                                            fontSize: FontSizeManager.s34.sp,
+                                            fontSize: FontSizeManager.s32.sp,
                                             color: ColorManager.primaryColor,
                                           ),
                                     ),
@@ -123,44 +141,59 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      screen = const CalendarMonthlyScreen();
+                                      LayoutBloc.get(context)
+                                          .changeBottomNavBar(5);
+                                    },
                                     icon: Image(
                                       image: const AssetImage(
                                         AssetsManager.calender,
                                       ),
-                                      width: AppSize.s18.w,
+                                      width: AppSize.s22.w,
                                     ),
                                   ),
                                   InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      HomeBloc.get(context).decressDate();
+                                    },
                                     child: Icon(
                                       Icons.arrow_back_ios,
                                       size: AppSize.s18.w,
                                     ),
                                   ),
                                   Text(
-                                    HomeBloc.get(context).dateTime,
+                                    DateFormat.yMMMd().format(
+                                      HomeBloc.get(context).dateTime,
+                                    ),
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineMedium,
                                   ),
                                   InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      HomeBloc.get(context).incressDate();
+                                    },
                                     child: Icon(
                                       Icons.arrow_forward_ios,
                                       size: AppSize.s18.w,
                                     ),
                                   ),
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      screen = AddTask();
+                                      LayoutBloc.get(context)
+                                          .changeBottomNavBar(5);
+                                    },
                                     icon: Image(
-                                      image: AssetImage(
+                                      image: const AssetImage(
                                         AssetsManager.addTask,
                                       ),
-                                      width: AppSize.s18.w,
+                                      width: AppSize.s22.w,
                                     ),
                                   ),
                                 ],
@@ -178,11 +211,15 @@ class HomeScreen extends StatelessWidget {
                                       color: ColorManager.greyWithOpacity,
                                     ),
                               ),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height /
+                                    AppSize.s50,
+                              ),
                               ListView.separated(
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) =>
-                                    taskItem(context),
+                                    taskItem(context, index),
                                 separatorBuilder: (context, index) => SizedBox(
                                   height: MediaQuery.of(context).size.height /
                                       AppSize.s50,
@@ -204,13 +241,21 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget taskItem(BuildContext context) => Container(
+  Widget taskItem(
+    BuildContext context,
+    int index,
+  ) =>
+      Container(
         padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width / AppSize.s22,
           vertical: MediaQuery.of(context).size.height / AppSize.s30,
         ),
         decoration: BoxDecoration(
-          color: ColorManager.grey,
+          color: HomeBloc.get(context).taskState[index] == "agree"
+              ? ColorManager.agree
+              : HomeBloc.get(context).taskState[index] == "decline"
+                  ? ColorManager.error
+                  : ColorManager.grey,
           borderRadius: BorderRadius.circular(
             MediaQuery.of(context).size.width / AppSize.s30,
           ),
@@ -221,28 +266,65 @@ class HomeScreen extends StatelessWidget {
               AppStrings.taskName.toTitleCase(),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: HomeBloc.get(context).taskState[index] == "agree"
+                  ? Theme.of(context).textTheme.headlineSmall
+                  : HomeBloc.get(context).taskState[index] == "decline"
+                      ? Theme.of(context).textTheme.headlineSmall!.copyWith(
+                            color: ColorManager.white,
+                          )
+                      : Theme.of(context).textTheme.headlineSmall,
             ),
             const Spacer(),
-            InkWell(
-              onTap: () {},
-              child: const Image(
-                image: AssetImage(
-                  AssetsManager.delete,
+            if (HomeBloc.get(context).taskState[index] == "agree")
+              InkWell(
+                onTap: () {
+                  HomeBloc.get(context).addToDecline(index);
+                },
+                child: const Image(
+                  image: AssetImage(
+                    AssetsManager.delete,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width / AppSize.s22,
-            ),
-            InkWell(
-              onTap: () {},
-              child: const Image(
-                image: AssetImage(
-                  AssetsManager.agree,
+            if (HomeBloc.get(context).taskState[index] == "decline")
+              InkWell(
+                onTap: () {
+                  HomeBloc.get(context).addToAgree(index);
+                },
+                child: const Image(
+                  image: AssetImage(
+                    AssetsManager.agree,
+                  ),
                 ),
               ),
-            ),
+            if (HomeBloc.get(context).taskState[index] == null)
+              Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      HomeBloc.get(context).addToDecline(index);
+                    },
+                    child: const Image(
+                      image: AssetImage(
+                        AssetsManager.delete,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / AppSize.s30,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      HomeBloc.get(context).addToAgree(index);
+                    },
+                    child: const Image(
+                      image: AssetImage(
+                        AssetsManager.agree,
+                      ),
+                    ),
+                  ),
+                ],
+              )
           ],
         ),
       );

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:keep/presentation/layout/view/layout_screen.dart';
 import 'package:keep/presentation/login/view/login_screen.dart';
+import 'package:keep/presentation/notification/view/notification_view.dart';
 import 'package:keep/presentation/on_boarding/view/on_boarding_screen.dart';
 import 'strings_manager.dart';
 
@@ -10,6 +11,8 @@ class Routes {
   static const String onBoardingRoute = "/onBoardingRoute";
   static const String loginRoute = "/loginRoute";
   static const String layoutRoute = "/layoutRoute";
+  static const String notificationRoute = "/notificationRoute";
+
 }
 
 class RouteGenerator {
@@ -26,6 +29,10 @@ class RouteGenerator {
         case Routes.layoutRoute:
         return MaterialPageRoute(
           builder: (_) => const LayoutScreen(),
+        );
+         case Routes.notificationRoute:
+        return MaterialPageRoute(
+          builder: (_) => const NotificationScreen(),
         );
       default:
         return unDefiendRoute();

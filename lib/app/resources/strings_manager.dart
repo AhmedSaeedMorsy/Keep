@@ -22,4 +22,26 @@ class AppStrings {
   static String taskName = "Task Name";
   static String language = "language";
   static String logOut = "logOut";
+  static String notification = "notification";
+  static String deleteNotification = "deleteNotification";
+  static String hideNotififcation = "hideNotififcation";
+  static String department = "department";
+  static String cancel = "cancel";
+  static String calendar = "calendar";
+  static String addTask = "addTask";
+  static String meetingTitle = "meetingTitle";
+  static String clientName = "clientName";
+  static String companyName = "companyName";
+  static String jobTitle = "jobTitle";
+  static String phoneNumber = "phoneNumber";
+  static String email = "e-mail@sample.com";
+  static String address = "address";
+  static String date = "date";
+  static String time = "time";
+  static String meetingDescription = "meetingDescription";
+  static String shareWithTeam = "shareWithTeam";
+  static String team = "team";
+  static String submit = "submit";
+  static String editCard = "editCard";
+  static String addLinksandContactInfo = "addLinksandContactInfo";
 }

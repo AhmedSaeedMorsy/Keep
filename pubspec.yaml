@@ -44,6 +44,7 @@ dependencies:
   animated_bottom_navigation_bar: ^1.1.0+1
   flutter_bloc: ^8.1.1
   sleek_circular_slider: ^2.0.1
+  dropdown_button2: ^1.9.2
 
 dev_dependencies:
   flutter_test:

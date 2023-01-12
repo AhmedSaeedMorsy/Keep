@@ -5,6 +5,9 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keep/app/resources/assets_manager.dart';
 import 'package:keep/app/resources/font_manager.dart';
+import 'package:keep/presentation/layout/controller/layout_bloc.dart';
+import 'package:keep/presentation/layout/view/layout_screen.dart';
+import 'package:keep/presentation/notification/view/notification_view.dart';
 import '../resources/color_manager.dart';
 import '../resources/language_manager.dart';
 import '../resources/strings_manager.dart';
@@ -53,7 +56,7 @@ class SharedWidget {
             // hint style
             hintStyle: getBoldStyle(
               color: ColorManager.grey,
-              fontSize: FontSizeManager.s22,
+              fontSize: FontSizeManager.s22.sp,
             ),
           ),
           onFieldSubmitted: onFieldSubmitted,
@@ -69,88 +72,369 @@ class SharedWidget {
 
   static Widget header(context) => Container(
         padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / AppPadding.p20,
-          vertical: MediaQuery.of(context).size.height / AppPadding.p40,
+          horizontal: MediaQuery.of(context).size.width / AppSize.s20,
+          vertical: MediaQuery.of(context).size.height / AppSize.s200,
         ),
-        width: double.infinity,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: MediaQuery.of(context).size.height / AppSize.s50,
-                    horizontal: MediaQuery.of(context).size.width / AppSize.s50,
-                  ),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: AppSize.s30.w,
-                        backgroundColor: ColorManager.white,
-                      ),
-                      SizedBox(
-                        width:
-                            MediaQuery.of(context).size.width / AppSize.s30.w,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            AppStrings.userName.tr(),
-                            style: Theme.of(context).textTheme.headlineLarge,
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height /
-                                AppSize.s350,
-                          ),
-                          Text(
-                            AppStrings.jobDescription.tr(),
-                            style: Theme.of(context).textTheme.displaySmall,
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                )),
-            Align(
-              alignment: Alignment.topRight,
-              child: Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      right: MediaQuery.of(context).size.width / AppSize.s30,
-                    ),
-                    child: InkWell(
-                      onTap: () {},
-                      child: Icon(
-                        Icons.notifications,
-                        size: AppSize.s18.w,
-                        color: ColorManager.white,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      right: MediaQuery.of(context).size.width / AppSize.s30,
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        showPopupSettings(context);
-                      },
-                      child: Icon(
-                        Icons.settings,
-                        size: AppSize.s18.w,
-                        color: ColorManager.white,
-                      ),
-                    ),
-                  ),
-                ],
+            InkWell(
+              onTap: () {
+                profile(context);
+              },
+              child: CircleAvatar(
+                radius: AppSize.s30.w,
+                backgroundColor: ColorManager.white,
               ),
-            )
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width / AppSize.s30.w,
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height / AppSize.s120,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          AppStrings.userName.tr(),
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                right: MediaQuery.of(context).size.width /
+                                    AppSize.s30,
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  screen = const NotificationScreen();
+                                  LayoutBloc.get(context).changeBottomNavBar(5);
+                                },
+                                child: Icon(
+                                  Icons.notifications,
+                                  size: AppSize.s18.w,
+                                  color: ColorManager.white,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                right: MediaQuery.of(context).size.width /
+                                    AppSize.s30,
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  showPopupSettings(context);
+                                },
+                                child: Icon(
+                                  Icons.settings,
+                                  size: AppSize.s18.w,
+                                  color: ColorManager.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Text(
+                      AppStrings.jobDescription.tr(),
+                      style: Theme.of(context).textTheme.displaySmall,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       );
+
+  static void profile(context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return FadeInRight(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height / AppSize.s1_3,
+                color: ColorManager.white,
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / AppSize.s3,
+                        child: Stack(
+                          alignment: AlignmentDirectional.bottomCenter,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional.topCenter,
+                              child: Stack(
+                                alignment: AlignmentDirectional.topEnd,
+                                children: [
+                                  Container(
+                                    width: double.infinity,
+                                    height: MediaQuery.of(context).size.height /
+                                        AppSize.s4_3,
+                                    color: ColorManager.primaryColor,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Stack(
+                              alignment: AlignmentDirectional.bottomEnd,
+                              children: [
+                                CircleAvatar(
+                                  radius: MediaQuery.of(context).size.height /
+                                      AppSize.s10,
+                                  backgroundColor: ColorManager.grey,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height:
+                            MediaQuery.of(context).size.height / AppSize.s80,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal:
+                              MediaQuery.of(context).size.width / AppSize.s12,
+                        ),
+                        child: Container(
+                          height: AppSize.s150.h,
+                          decoration: const BoxDecoration(
+                            color: ColorManager.grey,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                AppSize.s16,
+                              ),
+                            ),
+                          ),
+                          child: Column(children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Center(
+                                      child: Text(
+                                        AppStrings.editCard.tr(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineLarge!
+                                            .copyWith(
+                                              color: ColorManager.primaryColor,
+                                              fontSize: FontSizeManager.s18.sp,
+                                            ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: double.infinity,
+                                    width: AppSize.s1.h,
+                                    color: ColorManager.darkGrey,
+                                  ),
+                                  Expanded(
+                                    child: Center(
+                                      child: Text(
+                                        AppStrings.editCard.tr(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineLarge!
+                                            .copyWith(
+                                              fontSize: FontSizeManager.s18.sp,
+                                              color: ColorManager.primaryColor,
+                                            ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: AppSize.s1.w,
+                              color: ColorManager.darkGrey,
+                            ),
+                            Expanded(
+                              child: Center(
+                                child: Text(
+                                  AppStrings.addLinksandContactInfo.tr(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displaySmall!
+                                      .copyWith(
+                                        color: ColorManager.primaryColor,
+                                      ),
+                                ),
+                              ),
+                            )
+                          ]),
+                        ),
+                      ),
+                      SizedBox(
+                        height:
+                            MediaQuery.of(context).size.height / AppSize.s50,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal:
+                              MediaQuery.of(context).size.width / AppSize.s18,
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                width: double.infinity,
+                                height: AppSize.s1.w,
+                                color: ColorManager.darkGrey,
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        MediaQuery.of(context).size.width /
+                                            AppSize.s80),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Image(
+                                      image: const AssetImage(
+                                        AssetsManager.facebook,
+                                      ),
+                                      width: AppSize.s32.w,
+                                      height: AppSize.s32.h,
+                                    ),
+                                    Image(
+                                      image: const AssetImage(
+                                        AssetsManager.instagram,
+                                      ),
+                                      width: AppSize.s32.w,
+                                      height: AppSize.s32.h,
+                                    ),
+                                    Image(
+                                      image: const AssetImage(
+                                        AssetsManager.linkedin,
+                                      ),
+                                      width: AppSize.s32.w,
+                                      height: AppSize.s32.h,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                width: double.infinity,
+                                height: AppSize.s1.w,
+                                color: ColorManager.darkGrey,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal:
+                              MediaQuery.of(context).size.width / AppSize.s18,
+                          vertical:
+                              MediaQuery.of(context).size.height / AppSize.s30,
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  showPopupScannerProfile(context);
+                                },
+                                child: Image(
+                                  image: const AssetImage(
+                                    AssetsManager.scanner,
+                                  ),
+                                  color: ColorManager.primaryColor,
+                                  width: AppSize.s36.w,
+                                  height: AppSize.s36.h,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Image(
+                                image: const AssetImage(
+                                  AssetsManager.mapIcon,
+                                ),
+                                color: ColorManager.primaryColor,
+                                width: AppSize.s36.w,
+                                height: AppSize.s36.h,
+                              ),
+                            ),
+                            Expanded(
+                              child: Image(
+                                image: const AssetImage(
+                                  AssetsManager.share,
+                                ),
+                                color: ColorManager.primaryColor,
+                                width: AppSize.s36.w,
+                                height: AppSize.s36.h,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  static void showPopupScannerProfile(context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return FadeInDown(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                width: double.infinity,
+                height: AppSize.s220.h,
+                color: ColorManager.grey,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.height / AppSize.s22,
+                  ),
+                  child: const Image(
+                    image: AssetImage(
+                      AssetsManager.qrCode,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   // static Widget noItemWidget(context) {
   //   return Column(
@@ -190,7 +474,7 @@ class SharedWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return FadeInDown(
+        return FadeInRight(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -220,8 +504,12 @@ class SharedWidget {
                               ),
                               Text(
                                 AppStrings.language.tr(),
-                                style:
-                                    Theme.of(context).textTheme.headlineMedium,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium!
+                                    .copyWith(
+                                      fontSize: FontSizeManager.s22.sp,
+                                    ),
                               ),
                             ],
                           ),
@@ -250,7 +538,12 @@ class SharedWidget {
                             ),
                             Text(
                               AppStrings.logOut.tr(),
-                              style: Theme.of(context).textTheme.headlineMedium,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium!
+                                  .copyWith(
+                                    fontSize: FontSizeManager.s22.sp,
+                                  ),
                             ),
                           ],
                         ),

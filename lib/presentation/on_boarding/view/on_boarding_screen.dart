@@ -15,27 +15,30 @@ class OnBoardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              image: AssetImage(
-                AssetsManager.onBoarding,
-              ),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.fill,
+            image: AssetImage(
+              AssetsManager.onBoarding,
             ),
           ),
-          child: Padding(
-            padding: EdgeInsets.all(
-              MediaQuery.of(context).size.width / AppSize.s18,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () {
-                    SharedWidget.changeLanguage(context);
-                  },
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(
+            MediaQuery.of(context).size.width / AppSize.s18,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: () {
+                  SharedWidget.changeLanguage(context);
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / AppSize.s30,
+                  ),
                   child: Align(
                     alignment: Alignment.topRight,
                     child: Container(
@@ -52,33 +55,33 @@ class OnBoardingScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Center(
-                  child: Image(
-                    width: AppSize.s180.w,
-                    image: const AssetImage(
-                      AssetsManager.logo,
-                    ),
+              ),
+              Center(
+                child: Image(
+                  width: AppSize.s180.w,
+                  image: const AssetImage(
+                    AssetsManager.logo,
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).size.height / AppSize.s16,
-                  ),
-                  child: SharedWidget.defaultButton(
-                    context: context,
-                    backgroundColor: ColorManager.lightGrey,
-                    function: () {
-                      Navigator.pushNamed(
-                        context,
-                        Routes.loginRoute,
-                      );
-                    },
-                    style: Theme.of(context).textTheme.displayLarge!,
-                    text: AppStrings.signIn.tr(),
-                  ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height / AppSize.s16,
                 ),
-              ],
-            ),
+                child: SharedWidget.defaultButton(
+                  context: context,
+                  backgroundColor: ColorManager.lightGrey,
+                  function: () {
+                    Navigator.pushNamed(
+                      context,
+                      Routes.loginRoute,
+                    );
+                  },
+                  style: Theme.of(context).textTheme.displayLarge!,
+                  text: AppStrings.signIn.tr(),
+                ),
+              ),
+            ],
           ),
         ),
       ),
