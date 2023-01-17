@@ -242,16 +242,13 @@ class SharedWidget {
                 color: ColorManager.grey,
               ),
             ),
-            contentPadding: EdgeInsetsDirectional.all(
-         AppPadding.p12.w
-            ),
+            contentPadding: EdgeInsetsDirectional.all(AppPadding.p12.w),
             // hint style
             hintStyle: getMediumStyle(
               color: ColorManager.grey,
               fontSize: FontSizeManager.s18.sp,
             ),
           ),
-          
           onFieldSubmitted: onFieldSubmitted,
           minLines: 50,
           validator: validator,
@@ -313,7 +310,12 @@ class SharedWidget {
                               MediaQuery.of(context).size.height / AppSize.s50,
                         ),
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              Routes.calendarDailyRoute,
+                            );
+                          },
                           child: Text(
                             AppStrings.daily.tr(),
                             style: Theme.of(context)

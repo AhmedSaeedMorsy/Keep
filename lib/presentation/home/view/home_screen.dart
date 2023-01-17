@@ -231,7 +231,7 @@ class HomeScreen extends StatelessWidget {
                                         AppSize.s50,
                                   ),
                                   itemCount: 10,
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -335,7 +335,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ],
-              )
+              ),
           ],
         ),
       );

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:keep/presentation/calendar_daily/view/calendar_daily_screen.dart';
 import 'package:keep/presentation/map_screen/view/map_screen.dart';
 import 'package:keep/presentation/calendar_hourly/view/calendar_hourly.dart';
 import 'package:keep/presentation/calendar_monthly/view/calendar_monthly_screen.dart';
@@ -18,6 +19,7 @@ class Routes {
   static const String notificationRoute = "/notificationRoute";
   static const String calendarHourlyRoute = "/calendarHourlyRoute";
   static const String calendarMonthlyRoute = "/calendarMonthlyRoute";
+  static const String calendarDailyRoute = "/calendarDailyRoute";
   static const String shareRoute = "/shareRoute";
   static const String mapRoute = "/mapRoute";
   static const String addTaskRoute = "/addTaskRoute";
@@ -59,7 +61,10 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) =>  MapScreen(),
         );
-        
+          case Routes.calendarDailyRoute:
+        return MaterialPageRoute(
+          builder: (_) =>  CalendarDailyScreen(),
+        );
       default:
         return unDefiendRoute();
     }
