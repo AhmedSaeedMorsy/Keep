@@ -20,5 +20,5 @@ void main() async {
         child: MyApp(),
       ),
     ),
-  ); 
+  );
 }

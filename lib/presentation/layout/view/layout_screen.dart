@@ -13,7 +13,7 @@ import '../../leads/view/leads_screen.dart';
 import '../../scanner/view/scanner_screen.dart';
 import '../controller/layout_states.dart';
 
-Widget screen = HomeScreen();
+Widget screen =  HomeScreen();
 
 class LayoutScreen extends StatelessWidget {
   const LayoutScreen({super.key});
@@ -163,7 +163,7 @@ class LayoutScreen extends StatelessWidget {
                           backgroundColor: ColorManager.primaryColor,
                           onPressed: () {
                             LayoutBloc.get(context).changeBottomNavBar(0);
-                            screen = HomeScreen();
+                            screen =  HomeScreen();
                           },
                           child: Image(
                             image: const AssetImage(
@@ -178,7 +178,7 @@ class LayoutScreen extends StatelessWidget {
                       : FloatingActionButton.large(
                           backgroundColor: ColorManager.primaryColor,
                           onPressed: () {
-                            screen = HomeScreen();
+                            screen =  HomeScreen();
                             LayoutBloc.get(context).changeBottomNavBar(0);
                           },
                           child: Image(

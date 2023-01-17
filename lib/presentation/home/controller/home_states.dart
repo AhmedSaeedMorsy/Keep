@@ -7,3 +7,5 @@ class IncressDateState extends HomeStates {}
 class DecressDateState extends HomeStates {}
 
 class ChangeTaskItemState extends HomeStates {}
+
+class ChangeBottomSheetState extends HomeStates {}

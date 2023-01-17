@@ -44,4 +44,11 @@ class AppStrings {
   static String submit = "submit";
   static String editCard = "editCard";
   static String addLinksandContactInfo = "addLinksandContactInfo";
+  static String shareToStaff = "shareToStaff";
+  static String shareVia = "shareVia";
+  static String hourly = "hourly";
+  static String daily = "daily";
+  static String weekly = "weekly";
+  static String monthly = "monthly";
+  static String reasonOfcancellation = "reasonOfcancellation";
 }

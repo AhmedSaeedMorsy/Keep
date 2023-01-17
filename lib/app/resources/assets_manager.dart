@@ -29,6 +29,5 @@ class AssetsManager {
   static const String instagram = "$imagePath/instagram.png";
   static const String mapIcon = "$imagePath/map_icon.png";
   static const String share = "$imagePath/share.png";
-
-
+  static const String people = "$imagePath/people.png";
 }

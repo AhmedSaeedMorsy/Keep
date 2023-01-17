@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:animate_do/animate_do.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -51,7 +53,7 @@ class AddTask extends StatelessWidget {
               SizedBox(
                 height: MediaQuery.of(context).size.height / AppSize.s50,
               ),
-              addTaskFormField(
+              SharedWidget.addTaskFormField(
                 textInputType: TextInputType.name,
                 controller: TextEditingController(),
                 hint: AppStrings.meetingTitle.tr(),
@@ -62,7 +64,7 @@ class AddTask extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: addTaskFormField(
+                    child: SharedWidget.addTaskFormField(
                       textInputType: TextInputType.name,
                       controller: TextEditingController(),
                       hint: AppStrings.clientName.tr(),
@@ -72,7 +74,7 @@ class AddTask extends StatelessWidget {
                     width: MediaQuery.of(context).size.width / AppSize.s18,
                   ),
                   Expanded(
-                    child: addTaskFormField(
+                    child: SharedWidget.addTaskFormField(
                       textInputType: TextInputType.name,
                       controller: TextEditingController(),
                       hint: AppStrings.companyName.tr(),
@@ -86,7 +88,7 @@ class AddTask extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: addTaskFormField(
+                    child: SharedWidget.addTaskFormField(
                       textInputType: TextInputType.name,
                       controller: TextEditingController(),
                       hint: AppStrings.jobTitle.tr(),
@@ -96,7 +98,7 @@ class AddTask extends StatelessWidget {
                     width: MediaQuery.of(context).size.width / AppSize.s18,
                   ),
                   Expanded(
-                    child: addTaskFormField(
+                    child: SharedWidget.addTaskFormField(
                       textInputType: TextInputType.name,
                       controller: TextEditingController(),
                       hint: AppStrings.phoneNumber.tr(),
@@ -107,7 +109,7 @@ class AddTask extends StatelessWidget {
               SizedBox(
                 height: MediaQuery.of(context).size.height / AppSize.s100,
               ),
-              addTaskFormField(
+              SharedWidget.addTaskFormField(
                 textInputType: TextInputType.emailAddress,
                 controller: TextEditingController(),
                 hint: AppStrings.email.tr(),
@@ -115,7 +117,7 @@ class AddTask extends StatelessWidget {
               SizedBox(
                 height: MediaQuery.of(context).size.height / AppSize.s100,
               ),
-              addTaskFormField(
+              SharedWidget.addTaskFormField(
                 textInputType: TextInputType.streetAddress,
                 controller: TextEditingController(),
                 hint: AppStrings.address.tr(),
@@ -126,7 +128,7 @@ class AddTask extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: addTaskFormField(
+                    child: SharedWidget.addTaskFormField(
                         textInputType: TextInputType.none,
                         controller: TextEditingController(),
                         hint: AppStrings.date.tr(),
@@ -147,7 +149,7 @@ class AddTask extends StatelessWidget {
                     width: MediaQuery.of(context).size.width / AppSize.s18,
                   ),
                   Expanded(
-                    child: addTaskFormField(
+                    child: SharedWidget.addTaskFormField(
                       textInputType: TextInputType.none,
                       controller: TextEditingController(),
                       hint: AppStrings.time.tr(),
@@ -166,7 +168,7 @@ class AddTask extends StatelessWidget {
               ),
               SizedBox(
                 height: AppSize.s120.h,
-                child: addTaskFormField(
+                child: SharedWidget.addTaskFormField(
                   textInputType: TextInputType.text,
                   controller: TextEditingController(),
                   hint: AppStrings.meetingDescription.tr(),
@@ -174,7 +176,7 @@ class AddTask extends StatelessWidget {
                   minLines: 20,
                 ),
               ),
-               SizedBox(
+              SizedBox(
                 height: MediaQuery.of(context).size.height / AppSize.s100,
               ),
               checkboxItem(
@@ -213,7 +215,7 @@ class AddTask extends StatelessWidget {
               SharedWidget.defaultButton(
                 context: context,
                 function: () {
-                  screen =  HomeScreen();
+                  screen = HomeScreen();
                   LayoutBloc.get(context).changeBottomNavBar(0);
                 },
                 text: AppStrings.cancel.tr(),
@@ -232,61 +234,6 @@ class AddTask extends StatelessWidget {
       ),
     );
   }
-
-  Widget addTaskFormField({
-    final TextEditingController? controller,
-    required TextInputType textInputType,
-    void Function(String?)? onChange,
-    void Function()? onTap,
-    String? hint,
-    String? Function(String?)? validator,
-    void Function(String)? onFieldSubmitted,
-    int maxLines = 1,
-    int minLines = 1,
-  }) =>
-      SizedBox(
-        height: AppSize.s50.h,
-        child: TextFormField(
-          controller: controller,
-          cursorHeight: 5,
-          cursorColor: ColorManager.primaryColor,
-          decoration: InputDecoration(
-            hintText: hint,
-            fillColor: ColorManager.lightGrey, filled: true,
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(
-                AppSize.s16,
-              ),
-              borderSide: const BorderSide(
-                color: ColorManager.primaryColor,
-              ),
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(
-                AppSize.s16,
-              ),
-              borderSide: const BorderSide(
-                color: ColorManager.primaryColor,
-              ),
-            ),
-            contentPadding: EdgeInsetsDirectional.only(
-              top: AppPadding.p1.h,
-              start: AppPadding.p12.w,
-            ),
-            // hint style
-            hintStyle: getMediumStyle(
-              color: ColorManager.grey,
-              fontSize: FontSizeManager.s18.sp,
-            ),
-          ),
-          onTap: onTap,
-          onFieldSubmitted: onFieldSubmitted,
-          minLines: minLines,
-          validator: validator,
-          keyboardType: textInputType,
-          maxLines: maxLines,
-        ),
-      );
 
   Widget checkboxItem({
     required BuildContext context,

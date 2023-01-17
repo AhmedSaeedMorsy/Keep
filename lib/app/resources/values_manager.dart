@@ -27,6 +27,8 @@ class AppIntDuration {
 }
 
 class AppSize {
+  static const double s0 = 0.0;
+
   static const double s1 = 1.0;
   static const double s1_3 = 1.3;
   static const double s1_5 = 1.5;
@@ -78,8 +80,9 @@ class AppSize {
   static const double s180 = 180.0;
   static const double s200 = 200.0;
   static const double s220 = 220.0;
+  static const double s250 = 250.0;
   static const double s350 = 350.0;
   static const double s500 = 500.0;
-  static const double s1200 = 1200.0;
+  static const double s700 = 700.0;
 
 }

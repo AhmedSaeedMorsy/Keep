@@ -41,5 +41,12 @@
       "submit": "تأكيد",
       "editCard": "تعديل الكارت",
       "previewCard": "معاينة الكارت",
-      "addLinksandContactInfo": "إضافة روابط ومعلومات الاتصال"
+      "addLinksandContactInfo": "إضافة روابط ومعلومات الاتصال",
+      "shareToStaff": "شارك للموظفين",
+      "shareVia": "شارك عبر",
+      "daily": "باليوم",
+      "weekly": "بالاسبوع",
+      "monthly": "بالشهر",
+      "hourly": "بالساعة",
+      "reasonOfcancellation": "السبب ..."
 }

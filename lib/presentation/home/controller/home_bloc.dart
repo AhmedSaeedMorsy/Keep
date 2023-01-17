@@ -26,4 +26,14 @@ class HomeBloc extends Cubit<HomeStates> {
     taskState.addAll({index: "agree"});
     emit(ChangeTaskItemState());
   }
+
+  bool isBottomSheetShown = false;
+
+  void changeBottomSheet({
+    required bool isShow,
+  }) {
+    isBottomSheetShown = isShow;
+
+    emit(ChangeBottomSheetState());
+  }
 }

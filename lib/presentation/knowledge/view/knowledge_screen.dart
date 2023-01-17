@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keep/app/common/widget.dart';
 import 'package:keep/app/resources/assets_manager.dart';
 import 'package:keep/app/resources/font_manager.dart';
+import 'package:keep/app/resources/routes_manager.dart';
 import 'package:keep/presentation/layout/controller/layout_bloc.dart';
 import 'package:keep/presentation/layout/view/layout_screen.dart';
 import 'package:keep/presentation/view_knowledge/view/view_knowledge_screen.dart';
@@ -14,7 +15,6 @@ import 'package:keep/presentation/view_knowledge/view/view_knowledge_screen.dart
 import '../../../app/resources/color_manager.dart';
 import '../../../app/resources/strings_manager.dart';
 import '../../../app/resources/values_manager.dart';
-import '../../share/view/share_screen.dart';
 
 class KnowledgeScreen extends StatelessWidget {
   const KnowledgeScreen({super.key});
@@ -248,8 +248,10 @@ class KnowledgeScreen extends StatelessWidget {
                 flex: 2,
                 child: InkWell(
                   onTap: () {
-                    screen =  ShareScreen();
-                    LayoutBloc.get(context).changeBottomNavBar(5);
+                    Navigator.pushNamed(
+                      context,
+                      Routes.shareRoute,
+                    );
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,

@@ -40,5 +40,13 @@
       "team": "Team",
       "submit": "Submit",
       "editCard": "Edit Card",
-      "previewCard": "Preview Card","addLinksandContactInfo":"Add Links and Contact Info"
+      "previewCard": "Preview Card",
+      "addLinksandContactInfo": "Add Links and Contact Info",
+      "shareToStaff": "Share To Staff",
+      "shareVia": "Share vie",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "hourly": "Hourly",
+      "reasonOfcancellation": "Reason of Cancellation ..."
 }
