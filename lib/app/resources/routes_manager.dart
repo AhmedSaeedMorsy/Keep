@@ -9,6 +9,7 @@ import 'package:keep/presentation/login/view/login_screen.dart';
 import 'package:keep/presentation/notification/view/notification_view.dart';
 import 'package:keep/presentation/on_boarding/view/on_boarding_screen.dart';
 import 'package:keep/presentation/share/view/share_screen.dart';
+import '../../presentation/calendar_weekly/view/calendar_weekly_screen.dart';
 import 'strings_manager.dart';
 
 class Routes {
@@ -20,10 +21,10 @@ class Routes {
   static const String calendarHourlyRoute = "/calendarHourlyRoute";
   static const String calendarMonthlyRoute = "/calendarMonthlyRoute";
   static const String calendarDailyRoute = "/calendarDailyRoute";
+  static const String calendarWeeklyRoute = "/calendarWeeklyRoute";
   static const String shareRoute = "/shareRoute";
   static const String mapRoute = "/mapRoute";
   static const String addTaskRoute = "/addTaskRoute";
-
 }
 
 class RouteGenerator {
@@ -47,11 +48,11 @@ class RouteGenerator {
         );
       case Routes.calendarHourlyRoute:
         return MaterialPageRoute(
-          builder: (_) =>  CalendarHorlyScreen(),
+          builder: (_) => CalendarHorlyScreen(),
         );
       case Routes.calendarMonthlyRoute:
         return MaterialPageRoute(
-          builder: (_) =>  CalendarMonthlyScreen(),
+          builder: (_) => CalendarMonthlyScreen(),
         );
       case Routes.shareRoute:
         return MaterialPageRoute(
@@ -59,11 +60,15 @@ class RouteGenerator {
         );
       case Routes.mapRoute:
         return MaterialPageRoute(
-          builder: (_) =>  MapScreen(),
+          builder: (_) => MapScreen(),
         );
-          case Routes.calendarDailyRoute:
+      case Routes.calendarDailyRoute:
         return MaterialPageRoute(
-          builder: (_) =>  CalendarDailyScreen(),
+          builder: (_) => CalendarDailyScreen(),
+        );
+      case Routes.calendarWeeklyRoute:
+        return MaterialPageRoute(
+          builder: (_) => CalendarWeeklyScreen(),
         );
       default:
         return unDefiendRoute();

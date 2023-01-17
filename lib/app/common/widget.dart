@@ -342,7 +342,12 @@ class SharedWidget {
                               MediaQuery.of(context).size.height / AppSize.s50,
                         ),
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              Routes.calendarWeeklyRoute,
+                            );
+                          },
                           child: Text(
                             AppStrings.weekly.tr(),
                             style: Theme.of(context)
