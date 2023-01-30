@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ import '../../../app/resources/routes_manager.dart';
 import '../../../app/resources/strings_manager.dart';
 import '../../../app/resources/values_manager.dart';
 import '../../add_task/view/add_task_screen.dart';
+import '../../edit_task/view/edit_task_screen.dart';
 import '../../home/controller/home_bloc.dart';
 import '../../home/controller/home_states.dart';
 import '../../layout/controller/layout_bloc.dart';
@@ -63,7 +66,7 @@ class CalendarDailyScreen extends StatelessWidget {
               flex: 1,
               child: FadeInDown(
                 duration: const Duration(
-                  seconds: AppIntDuration.s1,
+                milliseconds: AppIntDuration.duration500,
                 ),
                 child: SharedWidget.header(
                   context,
@@ -74,7 +77,7 @@ class CalendarDailyScreen extends StatelessWidget {
               flex: 4,
               child: FadeInUp(
                 duration: const Duration(
-                  seconds: AppIntDuration.s1,
+                 milliseconds: AppIntDuration.duration500,
                 ),
                 child: Container(
                   width: double.infinity,
@@ -157,7 +160,7 @@ class CalendarDailyScreen extends StatelessWidget {
                                           .textTheme
                                           .bodyLarge!
                                           .copyWith(
-                                            fontSize: FontSizeManager.s26.sp,
+                                            fontSize: FontSizeManager.s24.sp,
                                           ),
                                     ),
                                   ),
@@ -216,91 +219,97 @@ class CalendarDailyScreen extends StatelessWidget {
     BuildContext context,
     int index,
   ) =>
-      Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / AppSize.s22,
-          vertical: MediaQuery.of(context).size.height / AppSize.s30,
-        ),
-        decoration: BoxDecoration(
-          color: HomeBloc.get(context).taskState[index] == "agree"
-              ? ColorManager.agree
-              : HomeBloc.get(context).taskState[index] == "decline"
-                  ? ColorManager.error
-                  : ColorManager.grey,
-          borderRadius: BorderRadius.circular(
-            MediaQuery.of(context).size.width / AppSize.s30,
+      InkWell(
+        onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const EditTaskScreen()));
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width / AppSize.s22,
+            vertical: MediaQuery.of(context).size.height / AppSize.s30,
           ),
-        ),
-        child: Row(
-          children: [
-            Text(
-              AppStrings.taskName.toTitleCase(),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              style: HomeBloc.get(context).taskState[index] == "agree"
-                  ? Theme.of(context).textTheme.headlineSmall
-                  : HomeBloc.get(context).taskState[index] == "decline"
-                      ? Theme.of(context).textTheme.headlineSmall!.copyWith(
-                            color: ColorManager.white,
-                          )
-                      : Theme.of(context).textTheme.headlineSmall,
+          decoration: BoxDecoration(
+            color: HomeBloc.get(context).taskState[index] == "agree"
+                ? ColorManager.agree
+                : HomeBloc.get(context).taskState[index] == "decline"
+                    ? ColorManager.error
+                    : ColorManager.grey,
+            borderRadius: BorderRadius.circular(
+              MediaQuery.of(context).size.width / AppSize.s30,
             ),
-            const Spacer(),
-            if (HomeBloc.get(context).taskState[index] == "agree")
-              InkWell(
-                onTap: () {
-                  bottomSheetItem(context, index);
-
-                  HomeBloc.get(context).addToDecline(index);
-                },
-                child: const Image(
-                  image: AssetImage(
-                    AssetsManager.delete,
-                  ),
-                ),
+          ),
+          child: Row(
+            children: [
+              Text(
+                AppStrings.taskName.toTitleCase(),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: HomeBloc.get(context).taskState[index] == "agree"
+                    ? Theme.of(context).textTheme.headlineSmall
+                    : HomeBloc.get(context).taskState[index] == "decline"
+                        ? Theme.of(context).textTheme.headlineSmall!.copyWith(
+                              color: ColorManager.white,
+                            )
+                        : Theme.of(context).textTheme.headlineSmall,
               ),
-            if (HomeBloc.get(context).taskState[index] == "decline")
-              InkWell(
-                onTap: () {
-                  HomeBloc.get(context).addToAgree(index);
-                },
-                child: const Image(
-                  image: AssetImage(
-                    AssetsManager.agree,
-                  ),
-                ),
-              ),
-            if (HomeBloc.get(context).taskState[index] == null)
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      bottomSheetItem(context, index);
+              const Spacer(),
+              if (HomeBloc.get(context).taskState[index] == "agree")
+                InkWell(
+                  onTap: () {
+                    bottomSheetItem(context, index);
 
-                      HomeBloc.get(context).addToDecline(index);
-                    },
-                    child: const Image(
-                      image: AssetImage(
-                        AssetsManager.delete,
-                      ),
+                    HomeBloc.get(context).addToDecline(index);
+                  },
+                  child: const Image(
+                    image: AssetImage(
+                      AssetsManager.delete,
                     ),
                   ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / AppSize.s30,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      HomeBloc.get(context).addToAgree(index);
-                    },
-                    child: const Image(
-                      image: AssetImage(
-                        AssetsManager.agree,
-                      ),
+                ),
+              if (HomeBloc.get(context).taskState[index] == "decline")
+                InkWell(
+                  onTap: () {
+                    HomeBloc.get(context).addToAgree(index);
+                  },
+                  child: const Image(
+                    image: AssetImage(
+                      AssetsManager.agree,
                     ),
                   ),
-                ],
-              ),
-          ],
+                ),
+              if (HomeBloc.get(context).taskState[index] == null)
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        bottomSheetItem(context, index);
+
+                        HomeBloc.get(context).addToDecline(index);
+                      },
+                      child: const Image(
+                        image: AssetImage(
+                          AssetsManager.delete,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / AppSize.s30,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        HomeBloc.get(context).addToAgree(index);
+                      },
+                      child: const Image(
+                        image: AssetImage(
+                          AssetsManager.agree,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
         ),
       );
   void bottomSheetItem(context, index) {

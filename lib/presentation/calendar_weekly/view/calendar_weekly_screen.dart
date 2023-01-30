@@ -1,3 +1,5 @@
+// ignore_for_file: library_prefixes, must_be_immutable
+
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +16,12 @@ import '../../add_task/view/add_task_screen.dart';
 import '../../layout/controller/layout_bloc.dart';
 import '../../layout/controller/layout_states.dart';
 import '../../layout/view/layout_screen.dart';
+import 'dart:ui' as UI;
 
 class CalendarWeeklyScreen extends StatelessWidget {
   CalendarWeeklyScreen({super.key});
   var scaffoldKey = GlobalKey<ScaffoldState>();
-
+  UI.TextDirection direction = UI.TextDirection.ltr;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,9 +52,12 @@ class CalendarWeeklyScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: const Icon(
-                    Icons.arrow_back_ios,
-                    color: ColorManager.white,
+                  child: Directionality(
+                    textDirection: direction,
+                    child: const Icon(
+                      Icons.arrow_back_ios,
+                      color: ColorManager.white,
+                    ),
                   ),
                 ),
               ),
@@ -60,7 +66,7 @@ class CalendarWeeklyScreen extends StatelessWidget {
               flex: 1,
               child: FadeInDown(
                 duration: const Duration(
-                  seconds: AppIntDuration.s1,
+                  milliseconds: AppIntDuration.duration500,
                 ),
                 child: SharedWidget.header(
                   context,
@@ -71,7 +77,7 @@ class CalendarWeeklyScreen extends StatelessWidget {
               flex: 4,
               child: FadeInUp(
                 duration: const Duration(
-                  seconds: AppIntDuration.s1,
+                  milliseconds: AppIntDuration.duration500,
                 ),
                 child: Container(
                   width: double.infinity,
@@ -193,6 +199,7 @@ class CalendarWeeklyScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                   vertical: MediaQuery.of(context).size.height / AppSize.s50),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text(
                     DateFormat.E().format(
@@ -207,7 +214,7 @@ class CalendarWeeklyScreen extends StatelessWidget {
                       DateTime.now().add(Duration(days: index)),
                     ),
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                          fontSize: FontSizeManager.s34.sp,
+                          fontSize: FontSizeManager.s32.sp,
                         ),
                   ),
                   Text(

@@ -48,5 +48,17 @@
       "weekly": "بالاسبوع",
       "monthly": "بالشهر",
       "hourly": "بالساعة",
-      "reasonOfcancellation": "السبب ..."
+      "reasonOfcancellation": "السبب ...",
+      "today": "اليوم",
+      "total": "الكل",
+      "yasterday": "أمس",
+      "thisWeek": "هذا الاسبوع",
+      "thisMonth": "هذا الشهر",
+      "custom": "تحديد",
+      "location": "الموقع",
+      "form": "من",
+      "to": "الي",
+      "editTask": "تعديل المهام",
+      "goal": "الهدف",
+      "saveContact": "حفظ جهة الاتصال"
 }

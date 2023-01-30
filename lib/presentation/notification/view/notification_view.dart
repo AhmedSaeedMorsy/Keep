@@ -33,7 +33,7 @@ class NotificationScreen extends StatelessWidget {
             flex: 1,
             child: FadeInDown(
               duration: const Duration(
-                seconds: AppIntDuration.s1,
+                milliseconds: AppIntDuration.duration500,
               ),
               child: SharedWidget.header(
                 context,
@@ -44,7 +44,7 @@ class NotificationScreen extends StatelessWidget {
             flex: 4,
             child: FadeInUp(
               duration: const Duration(
-                seconds: AppIntDuration.s1,
+                milliseconds: AppIntDuration.duration500,
               ),
               child: Container(
                 width: double.infinity,
@@ -157,6 +157,7 @@ class NotificationScreen extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return FadeInDown(
+          duration: const Duration(milliseconds: AppIntDuration.duration500),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, library_prefixes
 
 import 'package:animate_do/animate_do.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -82,7 +82,7 @@ class ShareScreen extends StatelessWidget {
                     flex: 1,
                     child: FadeInDown(
                       duration: const Duration(
-                        seconds: AppIntDuration.s1,
+                        milliseconds: AppIntDuration.duration500,
                       ),
                       child: SharedWidget.header(
                         context,
@@ -93,7 +93,7 @@ class ShareScreen extends StatelessWidget {
                     flex: 4,
                     child: FadeInUp(
                       duration: const Duration(
-                        seconds: AppIntDuration.s1,
+                        milliseconds: AppIntDuration.duration500,
                       ),
                       child: Container(
                         width: double.infinity,
@@ -206,7 +206,7 @@ class ShareScreen extends StatelessWidget {
       ),
     );
   }
-
+Future<String> currentLanguage =  getAppLanguage();
   Widget dropDownItem({required BuildContext context}) {
     return DropdownButtonHideUnderline(
       child: DropdownButton2(
@@ -224,8 +224,8 @@ class ShareScreen extends StatelessWidget {
               child: Text(
                 AppStrings.department.tr(),
                 style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                      color: ColorManager.primaryColor,
-                      fontSize: FontSizeManager.s22.sp,
+                      color: ColorManager.darkGrey,
+                      fontSize: FontSizeManager.s18.sp,
                     ),
               ),
             ),
@@ -237,7 +237,7 @@ class ShareScreen extends StatelessWidget {
                 value: item,
                 child: Text(
                   item,
-                  style: Theme.of(context).textTheme.headlineSmall,
+                  style: Theme.of(context).textTheme.headlineSmall!,
                 ),
               ),
             )
@@ -261,7 +261,7 @@ class ShareScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(
             AppSize.s55.w,
           ),
-          border: Border.all(),
+          
           color: ColorManager.grey,
         ),
         buttonPadding: EdgeInsets.symmetric(
@@ -274,7 +274,6 @@ class ShareScreen extends StatelessWidget {
           AppSize.s10.w,
         ),
         dropdownDecoration: BoxDecoration(
-          border: Border.all(),
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(
               AppSize.s20.w,
@@ -284,11 +283,10 @@ class ShareScreen extends StatelessWidget {
             ),
           ),
           color: ColorManager.white,
-          boxShadow: const [],
         ),
         scrollbarThickness: AppSize.s8.w,
         offset: CacheHelper.getData(key: SharedKey.Language) ==
-                LanguageType.ENGLISH.getValue()
+                LanguageType.ENGLISH.getValue() || CacheHelper.getData(key: SharedKey.Language) == null
             ? Offset(AppSize.s20.w, 0)
             : Offset(-AppSize.s20.w, 0),
       ),

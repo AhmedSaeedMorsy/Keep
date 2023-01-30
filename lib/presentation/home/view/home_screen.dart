@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -16,11 +18,13 @@ import '../../../app/common/widget.dart';
 import '../../../app/resources/color_manager.dart';
 import '../../../app/resources/routes_manager.dart';
 import '../../../app/resources/values_manager.dart';
+import '../../edit_task/view/edit_task_screen.dart';
 import '../../layout/view/layout_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
   var scaffoldKey = GlobalKey<ScaffoldState>();
+  double sleekValue = 71;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +52,7 @@ class HomeScreen extends StatelessWidget {
                     flex: 1,
                     child: FadeInDown(
                       duration: const Duration(
-                        seconds: AppIntDuration.s1,
+                        milliseconds: AppIntDuration.duration500,
                       ),
                       child: SharedWidget.header(
                         context,
@@ -59,7 +63,7 @@ class HomeScreen extends StatelessWidget {
                     flex: 4,
                     child: FadeInUp(
                       duration: const Duration(
-                        seconds: AppIntDuration.s1,
+                        milliseconds: AppIntDuration.duration500,
                       ),
                       child: Container(
                         width: double.infinity,
@@ -92,15 +96,15 @@ class HomeScreen extends StatelessWidget {
                                   child: SleekCircularSlider(
                                     min: 0,
                                     max: 100,
-                                    initialValue: 75,
+                                    initialValue: sleekValue,
                                     appearance: CircularSliderAppearance(
                                       startAngle: 270,
                                       angleRange: 360,
                                       size: AppSize.s130.w,
                                       animDurationMultiplier:
-                                          AppIntDuration.s4_5,
+                                          AppIntDuration.duration2,
                                       infoProperties: InfoProperties(
-                                        topLabelText: AppStrings.kpi,
+                                        topLabelText: AppStrings.goal.tr(),
                                         mainLabelStyle: Theme.of(context)
                                             .textTheme
                                             .headlineLarge!
@@ -117,8 +121,8 @@ class HomeScreen extends StatelessWidget {
                                             ),
                                       ),
                                       customColors: CustomSliderColors(
-                                        progressBarColor:
-                                            ColorManager.primaryColor,
+                                        progressBarColor: HomeBloc.get(context)
+                                            .getSleekSliderColor(sleekValue),
                                         trackColor: ColorManager.grey,
                                         hideShadow: true,
                                       ),
@@ -252,91 +256,97 @@ class HomeScreen extends StatelessWidget {
     BuildContext context,
     int index,
   ) =>
-      Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / AppSize.s22,
-          vertical: MediaQuery.of(context).size.height / AppSize.s30,
-        ),
-        decoration: BoxDecoration(
-          color: HomeBloc.get(context).taskState[index] == "agree"
-              ? ColorManager.agree
-              : HomeBloc.get(context).taskState[index] == "decline"
-                  ? ColorManager.error
-                  : ColorManager.grey,
-          borderRadius: BorderRadius.circular(
-            MediaQuery.of(context).size.width / AppSize.s30,
+      InkWell(
+        onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const EditTaskScreen()));
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width / AppSize.s22,
+            vertical: MediaQuery.of(context).size.height / AppSize.s30,
           ),
-        ),
-        child: Row(
-          children: [
-            Text(
-              AppStrings.taskName.toTitleCase(),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              style: HomeBloc.get(context).taskState[index] == "agree"
-                  ? Theme.of(context).textTheme.headlineSmall
-                  : HomeBloc.get(context).taskState[index] == "decline"
-                      ? Theme.of(context).textTheme.headlineSmall!.copyWith(
-                            color: ColorManager.white,
-                          )
-                      : Theme.of(context).textTheme.headlineSmall,
+          decoration: BoxDecoration(
+            color: HomeBloc.get(context).taskState[index] == "agree"
+                ? ColorManager.agree
+                : HomeBloc.get(context).taskState[index] == "decline"
+                    ? ColorManager.error
+                    : ColorManager.grey,
+            borderRadius: BorderRadius.circular(
+              MediaQuery.of(context).size.width / AppSize.s30,
             ),
-            const Spacer(),
-            if (HomeBloc.get(context).taskState[index] == "agree")
-              InkWell(
-                onTap: () {
-                  bottomSheetItem(context, index);
-
-                  HomeBloc.get(context).addToDecline(index);
-                },
-                child: const Image(
-                  image: AssetImage(
-                    AssetsManager.delete,
-                  ),
-                ),
+          ),
+          child: Row(
+            children: [
+              Text(
+                AppStrings.taskName.toTitleCase(),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: HomeBloc.get(context).taskState[index] == "agree"
+                    ? Theme.of(context).textTheme.headlineSmall
+                    : HomeBloc.get(context).taskState[index] == "decline"
+                        ? Theme.of(context).textTheme.headlineSmall!.copyWith(
+                              color: ColorManager.white,
+                            )
+                        : Theme.of(context).textTheme.headlineSmall,
               ),
-            if (HomeBloc.get(context).taskState[index] == "decline")
-              InkWell(
-                onTap: () {
-                  HomeBloc.get(context).addToAgree(index);
-                },
-                child: const Image(
-                  image: AssetImage(
-                    AssetsManager.agree,
-                  ),
-                ),
-              ),
-            if (HomeBloc.get(context).taskState[index] == null)
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      bottomSheetItem(context, index);
+              const Spacer(),
+              if (HomeBloc.get(context).taskState[index] == "agree")
+                InkWell(
+                  onTap: () {
+                    bottomSheetItem(context, index);
 
-                      HomeBloc.get(context).addToDecline(index);
-                    },
-                    child: const Image(
-                      image: AssetImage(
-                        AssetsManager.delete,
-                      ),
+                    HomeBloc.get(context).addToDecline(index);
+                  },
+                  child: const Image(
+                    image: AssetImage(
+                      AssetsManager.delete,
                     ),
                   ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / AppSize.s30,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      HomeBloc.get(context).addToAgree(index);
-                    },
-                    child: const Image(
-                      image: AssetImage(
-                        AssetsManager.agree,
-                      ),
+                ),
+              if (HomeBloc.get(context).taskState[index] == "decline")
+                InkWell(
+                  onTap: () {
+                    HomeBloc.get(context).addToAgree(index);
+                  },
+                  child: const Image(
+                    image: AssetImage(
+                      AssetsManager.agree,
                     ),
                   ),
-                ],
-              ),
-          ],
+                ),
+              if (HomeBloc.get(context).taskState[index] == null)
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        bottomSheetItem(context, index);
+
+                        HomeBloc.get(context).addToDecline(index);
+                      },
+                      child: const Image(
+                        image: AssetImage(
+                          AssetsManager.delete,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / AppSize.s30,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        HomeBloc.get(context).addToAgree(index);
+                      },
+                      child: const Image(
+                        image: AssetImage(
+                          AssetsManager.agree,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
         ),
       );
   void bottomSheetItem(context, index) {

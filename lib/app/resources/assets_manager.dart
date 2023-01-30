@@ -30,4 +30,15 @@ class AssetsManager {
   static const String mapIcon = "$imagePath/map_icon.png";
   static const String share = "$imagePath/share.png";
   static const String people = "$imagePath/people.png";
+  static const String gallery = "$imagePath/gallery.png";
+  static const String whatsapp = "$imagePath/whatsapp.svg";
+  static const String twitter = "$imagePath/twitter.svg";
+  static const String tiktok = "$imagePath/tiktok.svg";
+  static const String snapchat = "$imagePath/snapchat.svg";
+  static const String safari = "$imagePath/safari.svg";
+  static const String number = "$imagePath/number.svg";
+  static const String linkedinSvg = "$imagePath/linkedin.svg";
+  static const String instagramSvg = "$imagePath/instagram.svg";
+  static const String facebookSvg = "$imagePath/facebook.svg";
+  static const String customlink = "$imagePath/customlink.svg";
 }

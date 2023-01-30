@@ -29,14 +29,14 @@ class LoginScreen extends StatelessWidget {
                   flex: 1,
                   child: FadeInDown(
                     duration: const Duration(
-                      seconds: AppIntDuration.s1,
+                      milliseconds: AppIntDuration.duration500,
                     ),
                     child: Container(
                       padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width /
-                            AppPadding.p12,
-                        vertical: MediaQuery.of(context).size.height /
-                            AppPadding.p30,
+                        horizontal:
+                            MediaQuery.of(context).size.width / AppPadding.p12,
+                        vertical:
+                            MediaQuery.of(context).size.height / AppPadding.p30,
                       ),
                       width: double.infinity,
                       decoration: const BoxDecoration(
@@ -61,7 +61,7 @@ class LoginScreen extends StatelessWidget {
                   flex: 3,
                   child: FadeInUp(
                     duration: const Duration(
-                      seconds: AppIntDuration.s1,
+                      milliseconds: AppIntDuration.duration500,
                     ),
                     child: Container(
                       width: double.infinity,
@@ -88,16 +88,14 @@ class LoginScreen extends StatelessWidget {
                               alignment: AlignmentDirectional.topStart,
                               child: Text(
                                 AppStrings.login.tr(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineMedium,
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
                               ),
                             ),
                             Padding(
                               padding: EdgeInsets.symmetric(
-                                horizontal:
-                                    MediaQuery.of(context).size.width /
-                                        AppSize.s25,
+                                horizontal: MediaQuery.of(context).size.width /
+                                    AppSize.s25,
                                 vertical: MediaQuery.of(context).size.height /
                                     AppSize.s30,
                               ),
@@ -115,9 +113,8 @@ class LoginScreen extends StatelessWidget {
                                     hint: AppStrings.userName.tr(),
                                   ),
                                   SizedBox(
-                                    height:
-                                        MediaQuery.of(context).size.height /
-                                            AppSize.s25,
+                                    height: MediaQuery.of(context).size.height /
+                                        AppSize.s25,
                                   ),
                                   SharedWidget.defaultTextFormField(
                                     textInputType:
@@ -137,11 +134,6 @@ class LoginScreen extends StatelessWidget {
                                     },
                                     hint: AppStrings.password.tr(),
                                   ),
-                                  SizedBox(
-                                    height:
-                                        MediaQuery.of(context).size.height /
-                                            AppSize.s50,
-                                  ),
                                   InkWell(
                                     onTap: () {},
                                     child: Align(
@@ -152,6 +144,7 @@ class LoginScreen extends StatelessWidget {
                                             .textTheme
                                             .displayLarge!
                                             .copyWith(
+                                              fontSize: FontSizeManager.s16.sp,
                                               decoration:
                                                   TextDecoration.underline,
                                             ),
@@ -159,9 +152,8 @@ class LoginScreen extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    height:
-                                        MediaQuery.of(context).size.height /
-                                            AppSize.s10,
+                                    height: MediaQuery.of(context).size.height /
+                                        AppSize.s10,
                                   ),
                                   SharedWidget.defaultButton(
                                     context: context,
@@ -172,8 +164,7 @@ class LoginScreen extends StatelessWidget {
                                       );
                                     },
                                     text: AppStrings.login.tr(),
-                                    backgroundColor:
-                                        ColorManager.primaryColor,
+                                    backgroundColor: ColorManager.primaryColor,
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineLarge!

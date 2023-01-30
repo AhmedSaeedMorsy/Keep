@@ -8,6 +8,7 @@ import 'package:keep/presentation/layout/view/layout_screen.dart';
 import 'package:keep/presentation/login/view/login_screen.dart';
 import 'package:keep/presentation/notification/view/notification_view.dart';
 import 'package:keep/presentation/on_boarding/view/on_boarding_screen.dart';
+import 'package:keep/presentation/scanner/view/scanner_screen.dart';
 import 'package:keep/presentation/share/view/share_screen.dart';
 import '../../presentation/calendar_weekly/view/calendar_weekly_screen.dart';
 import 'strings_manager.dart';
@@ -25,6 +26,7 @@ class Routes {
   static const String shareRoute = "/shareRoute";
   static const String mapRoute = "/mapRoute";
   static const String addTaskRoute = "/addTaskRoute";
+  static const String scannerRoute = "/scannerRoute";
 }
 
 class RouteGenerator {
@@ -69,6 +71,10 @@ class RouteGenerator {
       case Routes.calendarWeeklyRoute:
         return MaterialPageRoute(
           builder: (_) => CalendarWeeklyScreen(),
+        );
+      case Routes.scannerRoute:
+        return MaterialPageRoute(
+          builder: (_) => const ScannerScreen(),
         );
       default:
         return unDefiendRoute();

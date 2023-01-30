@@ -17,7 +17,7 @@ class AppStrings {
   static String download = "download";
   static String qrcode = "qrcode";
   static String share = "share";
-  static String kpi = "KPI";
+  static String goal = "goal";
   static String dailyTask = "dailyTask";
   static String taskName = "Task Name";
   static String language = "language";
@@ -51,4 +51,18 @@ class AppStrings {
   static String weekly = "weekly";
   static String monthly = "monthly";
   static String reasonOfcancellation = "reasonOfcancellation";
+  static String today = "today";
+  static String total = "total";
+  static String yasterday = "yasterday";
+  static String thisWeek = "thisWeek";
+  static String thisMonth = "thisMonth";
+  static String custom = "custom";
+  static String leadName = "Lead Name";
+  static String ip = "ip";
+  static String location = "location";
+  static String form = "form";
+  static String to = "to";
+  static String duration = "Duration";
+  static String editTask = "editTask";
+  static String saveContact = "saveContact";
 }

@@ -40,7 +40,7 @@ class KnowledgeScreen extends StatelessWidget {
             flex: 1,
             child: FadeInDown(
               duration: const Duration(
-                seconds: AppIntDuration.s1,
+            milliseconds: AppIntDuration.duration500,
               ),
               child: SharedWidget.header(
                 context,
@@ -51,7 +51,7 @@ class KnowledgeScreen extends StatelessWidget {
             flex: 4,
             child: FadeInUp(
               duration: const Duration(
-                seconds: AppIntDuration.s1,
+                milliseconds: AppIntDuration.duration500,
               ),
               child: Container(
                 width: double.infinity,
@@ -248,10 +248,7 @@ class KnowledgeScreen extends StatelessWidget {
                 flex: 2,
                 child: InkWell(
                   onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      Routes.shareRoute,
-                    );
+                    SharedWidget.showPopupShare(context);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -283,6 +280,8 @@ class KnowledgeScreen extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return FadeInDown(
+          duration: const Duration(milliseconds: AppIntDuration.duration500),
+
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

@@ -30,7 +30,7 @@ class ViewKnowledgeScreen extends StatelessWidget {
             flex: 1,
             child: FadeInDown(
               duration: const Duration(
-                seconds: AppIntDuration.s1,
+               milliseconds: AppIntDuration.duration500,
               ),
               child: SharedWidget.header(
                 context,
@@ -41,7 +41,7 @@ class ViewKnowledgeScreen extends StatelessWidget {
             flex: 4,
             child: FadeInUp(
               duration: const Duration(
-                seconds: AppIntDuration.s1,
+              milliseconds: AppIntDuration.duration500,
               ),
               child: Container(
                 width: double.infinity,

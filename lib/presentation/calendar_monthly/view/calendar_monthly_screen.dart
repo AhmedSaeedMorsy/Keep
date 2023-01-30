@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, library_prefixes
+
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +71,7 @@ class CalendarMonthlyScreen extends StatelessWidget {
                     flex: 1,
                     child: FadeInDown(
                       duration: const Duration(
-                        seconds: AppIntDuration.s1,
+                      milliseconds: AppIntDuration.duration500,
                       ),
                       child: SharedWidget.header(
                         context,
@@ -80,7 +82,7 @@ class CalendarMonthlyScreen extends StatelessWidget {
                     flex: 4,
                     child: FadeInUp(
                       duration: const Duration(
-                        seconds: AppIntDuration.s1,
+                         milliseconds: AppIntDuration.duration500,
                       ),
                       child: Container(
                         width: double.infinity,

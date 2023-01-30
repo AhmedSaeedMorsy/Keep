@@ -34,6 +34,9 @@ class AddTask extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FadeInDown(
+      duration: const Duration(
+        milliseconds: AppIntDuration.duration500,
+      ),
       child: Container(
         color: ColorManager.white,
         padding: EdgeInsets.symmetric(
@@ -205,12 +208,12 @@ class AddTask extends StatelessWidget {
                 text: AppStrings.submit.tr(),
                 backgroundColor: ColorManager.primaryColor,
                 style: getExtraBoldStyle(
-                  fontSize: FontSizeManager.s26.sp,
+                  fontSize: FontSizeManager.s24.sp,
                   color: ColorManager.white,
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height / AppSize.s18,
+                height: MediaQuery.of(context).size.height / AppSize.s50,
               ),
               SharedWidget.defaultButton(
                 context: context,
@@ -221,7 +224,7 @@ class AddTask extends StatelessWidget {
                 text: AppStrings.cancel.tr(),
                 backgroundColor: ColorManager.primaryColor,
                 style: getExtraBoldStyle(
-                  fontSize: FontSizeManager.s26.sp,
+                  fontSize: FontSizeManager.s24.sp,
                   color: ColorManager.white,
                 ),
               ),
@@ -247,7 +250,7 @@ class AddTask extends StatelessWidget {
         Text(
           AppStrings.shareWithTeam.tr(),
           style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                fontSize: FontSizeManager.s18.sp,
+                fontSize: FontSizeManager.s16.sp,
                 color: ColorManager.grey,
               ),
         )
@@ -275,8 +278,8 @@ class AddTask extends StatelessWidget {
               child: Text(
                 title,
                 style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                      color: ColorManager.primaryColor,
-                      fontSize: FontSizeManager.s22.sp,
+                      color: ColorManager.darkGrey,
+                      fontSize: FontSizeManager.s18.sp,
                     ),
               ),
             ),
@@ -312,7 +315,6 @@ class AddTask extends StatelessWidget {
           borderRadius: BorderRadius.circular(
             AppSize.s55.w,
           ),
-          border: Border.all(),
           color: ColorManager.grey,
         ),
         buttonPadding: EdgeInsets.symmetric(
@@ -325,7 +327,6 @@ class AddTask extends StatelessWidget {
           AppSize.s10.w,
         ),
         dropdownDecoration: BoxDecoration(
-          border: Border.all(),
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(
               AppSize.s20.w,
@@ -335,13 +336,14 @@ class AddTask extends StatelessWidget {
             ),
           ),
           color: ColorManager.white,
-          boxShadow: const [],
         ),
+        
         scrollbarThickness: AppSize.s8.w,
         offset: CacheHelper.getData(key: SharedKey.Language) ==
-                LanguageType.ENGLISH.getValue()
-            ? Offset(AppSize.s20.h, 0)
-            : Offset(-AppSize.s20.w, 0),
+                    LanguageType.ENGLISH.getValue() ||
+                CacheHelper.getData(key: SharedKey.Language) == null
+            ? Offset(AppSize.s20.w, 0)
+            : Offset(-AppSize.s20.w, 0),  
       ),
     );
   }

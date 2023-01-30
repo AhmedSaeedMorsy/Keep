@@ -54,12 +54,12 @@ class SharedWidget {
                 color: ColorManager.primaryColor,
               ),
             ),
-            contentPadding:
-                EdgeInsets.only(top: AppPadding.p1.h, left: AppPadding.p16.w),
+            contentPadding: EdgeInsetsDirectional.only(
+                top: AppPadding.p12.h, start: AppPadding.p16.w),
             // hint style
             hintStyle: getBoldStyle(
               color: ColorManager.grey,
-              fontSize: FontSizeManager.s22.sp,
+              fontSize: FontSizeManager.s16.sp,
             ),
           ),
           onFieldSubmitted: onFieldSubmitted,
@@ -212,7 +212,7 @@ class SharedWidget {
             // hint style
             hintStyle: getMediumStyle(
               color: ColorManager.grey,
-              fontSize: FontSizeManager.s18.sp,
+              fontSize: FontSizeManager.s16.sp,
             ),
           ),
           onTap: onTap,
@@ -230,7 +230,7 @@ class SharedWidget {
     void Function(String)? onFieldSubmitted,
   }) =>
       SizedBox(
-        height: AppSize.s150.h,
+        height: AppSize.s120.h,
         child: TextFormField(
           controller: controller,
           decoration: InputDecoration(
@@ -246,7 +246,7 @@ class SharedWidget {
             // hint style
             hintStyle: getMediumStyle(
               color: ColorManager.grey,
-              fontSize: FontSizeManager.s18.sp,
+              fontSize: FontSizeManager.s16.sp,
             ),
           ),
           onFieldSubmitted: onFieldSubmitted,
@@ -262,6 +262,7 @@ class SharedWidget {
       context: context,
       builder: (BuildContext context) {
         return FadeInDown(
+          duration: const Duration(milliseconds: AppIntDuration.duration500),
           child: Column(
             children: [
               Container(
@@ -290,7 +291,7 @@ class SharedWidget {
                                 .textTheme
                                 .headlineMedium!
                                 .copyWith(
-                                  fontSize: FontSizeManager.s22.sp,
+                                  fontSize: FontSizeManager.s20.sp,
                                 ),
                           ),
                         ),
@@ -322,7 +323,7 @@ class SharedWidget {
                                 .textTheme
                                 .headlineMedium!
                                 .copyWith(
-                                  fontSize: FontSizeManager.s22.sp,
+                                  fontSize: FontSizeManager.s20.sp,
                                 ),
                           ),
                         ),
@@ -354,7 +355,7 @@ class SharedWidget {
                                 .textTheme
                                 .headlineMedium!
                                 .copyWith(
-                                  fontSize: FontSizeManager.s22.sp,
+                                  fontSize: FontSizeManager.s20.sp,
                                 ),
                           ),
                         ),
@@ -386,7 +387,7 @@ class SharedWidget {
                                 .textTheme
                                 .headlineMedium!
                                 .copyWith(
-                                  fontSize: FontSizeManager.s22.sp,
+                                  fontSize: FontSizeManager.s20.sp,
                                 ),
                           ),
                         ),
@@ -406,7 +407,9 @@ class SharedWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return FadeInRight(
+        return FadeInDown(
+          duration: const Duration(milliseconds: AppIntDuration.duration500),
+
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -481,7 +484,7 @@ class SharedWidget {
                                             .headlineLarge!
                                             .copyWith(
                                               color: ColorManager.primaryColor,
-                                              fontSize: FontSizeManager.s18.sp,
+                                              fontSize: FontSizeManager.s16.sp,
                                             ),
                                       ),
                                     ),
@@ -499,7 +502,7 @@ class SharedWidget {
                                             .textTheme
                                             .headlineLarge!
                                             .copyWith(
-                                              fontSize: FontSizeManager.s18.sp,
+                                              fontSize: FontSizeManager.s16.sp,
                                               color: ColorManager.primaryColor,
                                             ),
                                       ),
@@ -671,6 +674,8 @@ class SharedWidget {
       context: context,
       builder: (BuildContext context) {
         return FadeInDown(
+          duration: const Duration(milliseconds: AppIntDuration.duration500),
+
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -688,7 +693,7 @@ class SharedWidget {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         );
@@ -732,13 +737,16 @@ class SharedWidget {
 
   static void showPopupShare(context) {
     showDialog(
+
       context: context,
       builder: (BuildContext context) {
         return BlocProvider(
             create: (context) => LayoutBloc(),
             child: BlocBuilder<LayoutBloc, LayoutStates>(
               builder: (context, state) {
-                return FadeInRight(
+                return FadeInDown(
+          duration: const Duration(milliseconds: AppIntDuration.duration500),
+
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -756,7 +764,6 @@ class SharedWidget {
                                 ),
                                 child: GestureDetector(
                                   onTap: () {
-                                    Navigator.pop(context);
                                     Navigator.pop(context);
                                     Navigator.pushNamed(
                                         context, Routes.shareRoute);
@@ -777,7 +784,7 @@ class SharedWidget {
                                             .textTheme
                                             .headlineMedium!
                                             .copyWith(
-                                              fontSize: FontSizeManager.s22.sp,
+                                              fontSize: FontSizeManager.s20.sp,
                                             ),
                                       ),
                                     ],
@@ -812,7 +819,7 @@ class SharedWidget {
                                           .textTheme
                                           .headlineMedium!
                                           .copyWith(
-                                            fontSize: FontSizeManager.s22.sp,
+                                            fontSize: FontSizeManager.s20.sp,
                                           ),
                                     ),
                                   ],
@@ -835,7 +842,9 @@ class SharedWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return FadeInRight(
+        return FadeInDown(
+          duration: const Duration(milliseconds: AppIntDuration.duration500),
+
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -869,7 +878,7 @@ class SharedWidget {
                                     .textTheme
                                     .headlineMedium!
                                     .copyWith(
-                                      fontSize: FontSizeManager.s22.sp,
+                                      fontSize: FontSizeManager.s20.sp,
                                     ),
                               ),
                             ],
@@ -903,7 +912,7 @@ class SharedWidget {
                                   .textTheme
                                   .headlineMedium!
                                   .copyWith(
-                                    fontSize: FontSizeManager.s22.sp,
+                                    fontSize: FontSizeManager.s20.sp,
                                   ),
                             ),
                           ],

@@ -24,7 +24,7 @@
       "deleteNotification": "Delete Notification",
       "hideNotififcation": "Hide Notififcation",
       "department": "Department",
-      "cancel": "cancel",
+      "cancel": "Cancel",
       "calendar": "Calendar",
       "addTask": "Add Task/Meeting",
       "meetingTitle": "Meeting Title/Task",
@@ -48,5 +48,16 @@
       "weekly": "Weekly",
       "monthly": "Monthly",
       "hourly": "Hourly",
-      "reasonOfcancellation": "Reason of Cancellation ..."
+      "reasonOfcancellation": "Reason of Cancellation ...",
+      "today": "Today",
+      "total": "Total",
+      "yasterday": "Yasterday",
+      "thisWeek": "This Week",
+      "thisMonth": "This Month",
+      "custom": "Custom",
+      "location": "Location",
+      "form": "Form",
+      "to": "To",
+      "editTask": "Edit Task",
+      "goal": "Goal","saveContact":"Save Contact"
 }

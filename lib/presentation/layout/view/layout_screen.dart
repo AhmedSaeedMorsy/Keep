@@ -7,13 +7,13 @@ import 'package:keep/app/resources/values_manager.dart';
 import 'package:keep/presentation/home/view/home_screen.dart';
 import 'package:keep/presentation/layout/controller/layout_bloc.dart';
 
+import '../../../app/resources/routes_manager.dart';
 import '../../Knowledge/view/Knowledge_screen.dart';
 import '../../insights/view/insights_screen.dart';
-import '../../leads/view/leads_screen.dart';
-import '../../scanner/view/scanner_screen.dart';
+import '../../lead_layout/view/lead_layout.dart';
 import '../controller/layout_states.dart';
 
-Widget screen =  HomeScreen();
+Widget screen = HomeScreen();
 
 class LayoutScreen extends StatelessWidget {
   const LayoutScreen({super.key});
@@ -88,7 +88,7 @@ class LayoutScreen extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               LayoutBloc.get(context).changeBottomNavBar(2);
-                              screen = const InsightsScreen();
+                              screen = InsightsScreen();
                             },
                             child: Image.asset(
                               AssetsManager.insight,
@@ -111,7 +111,7 @@ class LayoutScreen extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               LayoutBloc.get(context).changeBottomNavBar(3);
-                              screen = const LeadsScreen();
+                              screen =const LeadsLayout();
                             },
                             child: Image.asset(
                               AssetsManager.customer,
@@ -138,8 +138,10 @@ class LayoutScreen extends StatelessWidget {
                           ),
                           child: InkWell(
                             onTap: () {
-                              LayoutBloc.get(context).changeBottomNavBar(4);
-                              screen = const ScannerScreen();
+                              Navigator.pushNamed(
+                                context,
+                                Routes.scannerRoute,
+                              );
                             },
                             child: Image.asset(
                               AssetsManager.scanner,
@@ -163,7 +165,7 @@ class LayoutScreen extends StatelessWidget {
                           backgroundColor: ColorManager.primaryColor,
                           onPressed: () {
                             LayoutBloc.get(context).changeBottomNavBar(0);
-                            screen =  HomeScreen();
+                            screen = HomeScreen();
                           },
                           child: Image(
                             image: const AssetImage(
@@ -178,7 +180,7 @@ class LayoutScreen extends StatelessWidget {
                       : FloatingActionButton.large(
                           backgroundColor: ColorManager.primaryColor,
                           onPressed: () {
-                            screen =  HomeScreen();
+                            screen = HomeScreen();
                             LayoutBloc.get(context).changeBottomNavBar(0);
                           },
                           child: Image(
