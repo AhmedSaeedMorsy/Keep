@@ -60,7 +60,7 @@ class AppStrings {
   static String leadName = "Lead Name";
   static String ip = "ip";
   static String location = "location";
-  static String form = "form";
+  static String from = "from";
   static String to = "to";
   static String duration = "Duration";
   static String editTask = "editTask";

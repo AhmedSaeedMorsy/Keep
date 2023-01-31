@@ -69,17 +69,31 @@ class _ScannerScreenState extends State<ScannerScreen> {
                     top: MediaQuery.of(context).size.height / AppPadding.p20,
                     left: MediaQuery.of(context).size.width / AppPadding.p20,
                   ),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Directionality(
-                        textDirection: direction,
-                        child: const Icon(
-                          Icons.arrow_back_ios,
-                          color: ColorManager.primaryColor,
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                      top: AppSize.s10,
+                      ),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Directionality(
+                          textDirection: direction,
+                          child: const CircleAvatar(
+                            radius: AppSize.s16,
+                            backgroundColor: ColorManager.white,
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.only(
+                                start: AppSize.s8,
+                              ),
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                color: ColorManager.primaryColor,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),

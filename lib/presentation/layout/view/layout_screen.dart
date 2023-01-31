@@ -67,8 +67,8 @@ class LayoutScreen extends StatelessWidget {
                               color: LayoutBloc.get(context).currentIndex == 1
                                   ? ColorManager.white
                                   : ColorManager.whiteWithOpacity,
-                              width: AppSize.s24.w,
-                              height: AppSize.s24.w,
+                              width: AppSize.s22.w,
+                              height: AppSize.s22.h,
                             ),
                           ),
                         ),
@@ -95,8 +95,8 @@ class LayoutScreen extends StatelessWidget {
                               color: LayoutBloc.get(context).currentIndex == 2
                                   ? ColorManager.white
                                   : ColorManager.whiteWithOpacity,
-                              width: AppSize.s24.w,
-                              height: AppSize.s24.h,
+                              width: AppSize.s22.w,
+                              height: AppSize.s22.h,
                             ),
                           ),
                         ),
@@ -118,8 +118,8 @@ class LayoutScreen extends StatelessWidget {
                               color: LayoutBloc.get(context).currentIndex == 3
                                   ? ColorManager.white
                                   : ColorManager.whiteWithOpacity,
-                              width: AppSize.s24.w,
-                              height: AppSize.s24.h,
+                              width: AppSize.s22.w,
+                              height: AppSize.s22.h,
                             ),
                           ),
                         ),
@@ -148,8 +148,8 @@ class LayoutScreen extends StatelessWidget {
                               color: LayoutBloc.get(context).currentIndex == 4
                                   ? ColorManager.white
                                   : ColorManager.whiteWithOpacity,
-                              width: AppSize.s24.w,
-                              height: AppSize.s24.h,
+                              width: AppSize.s22.w,
+                              height: AppSize.s22.h,
                             ),
                           ),
                         ),

@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keep/app/common/widget.dart';
 import 'package:keep/app/resources/assets_manager.dart';
 import 'package:keep/app/resources/font_manager.dart';
-import 'package:keep/app/resources/routes_manager.dart';
 import 'package:keep/presentation/layout/controller/layout_bloc.dart';
 import 'package:keep/presentation/layout/view/layout_screen.dart';
 import 'package:keep/presentation/view_knowledge/view/view_knowledge_screen.dart';

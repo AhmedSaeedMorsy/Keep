@@ -408,13 +408,14 @@ class SharedWidget {
       context: context,
       builder: (BuildContext context) {
         return FadeInDown(
-          duration: const Duration(milliseconds: AppIntDuration.duration500),
-
+          duration: const Duration(
+            milliseconds: AppIntDuration.duration500,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
-                height: MediaQuery.of(context).size.height / AppSize.s1_3,
+                height: MediaQuery.of(context).size.height / AppSize.s1_7,
                 color: ColorManager.white,
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
@@ -455,82 +456,6 @@ class SharedWidget {
                       SizedBox(
                         height:
                             MediaQuery.of(context).size.height / AppSize.s80,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal:
-                              MediaQuery.of(context).size.width / AppSize.s12,
-                        ),
-                        child: Container(
-                          height: AppSize.s150.h,
-                          decoration: const BoxDecoration(
-                            color: ColorManager.grey,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(
-                                AppSize.s16,
-                              ),
-                            ),
-                          ),
-                          child: Column(children: [
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Center(
-                                      child: Text(
-                                        AppStrings.editCard.tr(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineLarge!
-                                            .copyWith(
-                                              color: ColorManager.primaryColor,
-                                              fontSize: FontSizeManager.s16.sp,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: double.infinity,
-                                    width: AppSize.s1.h,
-                                    color: ColorManager.darkGrey,
-                                  ),
-                                  Expanded(
-                                    child: Center(
-                                      child: Text(
-                                        AppStrings.editCard.tr(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineLarge!
-                                            .copyWith(
-                                              fontSize: FontSizeManager.s16.sp,
-                                              color: ColorManager.primaryColor,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              height: AppSize.s1.w,
-                              color: ColorManager.darkGrey,
-                            ),
-                            Expanded(
-                              child: Center(
-                                child: Text(
-                                  AppStrings.addLinksandContactInfo.tr(),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displaySmall!
-                                      .copyWith(
-                                        color: ColorManager.primaryColor,
-                                      ),
-                                ),
-                              ),
-                            )
-                          ]),
-                        ),
                       ),
                       SizedBox(
                         height:
@@ -675,7 +600,6 @@ class SharedWidget {
       builder: (BuildContext context) {
         return FadeInDown(
           duration: const Duration(milliseconds: AppIntDuration.duration500),
-
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -737,7 +661,6 @@ class SharedWidget {
 
   static void showPopupShare(context) {
     showDialog(
-
       context: context,
       builder: (BuildContext context) {
         return BlocProvider(
@@ -745,8 +668,8 @@ class SharedWidget {
             child: BlocBuilder<LayoutBloc, LayoutStates>(
               builder: (context, state) {
                 return FadeInDown(
-          duration: const Duration(milliseconds: AppIntDuration.duration500),
-
+                  duration:
+                      const Duration(milliseconds: AppIntDuration.duration500),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -844,7 +767,6 @@ class SharedWidget {
       builder: (BuildContext context) {
         return FadeInDown(
           duration: const Duration(milliseconds: AppIntDuration.duration500),
-
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

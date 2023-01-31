@@ -18,7 +18,9 @@ class EditTaskScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FadeInDown(
-        duration:const Duration( milliseconds: AppIntDuration.duration500,),
+        duration: const Duration(
+          milliseconds: AppIntDuration.duration500,
+        ),
         child: Container(
           color: ColorManager.white,
           padding: EdgeInsets.symmetric(
@@ -168,7 +170,7 @@ class EditTaskScreen extends StatelessWidget {
                         controller: TextEditingController(),
                         hint: AppStrings.duration,
                       ),
-                    )
+                    ),
                   ],
                 ),
                 SizedBox(

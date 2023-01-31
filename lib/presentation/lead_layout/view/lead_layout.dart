@@ -164,7 +164,7 @@ class _LeadsLayoutState extends State<LeadsLayout>
               children: [
                 Container(
                   height: AppSize.s150.h,
-                  color: ColorManager.grey,
+                  color: ColorManager.white,
                   child: Column(
                     children: [
                       Expanded(
@@ -186,42 +186,51 @@ class _LeadsLayoutState extends State<LeadsLayout>
                                             AppSize.s50,
                                   ),
                                   decoration: const BoxDecoration(
-                                    color: ColorManager.greyWithOpacity,
+                                    color: ColorManager.grey,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(
                                         AppSize.s50,
                                       ),
                                     ),
                                   ),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        AppStrings.form.tr(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displayLarge,
-                                      ),
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                AppSize.s8,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          showDatePicker(
-                                            context: context,
-                                            initialDate: DateTime.now(),
-                                            firstDate: DateTime.now().subtract(
-                                                const Duration(days: 365)),
-                                            lastDate: DateTime.now()
-                                                .add(const Duration(days: 365)),
-                                          );
-                                        },
-                                        child: const Icon(
-                                          Icons.calendar_month,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          MediaQuery.of(context).size.width /
+                                              AppSize.s50,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          AppStrings.from.tr(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displayLarge,
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              AppSize.s8,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime.now()
+                                                  .subtract(const Duration(
+                                                      days: 365)),
+                                              lastDate: DateTime.now().add(
+                                                  const Duration(days: 365)),
+                                            );
+                                          },
+                                          child: const Icon(
+                                            Icons.calendar_month,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   )),
                               Container(
                                   padding: EdgeInsets.symmetric(
@@ -232,42 +241,51 @@ class _LeadsLayoutState extends State<LeadsLayout>
                                           MediaQuery.of(context).size.width /
                                               AppSize.s50),
                                   decoration: const BoxDecoration(
-                                    color: ColorManager.greyWithOpacity,
+                                    color: ColorManager.grey,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(
                                         AppSize.s50,
                                       ),
                                     ),
                                   ),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        AppStrings.to.tr(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displayLarge,
-                                      ),
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                AppSize.s6,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          showDatePicker(
-                                            context: context,
-                                            initialDate: DateTime.now(),
-                                            firstDate: DateTime.now().subtract(
-                                                const Duration(days: 365)),
-                                            lastDate: DateTime.now()
-                                                .add(const Duration(days: 365)),
-                                          );
-                                        },
-                                        child: const Icon(
-                                          Icons.calendar_month,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          MediaQuery.of(context).size.width /
+                                              AppSize.s50,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          AppStrings.to.tr(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displayLarge,
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              AppSize.s6,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime.now()
+                                                  .subtract(const Duration(
+                                                      days: 365)),
+                                              lastDate: DateTime.now().add(
+                                                  const Duration(days: 365)),
+                                            );
+                                          },
+                                          child: const Icon(
+                                            Icons.calendar_month,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ))
                             ],
                           ),
@@ -282,20 +300,16 @@ class _LeadsLayoutState extends State<LeadsLayout>
                           padding: EdgeInsets.symmetric(
                             horizontal:
                                 MediaQuery.of(context).size.width / AppSize.s18,
+                                vertical:  MediaQuery.of(context).size.height / AppSize.s30,
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.all(
-                                MediaQuery.of(context).size.height /
-                                    AppSize.s50),
-                            child: SharedWidget.defaultButton(
-                              context: context,
-                              function: () {
-                                Navigator.pop(context);
-                              },
-                              text: AppStrings.submit.tr(),
-                              backgroundColor: ColorManager.primaryColor,
-                              style: Theme.of(context).textTheme.headlineLarge!,
-                            ),
+                          child: SharedWidget.defaultButton(
+                            context: context,
+                            function: () {
+                              Navigator.pop(context);
+                            },
+                            text: AppStrings.submit.tr(),
+                            backgroundColor: ColorManager.primaryColor,
+                            style: Theme.of(context).textTheme.headlineLarge!,
                           ),
                         ),
                       ),
