@@ -154,9 +154,9 @@ class EditTaskScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: SharedWidget.addTaskFormField(
-                        textInputType: TextInputType.name,
+                        textInputType: TextInputType.none,
                         controller: TextEditingController(),
-                        hint: AppStrings.address.tr(),
+                        hint: AppStrings.location.tr(),
                       ),
                     ),
                     SizedBox(
@@ -170,6 +170,14 @@ class EditTaskScreen extends StatelessWidget {
                       ),
                     )
                   ],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / AppSize.s100,
+                ),
+                SharedWidget.addTaskFormField(
+                  textInputType: TextInputType.streetAddress,
+                  controller: TextEditingController(),
+                  hint: AppStrings.address.tr(),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height / AppSize.s100,

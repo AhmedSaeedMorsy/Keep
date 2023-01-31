@@ -128,6 +128,14 @@ class AddTask extends StatelessWidget {
               SizedBox(
                 height: MediaQuery.of(context).size.height / AppSize.s100,
               ),
+              SharedWidget.addTaskFormField(
+                textInputType: TextInputType.streetAddress,
+                controller: TextEditingController(),
+                hint: AppStrings.location.tr(),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / AppSize.s100,
+              ),
               Row(
                 children: [
                   Expanded(
@@ -337,13 +345,12 @@ class AddTask extends StatelessWidget {
           ),
           color: ColorManager.white,
         ),
-        
         scrollbarThickness: AppSize.s8.w,
         offset: CacheHelper.getData(key: SharedKey.Language) ==
                     LanguageType.ENGLISH.getValue() ||
                 CacheHelper.getData(key: SharedKey.Language) == null
             ? Offset(AppSize.s20.w, 0)
-            : Offset(-AppSize.s20.w, 0),  
+            : Offset(-AppSize.s20.w, 0),
       ),
     );
   }

@@ -107,8 +107,6 @@ class CalendarWeeklyScreen extends StatelessWidget {
                             child: BlocBuilder<LayoutBloc, LayoutStates>(
                               builder: (context, state) {
                                 return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       AppStrings.calendar.tr(),
@@ -116,6 +114,7 @@ class CalendarWeeklyScreen extends StatelessWidget {
                                           .textTheme
                                           .headlineMedium,
                                     ),
+                                    const Spacer(),
                                     IconButton(
                                       onPressed: () {
                                         screen = AddTask();
@@ -133,28 +132,24 @@ class CalendarWeeklyScreen extends StatelessWidget {
                                         width: AppSize.s22.w,
                                       ),
                                     ),
+                                    Align(
+                                      alignment: AlignmentDirectional.bottomEnd,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          SharedWidget.showPopupFilter(context);
+                                        },
+                                        icon: Image(
+                                          image: const AssetImage(
+                                            AssetsManager.filter,
+                                          ),
+                                          width: AppSize.s22.w,
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 );
                               },
                             ),
-                          ),
-                          Align(
-                            alignment: AlignmentDirectional.bottomEnd,
-                            child: IconButton(
-                              onPressed: () {
-                                SharedWidget.showPopupFilter(context);
-                              },
-                              icon: Image(
-                                image: const AssetImage(
-                                  AssetsManager.filter,
-                                ),
-                                width: AppSize.s22.w,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height /
-                                AppSize.s50,
                           ),
                           ListView.separated(
                             physics: const NeverScrollableScrollPhysics(),
