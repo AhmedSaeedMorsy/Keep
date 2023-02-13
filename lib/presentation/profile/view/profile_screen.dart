@@ -40,9 +40,9 @@ class ProfileScreen extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(
                           top: MediaQuery.of(context).size.height /
-                              AppPadding.p20,
+                              AppPadding.p12,
                           left: MediaQuery.of(context).size.width /
-                              AppPadding.p20,
+                              AppPadding.p12,
                         ),
                         child: Align(
                           alignment: Alignment.topLeft,
@@ -105,11 +105,13 @@ class ProfileScreen extends StatelessWidget {
               horizontal: MediaQuery.of(context).size.width / AppSize.s8,
             ),
             child: SharedWidget.defaultButton(
-              backgroundColor: ColorManager.primaryColor,
+              backgroundColor: ColorManager.white,
               function: () {},
               text: AppStrings.saveContact.tr(),
               context: context,
-              style: Theme.of(context).textTheme.bodyLarge!,
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: ColorManager.primaryColor,
+                  ),
             ),
           ),
           SizedBox(

@@ -34,7 +34,7 @@ class LoginScreen extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.symmetric(
                         horizontal:
-                            MediaQuery.of(context).size.width / AppPadding.p12,
+                            MediaQuery.of(context).size.width / AppPadding.p20,
                         vertical:
                             MediaQuery.of(context).size.height / AppPadding.p30,
                       ),
@@ -164,7 +164,7 @@ class LoginScreen extends StatelessWidget {
                                       );
                                     },
                                     text: AppStrings.login.tr(),
-                                    backgroundColor: ColorManager.primaryColor,
+                                    backgroundColor: ColorManager.lightGrey,
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineLarge!

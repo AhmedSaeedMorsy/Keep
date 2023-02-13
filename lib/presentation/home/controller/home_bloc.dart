@@ -39,12 +39,13 @@ class HomeBloc extends Cubit<HomeStates> {
     emit(ChangeBottomSheetState());
   }
 
+  double goalValue = 0.249;
   Color getSleekSliderColor(double value) {
-    if (value < 25) {
+    if (value < 0.25) {
       return ColorManager.error;
-    } else if (value >= 25 && value < 75) {
+    } else if (value >= 0.25 && value < 0.75) {
       return ColorManager.orange;
-    } else if (value >= 75) {
+    } else if (value >= 0.75) {
       return ColorManager.agree;
     }
     return ColorManager.primaryColor;

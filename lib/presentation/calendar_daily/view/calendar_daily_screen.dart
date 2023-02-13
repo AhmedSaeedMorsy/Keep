@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,33 +19,24 @@ import '../../home/controller/home_states.dart';
 import '../../layout/controller/layout_bloc.dart';
 import '../../layout/controller/layout_states.dart';
 import '../../layout/view/layout_screen.dart';
+import 'dart:ui' as UI;
 
 class CalendarDailyScreen extends StatelessWidget {
   CalendarDailyScreen({super.key});
   var scaffoldKey = GlobalKey<ScaffoldState>();
+  UI.TextDirection direction = UI.TextDirection.ltr;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            end: Alignment.bottomCenter,
-            begin: Alignment.topCenter,
-            colors: [
-              ColorManager.primaryColor,
-              ColorManager.primaryColor,
-              ColorManager.primaryColor,
-              ColorManager.white,
-            ],
-          ),
-        ),
+        color: ColorManager.white,
         child: Column(
           children: [
             Padding(
               padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height / AppPadding.p20,
+                top: MediaQuery.of(context).size.height / AppPadding.p12,
                 left: MediaQuery.of(context).size.width / AppPadding.p20,
               ),
               child: Align(
@@ -55,155 +45,146 @@ class CalendarDailyScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: const Icon(
-                    Icons.arrow_back_ios,
-                    color: ColorManager.white,
+                  child: Directionality(textDirection: direction,
+                    child: const Icon(
+                      Icons.arrow_back_ios,
+                      color: ColorManager.primaryColor,
+                    ),
                   ),
                 ),
               ),
             ),
             Expanded(
               flex: 1,
-              child: FadeInDown(
-                duration: const Duration(
-                milliseconds: AppIntDuration.duration500,
-                ),
-                child: SharedWidget.header(
-                  context,
-                ),
+              child: SharedWidget.header(
+                context,
               ),
             ),
             Expanded(
               flex: 4,
-              child: FadeInUp(
-                duration: const Duration(
-                 milliseconds: AppIntDuration.duration500,
-                ),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: ColorManager.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(
-                        AppSize.s40.w,
-                      ),
-                      topRight: Radius.circular(
-                        AppSize.s40.w,
-                      ),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: ColorManager.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(
+                      AppSize.s40.w,
+                    ),
+                    topRight: Radius.circular(
+                      AppSize.s40.w,
                     ),
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height / AppPadding.p30,
-                      left: MediaQuery.of(context).size.width / AppPadding.p12,
-                      right: MediaQuery.of(context).size.width / AppPadding.p12,
-                    ),
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      child: Column(
-                        children: [
-                          BlocProvider(
-                            create: (context) => LayoutBloc(),
-                            child: BlocBuilder<LayoutBloc, LayoutStates>(
-                              builder: (context, state) {
-                                return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      AppStrings.calendar.tr(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineMedium,
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        screen = AddTask();
-                                        LayoutBloc.get(context)
-                                            .changeBottomNavBar(5);
-                                        Navigator.pushNamed(
-                                          context,
-                                          Routes.layoutRoute,
-                                        );
-                                      },
-                                      icon: Image(
-                                        image: const AssetImage(
-                                          AssetsManager.addTask,
-                                        ),
-                                        width: AppSize.s22.w,
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / AppPadding.p30,
+                    left: MediaQuery.of(context).size.width / AppPadding.p20,
+                    right: MediaQuery.of(context).size.width / AppPadding.p20,
+                  ),
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        BlocProvider(
+                          create: (context) => LayoutBloc(),
+                          child: BlocBuilder<LayoutBloc, LayoutStates>(
+                            builder: (context, state) {
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    DateFormat.E().format(
-                                      DateTime.now(),
-                                    ),
+                                    AppStrings.calendar.tr(),
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineMedium,
                                   ),
-                                  CircleAvatar(
-                                    radius: AppSize.s22.h,
-                                    backgroundColor: ColorManager.primaryColor,
-                                    child: Text(
-                                      DateFormat.d().format(DateTime.now()),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge!
-                                          .copyWith(
-                                            fontSize: FontSizeManager.s24.sp,
-                                          ),
+                                  IconButton(
+                                    onPressed: () {
+                                      screen = AddTask();
+                                      LayoutBloc.get(context)
+                                          .changeBottomNavBar(5);
+                                      Navigator.pushNamed(
+                                        context,
+                                        Routes.layoutRoute,
+                                      );
+                                    },
+                                    icon: Image(
+                                      image: const AssetImage(
+                                        AssetsManager.addTask,
+                                      ),
+                                      width: AppSize.s22.w,
                                     ),
                                   ),
                                 ],
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  SharedWidget.showPopupFilter(context);
-                                },
-                                icon: Image(
-                                  image: const AssetImage(
-                                    AssetsManager.filter,
+                              );
+                            },
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                                Text(
+                                  DateFormat.E().format(
+                                    DateTime.now(),
                                   ),
-                                  width: AppSize.s22.w,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height /
-                                AppSize.s50,
-                          ),
-                          BlocProvider(
-                            create: (context) => HomeBloc(),
-                            child: BlocBuilder<HomeBloc, HomeStates>(
-                              builder: (context, state) {
-                                return ListView.separated(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) =>
-                                      taskItem(context, index),
-                                  separatorBuilder: (context, index) =>
-                                      SizedBox(
-                                    height: MediaQuery.of(context).size.height /
-                                        AppSize.s50,
+                                CircleAvatar(
+                                  radius: AppSize.s22.h,
+                                  backgroundColor: ColorManager.primaryColor,
+                                  child: Text(
+                                    DateFormat.d().format(DateTime.now()),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(
+                                          fontSize: FontSizeManager.s24.sp,
+                                        ),
                                   ),
-                                  itemCount: 10,
-                                );
-                              },
+                                ),
+                              ],
                             ),
+                            IconButton(
+                              onPressed: () {
+                                SharedWidget.showPopupFilter(context);
+                              },
+                              icon: Image(
+                                image: const AssetImage(
+                                  AssetsManager.filter,
+                                ),
+                                width: AppSize.s22.w,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height:
+                              MediaQuery.of(context).size.height / AppSize.s50,
+                        ),
+                        BlocProvider(
+                          create: (context) => HomeBloc(),
+                          child: BlocBuilder<HomeBloc, HomeStates>(
+                            builder: (context, state) {
+                              return ListView.separated(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) =>
+                                    taskItem(context, index),
+                                separatorBuilder: (context, index) => SizedBox(
+                                  height: MediaQuery.of(context).size.height /
+                                      AppSize.s50,
+                                ),
+                                itemCount: 10,
+                              );
+                            },
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -349,8 +330,12 @@ class CalendarDailyScreen extends StatelessWidget {
                                     Navigator.pop(context);
                                   },
                                   text: AppStrings.submit.tr(),
-                                  backgroundColor: ColorManager.primaryColor,
-                                  style: Theme.of(context).textTheme.bodyLarge!,
+                                  backgroundColor: ColorManager.white,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                          color: ColorManager.primaryColor),
                                 );
                               },
                             )),

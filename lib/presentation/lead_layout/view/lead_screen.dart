@@ -3,13 +3,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keep/app/common/widget.dart';
-import 'package:keep/app/resources/styles_manager.dart';
-
 import '../../../app/resources/assets_manager.dart';
 import '../../../app/resources/color_manager.dart';
 import '../../../app/resources/font_manager.dart';
 import '../../../app/resources/strings_manager.dart';
 import '../../../app/resources/values_manager.dart';
+import '../../edit_lead/view/edit_lead_screen.dart';
 import '../../profile/view/profile_screen.dart';
 
 class LeedScreen extends StatelessWidget {
@@ -18,9 +17,10 @@ class LeedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: MediaQuery.of(context).size.height / AppSize.s30,
-        horizontal: MediaQuery.of(context).size.width / AppSize.s100,
+      padding: EdgeInsets.only(
+        top: MediaQuery.of(context).size.height / AppSize.s30,
+        left: MediaQuery.of(context).size.width / AppSize.s100,
+        right: MediaQuery.of(context).size.width / AppSize.s100,
       ),
       child: ListView.separated(
         physics: const BouncingScrollPhysics(),
@@ -105,12 +105,17 @@ class LeedScreen extends StatelessWidget {
                   flex: 2,
                   child: InkWell(
                     onTap: () {
-                      showPopupLead(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const EditLeadScreen(),
+                        ),
+                      );
                     },
                     child: Row(
                       children: [
                         Icon(
-                          Icons.visibility,
+                          Icons.edit,
                           size: AppSize.s18.w,
                         ),
                         SizedBox(
@@ -118,7 +123,7 @@ class LeedScreen extends StatelessWidget {
                               MediaQuery.of(context).size.width / AppSize.s100,
                         ),
                         Text(
-                          AppStrings.view.tr(),
+                          AppStrings.edit.tr(),
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -238,7 +243,6 @@ class LeedScreen extends StatelessWidget {
       builder: (BuildContext context) {
         return FadeInDown(
           duration: const Duration(milliseconds: AppIntDuration.duration500),
-
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -261,164 +265,6 @@ class LeedScreen extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  void showPopupLead(context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return FadeInDown(
-          duration: const Duration(milliseconds: AppIntDuration.duration500),
-
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height / AppSize.s2,
-                color: ColorManager.white,
-                child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical:
-                          MediaQuery.of(context).size.height / AppSize.s22,
-                      horizontal:
-                          MediaQuery.of(context).size.width / AppSize.s40,
-                    ),
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: double.infinity,
-                            child: viewLeadItem(
-                              height: AppSize.s40.h,
-                              title: "Name",
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height /
-                                AppSize.s50,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: viewLeadItem(
-                                  height: AppSize.s40.h,
-                                  title: "Job Title",
-                                ),
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width /
-                                    AppSize.s50,
-                              ),
-                              Expanded(
-                                child: viewLeadItem(
-                                  height: AppSize.s40.h,
-                                  title: "Company Name",
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height /
-                                AppSize.s50,
-                          ),
-                          SizedBox(
-                            width: double.infinity,
-                            child: viewLeadItem(
-                              height: AppSize.s40.h,
-                              title: "e-mail",
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height /
-                                AppSize.s50,
-                          ),
-                          SizedBox(
-                            width: double.infinity,
-                            child: viewLeadItem(
-                              height: AppSize.s40.h,
-                              title: "Address",
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height /
-                                AppSize.s50,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: viewLeadItem(
-                                  height: AppSize.s40.h,
-                                  title: "Date",
-                                ),
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width /
-                                    AppSize.s50,
-                              ),
-                              Expanded(
-                                child: viewLeadItem(
-                                  height: AppSize.s40.h,
-                                  title: "Time",
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height /
-                                AppSize.s50,
-                          ),
-                          SizedBox(
-                            width: double.infinity,
-                            child: viewLeadItem(
-                              height: AppSize.s40.h,
-                              title: "Phone Number",
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height /
-                                AppSize.s50,
-                          ),
-                          SizedBox(
-                            width: double.infinity,
-                            child: viewLeadItem(
-                              height: AppSize.s100.h,
-                              title: "Meeting Summary",
-                            ),
-                          ),
-                        ],
-                      ),
-                    )),
-              )
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget viewLeadItem({
-    required String title,
-    required double height,
-  }) {
-    return Container(
-      padding: EdgeInsets.all(AppSize.s10.w),
-      decoration: const BoxDecoration(
-        color: ColorManager.grey,
-        borderRadius: BorderRadius.all(
-          Radius.circular(
-            AppSize.s10,
-          ),
-        ),
-      ),
-      height: height,
-      child: Text(
-        title,
-        style: getBoldStyle(
-            fontSize: FontSizeManager.s14.sp, color: ColorManager.primaryColor),
-      ),
     );
   }
 }

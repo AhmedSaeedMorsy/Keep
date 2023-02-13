@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +12,7 @@ import 'package:keep/presentation/add_task/view/add_task_screen.dart';
 import 'package:keep/presentation/home/controller/home_bloc.dart';
 import 'package:keep/presentation/home/controller/home_states.dart';
 import 'package:keep/presentation/layout/controller/layout_bloc.dart';
-import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import '../../../app/common/widget.dart';
 import '../../../app/resources/color_manager.dart';
 import '../../../app/resources/routes_manager.dart';
@@ -34,210 +33,194 @@ class HomeScreen extends StatelessWidget {
         child: BlocBuilder<HomeBloc, HomeStates>(
           builder: (context, state) {
             return Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  end: Alignment.bottomCenter,
-                  begin: Alignment.topCenter,
-                  colors: [
-                    ColorManager.primaryColor,
-                    ColorManager.primaryColor,
-                    ColorManager.primaryColor,
-                    ColorManager.white,
-                  ],
-                ),
-              ),
+              color: ColorManager.white,
               child: Column(
                 children: [
                   Expanded(
                     flex: 1,
-                    child: FadeInDown(
-                      duration: const Duration(
-                        milliseconds: AppIntDuration.duration500,
-                      ),
-                      child: SharedWidget.header(
-                        context,
-                      ),
+                    child: SharedWidget.header(
+                      context,
                     ),
                   ),
                   Expanded(
                     flex: 4,
-                    child: FadeInUp(
-                      duration: const Duration(
-                        milliseconds: AppIntDuration.duration500,
-                      ),
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: ColorManager.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(
-                              AppSize.s40.w,
-                            ),
-                            topRight: Radius.circular(
-                              AppSize.s40.w,
-                            ),
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: ColorManager.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(
+                            AppSize.s40.w,
+                          ),
+                          topRight: Radius.circular(
+                            AppSize.s40.w,
                           ),
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height /
-                                AppPadding.p30,
-                            left: MediaQuery.of(context).size.width /
-                                AppPadding.p12,
-                            right: MediaQuery.of(context).size.width /
-                                AppPadding.p12,
-                          ),
-                          child: SingleChildScrollView(
-                            physics: const BouncingScrollPhysics(),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Center(
-                                  child: SleekCircularSlider(
-                                    min: 0,
-                                    max: 100,
-                                    initialValue: sleekValue,
-                                    appearance: CircularSliderAppearance(
-                                      startAngle: 270,
-                                      angleRange: 360,
-                                      size: AppSize.s130.w,
-                                      animDurationMultiplier:
-                                          AppIntDuration.duration2,
-                                      infoProperties: InfoProperties(
-                                        topLabelText: AppStrings.goal.tr(),
-                                        mainLabelStyle: Theme.of(context)
-                                            .textTheme
-                                            .headlineLarge!
-                                            .copyWith(
-                                              color: ColorManager.primaryColor,
-                                              fontSize: FontSizeManager.s26.sp,
-                                            ),
-                                        topLabelStyle: Theme.of(context)
-                                            .textTheme
-                                            .headlineLarge!
-                                            .copyWith(
-                                              fontSize: FontSizeManager.s32.sp,
-                                              color: ColorManager.primaryColor,
-                                            ),
-                                      ),
-                                      customColors: CustomSliderColors(
-                                        progressBarColor: HomeBloc.get(context)
-                                            .getSleekSliderColor(sleekValue),
-                                        trackColor: ColorManager.grey,
-                                        hideShadow: true,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: MediaQuery.of(context).size.height /
-                                      AppSize.s30,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        MediaQuery.of(context).size.width /
-                                            AppSize.s16,
-                                    vertical:
-                                        MediaQuery.of(context).size.height /
-                                            AppSize.s50,
-                                  ),
-                                  child: Container(
-                                    color: ColorManager.grey,
-                                    width: double.infinity,
-                                    height: AppSize.s2.h,
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        Navigator.pushNamed(
-                                          context,
-                                          Routes.calendarMonthlyRoute,
-                                        );
-                                      },
-                                      icon: Image(
-                                        image: const AssetImage(
-                                          AssetsManager.calender,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height /
+                              AppPadding.p30,
+                          left: MediaQuery.of(context).size.width /
+                              AppPadding.p12,
+                          right: MediaQuery.of(context).size.width /
+                              AppPadding.p12,
+                        ),
+                        child: SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    AppStrings.goal.tr(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineLarge!
+                                        .copyWith(
+                                          fontSize: FontSizeManager.s28.sp,
                                         ),
-                                        width: AppSize.s22.w,
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        HomeBloc.get(context).decressDate();
-                                      },
-                                      child: Icon(
-                                        Icons.arrow_back_ios,
-                                        size: AppSize.s18.w,
-                                      ),
-                                    ),
-                                    Text(
-                                      DateFormat.yMMMd().format(
-                                        HomeBloc.get(context).dateTime,
-                                      ),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineMedium,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        HomeBloc.get(context).incressDate();
-                                      },
-                                      child: Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: AppSize.s18.w,
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        screen = AddTask();
-                                        LayoutBloc.get(context)
-                                            .changeBottomNavBar(5);
-                                      },
-                                      icon: Image(
-                                        image: const AssetImage(
-                                          AssetsManager.addTask,
+                                  ),
+                                  Text(
+                                    "${HomeBloc.get(context).goalValue * 100}%",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineLarge!
+                                        .copyWith(
+                                          fontSize: FontSizeManager.s28.sp,
                                         ),
-                                        width: AppSize.s22.w,
-                                      ),
-                                    ),
-                                  ],
+                                  ),
+                                ],
+                              ),
+                              LinearPercentIndicator(
+                                animation: true,
+                                barRadius: const Radius.circular(
+                                  AppSize.s50,
                                 ),
-                                SizedBox(
+                                clipLinearGradient: true,
+                                lineHeight: AppSize.s24.h,
+                                animationDuration:
+                                    AppIntDuration.linearDuration,
+                                percent: HomeBloc.get(context).goalValue,
+                                center: Text(
+                                  "${HomeBloc.get(context).goalValue * 100}%",
+                                  style:
+                                      Theme.of(context).textTheme.displayMedium,
+                                ),
+                                progressColor:
+                                    HomeBloc.get(context).getSleekSliderColor(
+                                  HomeBloc.get(context).goalValue,
+                                ),
+                              ),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height /
+                                    AppSize.s30,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      MediaQuery.of(context).size.width /
+                                          AppSize.s16,
+                                  vertical: MediaQuery.of(context).size.height /
+                                      AppSize.s50,
+                                ),
+                                child: Container(
+                                  color: ColorManager.grey,
+                                  width: double.infinity,
+                                  height: AppSize.s2.h,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        Routes.calendarMonthlyRoute,
+                                      );
+                                    },
+                                    icon: Image(
+                                      image: const AssetImage(
+                                        AssetsManager.calender,
+                                      ),
+                                      width: AppSize.s22.w,
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      HomeBloc.get(context).decressDate();
+                                    },
+                                    child: Icon(
+                                      Icons.arrow_back_ios,
+                                      size: AppSize.s18.w,
+                                    ),
+                                  ),
+                                  Text(
+                                    DateFormat.yMMMd().format(
+                                      HomeBloc.get(context).dateTime,
+                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      HomeBloc.get(context).incressDate();
+                                    },
+                                    child: Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: AppSize.s18.w,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      screen = AddTask();
+                                      LayoutBloc.get(context)
+                                          .changeBottomNavBar(5);
+                                    },
+                                    icon: Image(
+                                      image: const AssetImage(
+                                        AssetsManager.addTask,
+                                      ),
+                                      width: AppSize.s22.w,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height /
+                                    AppSize.s50,
+                              ),
+                              Text(
+                                AppStrings.dailyTask.tr(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge!
+                                    .copyWith(
+                                      color: ColorManager.primaryColor,
+                                    ),
+                              ),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height /
+                                    AppSize.s50,
+                              ),
+                              ListView.separated(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) =>
+                                    taskItem(context, index),
+                                separatorBuilder: (context, index) => SizedBox(
                                   height: MediaQuery.of(context).size.height /
                                       AppSize.s50,
                                 ),
-                                Text(
-                                  AppStrings.dailyTask.tr(),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineLarge!
-                                      .copyWith(
-                                        color: ColorManager.greyWithOpacity,
-                                      ),
-                                ),
-                                SizedBox(
-                                  height: MediaQuery.of(context).size.height /
-                                      AppSize.s50,
-                                ),
-                                ListView.separated(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) =>
-                                      taskItem(context, index),
-                                  separatorBuilder: (context, index) =>
-                                      SizedBox(
-                                    height: MediaQuery.of(context).size.height /
-                                        AppSize.s50,
-                                  ),
-                                  itemCount: 10,
-                                ),
-                              ],
-                            ),
+                                itemCount: 10,
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -386,8 +369,8 @@ class HomeScreen extends StatelessWidget {
                                     Navigator.pop(context);
                                   },
                                   text: AppStrings.submit.tr(),
-                                  backgroundColor: ColorManager.primaryColor,
-                                  style: Theme.of(context).textTheme.bodyLarge!,
+                                  backgroundColor: ColorManager.white,
+                                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ColorManager.primaryColor),
                                 );
                               },
                             )),

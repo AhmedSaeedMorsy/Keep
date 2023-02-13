@@ -1,18 +1,17 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:keep/app/common/widget.dart';
-import 'package:keep/app/resources/color_manager.dart';
-import 'package:keep/app/resources/values_manager.dart';
+
+import '../../../app/common/widget.dart';
+import '../../../app/resources/color_manager.dart';
 import '../../../app/resources/font_manager.dart';
 import '../../../app/resources/strings_manager.dart';
 import '../../../app/resources/styles_manager.dart';
+import '../../../app/resources/values_manager.dart';
 
-class EditTaskScreen extends StatelessWidget {
-  const EditTaskScreen({super.key});
+class EditLeadScreen extends StatelessWidget {
+  const EditLeadScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,7 @@ class EditTaskScreen extends StatelessWidget {
           color: ColorManager.white,
           padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width / AppSize.s16,
-            vertical: MediaQuery.of(context).size.height / AppSize.s26,
+            vertical: MediaQuery.of(context).size.height / AppSize.s12,
           ),
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -52,7 +51,7 @@ class EditTaskScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  AppStrings.editTask.tr(),
+                  AppStrings.editLead.tr(),
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 SizedBox(
@@ -61,20 +60,7 @@ class EditTaskScreen extends StatelessWidget {
                 SharedWidget.addTaskFormField(
                   textInputType: TextInputType.name,
                   controller: TextEditingController(),
-                  hint: AppStrings.meetingTitle.tr(),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / AppSize.s100,
-                ),
-                SizedBox(
-                  height: AppSize.s120.h,
-                  child: SharedWidget.addTaskFormField(
-                    textInputType: TextInputType.text,
-                    controller: TextEditingController(),
-                    hint: AppStrings.meetingDescription.tr(),
-                    maxLines: 20,
-                    minLines: 20,
-                  ),
+                  hint: AppStrings.name.tr(),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height / AppSize.s100,
@@ -83,6 +69,13 @@ class EditTaskScreen extends StatelessWidget {
                   textInputType: TextInputType.emailAddress,
                   controller: TextEditingController(),
                   hint: AppStrings.email.tr(),
+                ), SizedBox(
+                  height: MediaQuery.of(context).size.height / AppSize.s100,
+                ),
+                SharedWidget.addTaskFormField(
+                  textInputType: TextInputType.phone,
+                  controller: TextEditingController(),
+                  hint: AppStrings.phoneNumber.tr(),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height / AppSize.s100,
@@ -134,7 +127,7 @@ class EditTaskScreen extends StatelessWidget {
                       child: SharedWidget.addTaskFormField(
                         textInputType: TextInputType.name,
                         controller: TextEditingController(),
-                        hint: AppStrings.clientName.tr(),
+                        hint: AppStrings.jobTitle.tr(),
                       ),
                     ),
                     SizedBox(
@@ -147,30 +140,6 @@ class EditTaskScreen extends StatelessWidget {
                         hint: AppStrings.companyName.tr(),
                       ),
                     )
-                  ],
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / AppSize.s100,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: SharedWidget.addTaskFormField(
-                        textInputType: TextInputType.none,
-                        controller: TextEditingController(),
-                        hint: AppStrings.location.tr(),
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / AppSize.s18,
-                    ),
-                    Expanded(
-                      child: SharedWidget.addTaskFormField(
-                        textInputType: TextInputType.name,
-                        controller: TextEditingController(),
-                        hint: AppStrings.duration,
-                      ),
-                    ),
                   ],
                 ),
                 SizedBox(
@@ -189,7 +158,7 @@ class EditTaskScreen extends StatelessWidget {
                   child: SharedWidget.addTaskFormField(
                     textInputType: TextInputType.text,
                     controller: TextEditingController(),
-                    hint: "Task Summary",
+                    hint: AppStrings.meetingSummary.tr(),
                     maxLines: 20,
                     minLines: 20,
                   ),

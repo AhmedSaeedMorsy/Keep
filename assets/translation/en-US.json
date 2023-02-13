@@ -59,5 +59,9 @@
       "from": "From",
       "to": "To",
       "editTask": "Edit Task",
-      "goal": "Goal","saveContact":"Save Contact"
+      "goal": "Goal",
+      "saveContact": "Save Contact",
+      "edit": "Edit",
+      "editLead": "Edit Lead",
+      "meetingSummary": "Meeting Summary"
 }

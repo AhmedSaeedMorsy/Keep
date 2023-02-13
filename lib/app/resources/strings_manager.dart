@@ -64,5 +64,9 @@ class AppStrings {
   static String to = "to";
   static String duration = "Duration";
   static String editTask = "editTask";
+  static String editLead = "editLead";
   static String saveContact = "saveContact";
+  static String edit = "edit";
+  static String name = "name";
+  static String meetingSummary = "meetingSummary";
 }

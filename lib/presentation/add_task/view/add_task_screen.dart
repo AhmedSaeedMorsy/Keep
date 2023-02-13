@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:animate_do/animate_do.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -33,214 +32,210 @@ class AddTask extends StatelessWidget {
   String? selectedValue;
   @override
   Widget build(BuildContext context) {
-    return FadeInDown(
-      duration: const Duration(
-        milliseconds: AppIntDuration.duration500,
+    return Container(
+      color: ColorManager.white,
+      padding: EdgeInsets.only(
+        left: MediaQuery.of(context).size.width / AppSize.s20,
+        right: MediaQuery.of(context).size.width / AppSize.s20,
+        top: MediaQuery.of(context).size.height / AppSize.s26,
       ),
-      child: Container(
-        color: ColorManager.white,
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / AppSize.s16,
-          vertical: MediaQuery.of(context).size.height / AppSize.s26,
-        ),
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                AppStrings.addTask.tr(),
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / AppSize.s50,
-              ),
-              SharedWidget.addTaskFormField(
-                textInputType: TextInputType.name,
-                controller: TextEditingController(),
-                hint: AppStrings.meetingTitle.tr(),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / AppSize.s100,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: SharedWidget.addTaskFormField(
-                      textInputType: TextInputType.name,
-                      controller: TextEditingController(),
-                      hint: AppStrings.clientName.tr(),
-                    ),
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              AppStrings.addTask.tr(),
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / AppSize.s50,
+            ),
+            SharedWidget.addTaskFormField(
+              textInputType: TextInputType.name,
+              controller: TextEditingController(),
+              hint: AppStrings.meetingTitle.tr(),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / AppSize.s100,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: SharedWidget.addTaskFormField(
+                    textInputType: TextInputType.name,
+                    controller: TextEditingController(),
+                    hint: AppStrings.clientName.tr(),
                   ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / AppSize.s18,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / AppSize.s18,
+                ),
+                Expanded(
+                  child: SharedWidget.addTaskFormField(
+                    textInputType: TextInputType.name,
+                    controller: TextEditingController(),
+                    hint: AppStrings.companyName.tr(),
                   ),
-                  Expanded(
-                    child: SharedWidget.addTaskFormField(
-                      textInputType: TextInputType.name,
-                      controller: TextEditingController(),
-                      hint: AppStrings.companyName.tr(),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / AppSize.s100,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: SharedWidget.addTaskFormField(
-                      textInputType: TextInputType.name,
-                      controller: TextEditingController(),
-                      hint: AppStrings.jobTitle.tr(),
-                    ),
+                )
+              ],
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / AppSize.s100,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: SharedWidget.addTaskFormField(
+                    textInputType: TextInputType.name,
+                    controller: TextEditingController(),
+                    hint: AppStrings.jobTitle.tr(),
                   ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / AppSize.s18,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / AppSize.s18,
+                ),
+                Expanded(
+                  child: SharedWidget.addTaskFormField(
+                    textInputType: TextInputType.name,
+                    controller: TextEditingController(),
+                    hint: AppStrings.phoneNumber.tr(),
                   ),
-                  Expanded(
-                    child: SharedWidget.addTaskFormField(
-                      textInputType: TextInputType.name,
-                      controller: TextEditingController(),
-                      hint: AppStrings.phoneNumber.tr(),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / AppSize.s100,
-              ),
-              SharedWidget.addTaskFormField(
-                textInputType: TextInputType.emailAddress,
-                controller: TextEditingController(),
-                hint: AppStrings.email.tr(),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / AppSize.s100,
-              ),
-              SharedWidget.addTaskFormField(
-                textInputType: TextInputType.streetAddress,
-                controller: TextEditingController(),
-                hint: AppStrings.address.tr(),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / AppSize.s100,
-              ),
-              SharedWidget.addTaskFormField(
-                textInputType: TextInputType.streetAddress,
-                controller: TextEditingController(),
-                hint: AppStrings.location.tr(),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / AppSize.s100,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: SharedWidget.addTaskFormField(
-                        textInputType: TextInputType.none,
-                        controller: TextEditingController(),
-                        hint: AppStrings.date.tr(),
-                        onTap: () {
-                          showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime.now().add(
-                              const Duration(
-                                days: 1000,
-                              ),
-                            ),
-                          );
-                        }),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / AppSize.s18,
-                  ),
-                  Expanded(
-                    child: SharedWidget.addTaskFormField(
+                )
+              ],
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / AppSize.s100,
+            ),
+            SharedWidget.addTaskFormField(
+              textInputType: TextInputType.emailAddress,
+              controller: TextEditingController(),
+              hint: AppStrings.email.tr(),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / AppSize.s100,
+            ),
+            SharedWidget.addTaskFormField(
+              textInputType: TextInputType.streetAddress,
+              controller: TextEditingController(),
+              hint: AppStrings.address.tr(),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / AppSize.s100,
+            ),
+            SharedWidget.addTaskFormField(
+              textInputType: TextInputType.streetAddress,
+              controller: TextEditingController(),
+              hint: AppStrings.location.tr(),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / AppSize.s100,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: SharedWidget.addTaskFormField(
                       textInputType: TextInputType.none,
                       controller: TextEditingController(),
-                      hint: AppStrings.time.tr(),
+                      hint: AppStrings.date.tr(),
                       onTap: () {
-                        showTimePicker(
+                        showDatePicker(
                           context: context,
-                          initialTime: TimeOfDay.now(),
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime.now().add(
+                            const Duration(
+                              days: 1000,
+                            ),
+                          ),
                         );
-                      },
-                    ),
+                      }),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / AppSize.s18,
+                ),
+                Expanded(
+                  child: SharedWidget.addTaskFormField(
+                    textInputType: TextInputType.none,
+                    controller: TextEditingController(),
+                    hint: AppStrings.time.tr(),
+                    onTap: () {
+                      showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                    },
                   ),
-                ],
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / AppSize.s100,
-              ),
-              SizedBox(
-                height: AppSize.s120.h,
-                child: SharedWidget.addTaskFormField(
-                  textInputType: TextInputType.text,
-                  controller: TextEditingController(),
-                  hint: AppStrings.meetingDescription.tr(),
-                  maxLines: 20,
-                  minLines: 20,
                 ),
+              ],
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / AppSize.s100,
+            ),
+            SizedBox(
+              height: AppSize.s120.h,
+              child: SharedWidget.addTaskFormField(
+                textInputType: TextInputType.text,
+                controller: TextEditingController(),
+                hint: AppStrings.meetingDescription.tr(),
+                maxLines: 20,
+                minLines: 20,
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / AppSize.s100,
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / AppSize.s100,
+            ),
+            checkboxItem(
+              context: context,
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / AppSize.s100,
+            ),
+            dropDownItem(
+              context: context,
+              title: AppStrings.department.tr(),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / AppSize.s30,
+            ),
+            dropDownItem(
+              context: context,
+              title: AppStrings.team.tr(),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / AppSize.s18,
+            ),
+            SharedWidget.defaultButton(
+              context: context,
+              function: () {},
+              text: AppStrings.submit.tr(),
+              backgroundColor: ColorManager.white,
+              style: getExtraBoldStyle(
+                fontSize: FontSizeManager.s24.sp,
+                color: ColorManager.primaryColor,
               ),
-              checkboxItem(
-                context: context,
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / AppSize.s50,
+            ),
+            SharedWidget.defaultButton(
+              context: context,
+              function: () {
+                screen = HomeScreen();
+                LayoutBloc.get(context).changeBottomNavBar(0);
+              },
+              text: AppStrings.cancel.tr(),
+              backgroundColor: ColorManager.white,
+              style: getExtraBoldStyle(
+                fontSize: FontSizeManager.s24.sp,
+                color: ColorManager.primaryColor,
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / AppSize.s100,
-              ),
-              dropDownItem(
-                context: context,
-                title: AppStrings.department.tr(),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / AppSize.s30,
-              ),
-              dropDownItem(
-                context: context,
-                title: AppStrings.team.tr(),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / AppSize.s18,
-              ),
-              SharedWidget.defaultButton(
-                context: context,
-                function: () {},
-                text: AppStrings.submit.tr(),
-                backgroundColor: ColorManager.primaryColor,
-                style: getExtraBoldStyle(
-                  fontSize: FontSizeManager.s24.sp,
-                  color: ColorManager.white,
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / AppSize.s50,
-              ),
-              SharedWidget.defaultButton(
-                context: context,
-                function: () {
-                  screen = HomeScreen();
-                  LayoutBloc.get(context).changeBottomNavBar(0);
-                },
-                text: AppStrings.cancel.tr(),
-                backgroundColor: ColorManager.primaryColor,
-                style: getExtraBoldStyle(
-                  fontSize: FontSizeManager.s24.sp,
-                  color: ColorManager.white,
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / AppSize.s18,
-              ),
-            ],
-          ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / AppSize.s18,
+            ),
+          ],
         ),
       ),
     );

@@ -25,6 +25,7 @@ class AppIntDuration {
   static const int duration3 = 3;
   static const int duration500 = 500;
   static const double duration4_5 = 4.5;
+  static const int linearDuration = 1000;
 }
 
 class AppSize {

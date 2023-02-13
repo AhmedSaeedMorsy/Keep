@@ -43,11 +43,11 @@ dependencies:
   animate_do: ^3.0.2
   animated_bottom_navigation_bar: ^1.1.0+1
   flutter_bloc: ^8.1.1
-  sleek_circular_slider: ^2.0.1
   dropdown_button2: ^1.9.2
   syncfusion_flutter_calendar: ^20.4.43
   qr_code_scanner: ^1.0.1
   flutter_svg: ^1.1.6
+  percent_indicator: ^4.2.2
 
 dev_dependencies:
   flutter_test:

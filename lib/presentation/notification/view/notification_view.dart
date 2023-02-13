@@ -15,83 +15,62 @@ class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          end: Alignment.bottomCenter,
-          begin: Alignment.topCenter,
-          colors: [
-            ColorManager.primaryColor,
-            ColorManager.primaryColor,
-            ColorManager.primaryColor,
-            ColorManager.white,
-          ],
-        ),
-      ),
+      color: ColorManager.white,
       child: Column(
         children: [
           Expanded(
             flex: 1,
-            child: FadeInDown(
-              duration: const Duration(
-                milliseconds: AppIntDuration.duration500,
-              ),
-              child: SharedWidget.header(
-                context,
-              ),
+            child: SharedWidget.header(
+              context,
             ),
           ),
           Expanded(
             flex: 4,
-            child: FadeInUp(
-              duration: const Duration(
-                milliseconds: AppIntDuration.duration500,
-              ),
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: ColorManager.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(
-                      AppSize.s40.w,
-                    ),
-                    topRight: Radius.circular(
-                      AppSize.s40.w,
-                    ),
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: ColorManager.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(
+                    AppSize.s40.w,
+                  ),
+                  topRight: Radius.circular(
+                    AppSize.s40.w,
                   ),
                 ),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height / AppPadding.p30,
-                    left: MediaQuery.of(context).size.width / AppPadding.p12,
-                    right: MediaQuery.of(context).size.width / AppPadding.p12,
-                  ),
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: AlignmentDirectional.topStart,
-                        child: Text(
-                          AppStrings.notification.tr(),
-                          style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height / AppPadding.p30,
+                  left: MediaQuery.of(context).size.width / AppPadding.p20,
+                  right: MediaQuery.of(context).size.width / AppPadding.p20,
+                ),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: AlignmentDirectional.topStart,
+                      child: Text(
+                        AppStrings.notification.tr(),
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
+                    SizedBox(
+                      height:
+                          MediaQuery.of(context).size.height / AppSize.s22,
+                    ),
+                    Expanded(
+                      child: ListView.separated(
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index) =>
+                            notificationItem(context: context),
+                        separatorBuilder: (context, index) => SizedBox(
+                          height: MediaQuery.of(context).size.height /
+                              AppSize.s22,
                         ),
+                        itemCount: 10,
                       ),
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height / AppSize.s22,
-                      ),
-                      Expanded(
-                        child: ListView.separated(
-                          physics: const BouncingScrollPhysics(),
-                          itemBuilder: (context, index) =>
-                              notificationItem(context: context),
-                          separatorBuilder: (context, index) => SizedBox(
-                            height: MediaQuery.of(context).size.height /
-                                AppSize.s22,
-                          ),
-                          itemCount: 10,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

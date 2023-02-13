@@ -32,114 +32,93 @@ class _LeadsLayoutState extends State<LeadsLayout>
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          end: Alignment.bottomCenter,
-          begin: Alignment.topCenter,
-          colors: [
-            ColorManager.primaryColor,
-            ColorManager.primaryColor,
-            ColorManager.primaryColor,
-            ColorManager.white,
-          ],
-        ),
-      ),
+      color: ColorManager.white,
       child: Column(
         children: [
           Expanded(
             flex: 1,
-            child: FadeInDown(
-              duration: const Duration(
-                milliseconds: AppIntDuration.duration500,
-              ),
-              child: SharedWidget.header(
-                context,
-              ),
+            child: SharedWidget.header(
+              context,
             ),
           ),
           Expanded(
             flex: 4,
-            child: FadeInUp(
-              duration: const Duration(
-                milliseconds: AppIntDuration.duration500,
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: ColorManager.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(
+                    AppSize.s40.w,
+                  ),
+                  topRight: Radius.circular(
+                    AppSize.s40.w,
+                  ),
+                ),
               ),
-              child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: ColorManager.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(
-                          AppSize.s40.w,
-                        ),
-                        topRight: Radius.circular(
-                          AppSize.s40.w,
-                        ),
-                      )),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height / AppPadding.p30,
-                      left: MediaQuery.of(context).size.width / AppPadding.p12,
-                      right: MediaQuery.of(context).size.width / AppPadding.p12,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        TabBar(
-                          isScrollable: true,
-                          physics: const BouncingScrollPhysics(),
-                          unselectedLabelColor: ColorManager.darkGrey,
-                          labelColor: ColorManager.darkGrey,
-                          labelStyle: Theme.of(context)
-                              .textTheme
-                              .headlineLarge!
-                              .copyWith(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height / AppPadding.p30,
+                  left: MediaQuery.of(context).size.width / AppPadding.p20,
+                  right: MediaQuery.of(context).size.width / AppPadding.p20,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TabBar(
+                      isScrollable: true,
+                      physics: const BouncingScrollPhysics(),
+                      unselectedLabelColor: ColorManager.darkGrey,
+                      labelColor: ColorManager.darkGrey,
+                      labelStyle:
+                          Theme.of(context).textTheme.headlineLarge!.copyWith(
                                 fontSize: FontSizeManager.s18.sp,
                               ),
-                          tabs: [
-                            Tab(
-                              text: AppStrings.total.tr(),
-                            ),
-                            Tab(
-                              text: AppStrings.today.tr(),
-                            ),
-                            Tab(
-                              text: AppStrings.yasterday.tr(),
-                            ),
-                            Tab(
-                              text: AppStrings.thisWeek.tr(),
-                            ),
-                            Tab(
-                              text: AppStrings.thisMonth.tr(),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                showPopupCustomDate(context);
-                              },
-                              child: Tab(
-                                text: AppStrings.custom.tr(),
-                              ),
-                            ),
-                          ],
-                          controller: _tabController,
-                          indicatorSize: TabBarIndicatorSize.label,
+                      tabs: [
+                        Tab(
+                          text: AppStrings.total.tr(),
                         ),
-                        Expanded(
-                          child: TabBarView(
-                            physics: const BouncingScrollPhysics(),
-                            controller: _tabController,
-                            children: const [
-                              LeedScreen(),
-                              LeedScreen(),
-                              LeedScreen(),
-                              LeedScreen(),
-                              LeedScreen(),
-                              LeedScreen(),
-                            ],
+                        Tab(
+                          text: AppStrings.today.tr(),
+                        ),
+                        Tab(
+                          text: AppStrings.yasterday.tr(),
+                        ),
+                        Tab(
+                          text: AppStrings.thisWeek.tr(),
+                        ),
+                        Tab(
+                          text: AppStrings.thisMonth.tr(),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            showPopupCustomDate(context);
+                          },
+                          child: Tab(
+                            text: AppStrings.custom.tr(),
                           ),
                         ),
                       ],
+                      controller: _tabController,
+                      indicatorSize: TabBarIndicatorSize.label,
                     ),
-                  )),
+                    Expanded(
+                      child: TabBarView(
+                        physics: const BouncingScrollPhysics(),
+                        controller: _tabController,
+                        children: const [
+                          LeedScreen(),
+                          LeedScreen(),
+                          LeedScreen(),
+                          LeedScreen(),
+                          LeedScreen(),
+                          LeedScreen(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
@@ -300,7 +279,8 @@ class _LeadsLayoutState extends State<LeadsLayout>
                           padding: EdgeInsets.symmetric(
                             horizontal:
                                 MediaQuery.of(context).size.width / AppSize.s18,
-                                vertical:  MediaQuery.of(context).size.height / AppSize.s30,
+                            vertical: MediaQuery.of(context).size.height /
+                                AppSize.s40,
                           ),
                           child: SharedWidget.defaultButton(
                             context: context,
@@ -308,8 +288,13 @@ class _LeadsLayoutState extends State<LeadsLayout>
                               Navigator.pop(context);
                             },
                             text: AppStrings.submit.tr(),
-                            backgroundColor: ColorManager.primaryColor,
-                            style: Theme.of(context).textTheme.headlineLarge!,
+                            backgroundColor: ColorManager.white,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineLarge!
+                                .copyWith(
+                                  color: ColorManager.primaryColor,
+                                ),
                           ),
                         ),
                       ),

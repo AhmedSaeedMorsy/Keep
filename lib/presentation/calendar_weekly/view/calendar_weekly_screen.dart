@@ -1,6 +1,5 @@
 // ignore_for_file: library_prefixes, must_be_immutable
 
-import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,23 +26,12 @@ class CalendarWeeklyScreen extends StatelessWidget {
     return Scaffold(
       key: scaffoldKey,
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            end: Alignment.bottomCenter,
-            begin: Alignment.topCenter,
-            colors: [
-              ColorManager.primaryColor,
-              ColorManager.primaryColor,
-              ColorManager.primaryColor,
-              ColorManager.white,
-            ],
-          ),
-        ),
+        color: ColorManager.white,
         child: Column(
           children: [
             Padding(
               padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height / AppPadding.p20,
+                top: MediaQuery.of(context).size.height / AppPadding.p12,
                 left: MediaQuery.of(context).size.width / AppPadding.p20,
               ),
               child: Align(
@@ -56,7 +44,7 @@ class CalendarWeeklyScreen extends StatelessWidget {
                     textDirection: direction,
                     child: const Icon(
                       Icons.arrow_back_ios,
-                      color: ColorManager.white,
+                      color: ColorManager.primaryColor,
                     ),
                   ),
                 ),
@@ -64,106 +52,96 @@ class CalendarWeeklyScreen extends StatelessWidget {
             ),
             Expanded(
               flex: 1,
-              child: FadeInDown(
-                duration: const Duration(
-                  milliseconds: AppIntDuration.duration500,
-                ),
-                child: SharedWidget.header(
-                  context,
-                ),
+              child: SharedWidget.header(
+                context,
               ),
             ),
             Expanded(
               flex: 4,
-              child: FadeInUp(
-                duration: const Duration(
-                  milliseconds: AppIntDuration.duration500,
-                ),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: ColorManager.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(
-                        AppSize.s40.w,
-                      ),
-                      topRight: Radius.circular(
-                        AppSize.s40.w,
-                      ),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: ColorManager.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(
+                      AppSize.s40.w,
+                    ),
+                    topRight: Radius.circular(
+                      AppSize.s40.w,
                     ),
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height / AppPadding.p30,
-                      left: MediaQuery.of(context).size.width / AppPadding.p12,
-                      right: MediaQuery.of(context).size.width / AppPadding.p12,
-                    ),
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      child: Column(
-                        children: [
-                          BlocProvider(
-                            create: (context) => LayoutBloc(),
-                            child: BlocBuilder<LayoutBloc, LayoutStates>(
-                              builder: (context, state) {
-                                return Row(
-                                  children: [
-                                    Text(
-                                      AppStrings.calendar.tr(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineMedium,
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / AppPadding.p30,
+                    left: MediaQuery.of(context).size.width / AppPadding.p20,
+                    right: MediaQuery.of(context).size.width / AppPadding.p20,
+                  ),
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        BlocProvider(
+                          create: (context) => LayoutBloc(),
+                          child: BlocBuilder<LayoutBloc, LayoutStates>(
+                            builder: (context, state) {
+                              return Row(
+                                children: [
+                                  Text(
+                                    AppStrings.calendar.tr(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium,
+                                  ),
+                                  const Spacer(),
+                                  IconButton(
+                                    onPressed: () {
+                                      screen = AddTask();
+                                      LayoutBloc.get(context)
+                                          .changeBottomNavBar(5);
+                                      Navigator.pushNamed(
+                                        context,
+                                        Routes.layoutRoute,
+                                      );
+                                    },
+                                    icon: Image(
+                                      image: const AssetImage(
+                                        AssetsManager.addTask,
+                                      ),
+                                      width: AppSize.s22.w,
                                     ),
-                                    const Spacer(),
-                                    IconButton(
+                                  ),
+                                  Align(
+                                    alignment: AlignmentDirectional.bottomEnd,
+                                    child: IconButton(
                                       onPressed: () {
-                                        screen = AddTask();
-                                        LayoutBloc.get(context)
-                                            .changeBottomNavBar(5);
-                                        Navigator.pushNamed(
-                                          context,
-                                          Routes.layoutRoute,
-                                        );
+                                        SharedWidget.showPopupFilter(context);
                                       },
                                       icon: Image(
                                         image: const AssetImage(
-                                          AssetsManager.addTask,
+                                          AssetsManager.filter,
                                         ),
                                         width: AppSize.s22.w,
                                       ),
                                     ),
-                                    Align(
-                                      alignment: AlignmentDirectional.bottomEnd,
-                                      child: IconButton(
-                                        onPressed: () {
-                                          SharedWidget.showPopupFilter(context);
-                                        },
-                                        icon: Image(
-                                          image: const AssetImage(
-                                            AssetsManager.filter,
-                                          ),
-                                          width: AppSize.s22.w,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
+                                  ),
+                                ],
+                              );
+                            },
                           ),
-                          ListView.separated(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) =>
-                                listItem(context, index),
-                            separatorBuilder: (context, index) => SizedBox(
-                              height: MediaQuery.of(context).size.height /
-                                  AppSize.s50,
-                            ),
-                            itemCount: 7,
-                          )
-                        ],
-                      ),
+                        ),
+                        ListView.separated(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) =>
+                              listItem(context, index),
+                          separatorBuilder: (context, index) => SizedBox(
+                            height: MediaQuery.of(context).size.height /
+                                AppSize.s50,
+                          ),
+                          itemCount: 7,
+                        )
+                      ],
                     ),
                   ),
                 ),
@@ -255,7 +233,7 @@ class CalendarWeeklyScreen extends StatelessWidget {
           horizontal: MediaQuery.of(context).size.width / AppSize.s50,
         ),
         decoration: const BoxDecoration(
-            color: ColorManager.darkGrey,
+            color: ColorManager.white,
             borderRadius: BorderRadius.all(
               Radius.circular(
                 AppSize.s10,
@@ -263,10 +241,10 @@ class CalendarWeeklyScreen extends StatelessWidget {
             )),
         child: Text(
           "Task Name",
-          style: Theme.of(context)
-              .textTheme
-              .headlineLarge!
-              .copyWith(fontSize: FontSizeManager.s16.sp),
+          style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                fontSize: FontSizeManager.s16.sp,
+                color: ColorManager.primaryColor,
+              ),
         ),
       );
 }

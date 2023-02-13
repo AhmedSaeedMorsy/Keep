@@ -29,7 +29,8 @@ ThemeData getAppTheme() {
     appBarTheme: const AppBarTheme(
       systemOverlayStyle: SystemUiOverlayStyle(
         // Status bar color
-        statusBarColor: ColorManager.primaryColor,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarColor: ColorManager.grey,
       ),
     ),
     // primarySwatch: MaterialColor(),
@@ -47,7 +48,7 @@ ThemeData getAppTheme() {
           fontSize: FontSizeManager.s20.sp,
         ),
         headlineLarge: getBoldStyle(
-          color: ColorManager.white,
+          color: ColorManager.primaryColor,
           fontSize: FontSizeManager.s20.sp,
         ),
         headlineMedium: getSemiBoldStyle(
@@ -55,7 +56,7 @@ ThemeData getAppTheme() {
           fontSize: FontSizeManager.s22.sp,
         ),
         displaySmall: getLightStyle(
-          color: ColorManager.white,
+          color: ColorManager.primaryColor,
           fontSize: FontSizeManager.s16.sp,
         ),
         bodySmall: getRegularStyle(

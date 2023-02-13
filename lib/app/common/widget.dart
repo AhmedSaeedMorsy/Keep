@@ -89,7 +89,7 @@ class SharedWidget {
                   },
                   child: CircleAvatar(
                     radius: AppSize.s30.w,
-                    backgroundColor: ColorManager.white,
+                    backgroundColor: ColorManager.primaryColor,
                   ),
                 ),
                 SizedBox(
@@ -131,7 +131,7 @@ class SharedWidget {
                                     child: Icon(
                                       Icons.notifications,
                                       size: AppSize.s18.w,
-                                      color: ColorManager.white,
+                                      color: ColorManager.darkGrey,
                                     ),
                                   ),
                                 ),
@@ -147,7 +147,7 @@ class SharedWidget {
                                     child: Icon(
                                       Icons.settings,
                                       size: AppSize.s18.w,
-                                      color: ColorManager.white,
+                                      color: ColorManager.darkGrey,
                                     ),
                                   ),
                                 ),

@@ -37,7 +37,7 @@ class OnBoardingScreen extends StatelessWidget {
                 },
                 child: Padding(
                   padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height / AppSize.s30,
+                    top: MediaQuery.of(context).size.height / AppSize.s18,
                   ),
                   child: Align(
                     alignment: Alignment.topRight,

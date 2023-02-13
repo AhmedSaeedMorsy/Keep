@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable, library_prefixes
 
-import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,23 +27,12 @@ class CalendarHorlyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            end: Alignment.bottomCenter,
-            begin: Alignment.topCenter,
-            colors: [
-              ColorManager.primaryColor,
-              ColorManager.primaryColor,
-              ColorManager.primaryColor,
-              ColorManager.white,
-            ],
-          ),
-        ),
+        color: ColorManager.white,
         child: Column(
           children: [
             Padding(
               padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height / AppPadding.p20,
+                top: MediaQuery.of(context).size.height / AppPadding.p12,
                 left: MediaQuery.of(context).size.width / AppPadding.p20,
               ),
               child: Align(
@@ -58,7 +46,7 @@ class CalendarHorlyScreen extends StatelessWidget {
                     textDirection: direction,
                     child: const Icon(
                       Icons.arrow_back_ios,
-                      color: ColorManager.white,
+                      color: ColorManager.primaryColor,
                     ),
                   ),
                 ),
@@ -66,120 +54,110 @@ class CalendarHorlyScreen extends StatelessWidget {
             ),
             Expanded(
               flex: 1,
-              child: FadeInDown(
-                duration: const Duration(
-                 milliseconds: AppIntDuration.duration500,
-                ),
-                child: SharedWidget.header(
-                  context,
-                ),
+              child: SharedWidget.header(
+                context,
               ),
             ),
             Expanded(
               flex: 4,
-              child: FadeInUp(
-                duration: const Duration(
-               milliseconds: AppIntDuration.duration500,
-                ),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: ColorManager.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(
-                        AppSize.s40.w,
-                      ),
-                      topRight: Radius.circular(
-                        AppSize.s40.w,
-                      ),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: ColorManager.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(
+                      AppSize.s40.w,
+                    ),
+                    topRight: Radius.circular(
+                      AppSize.s40.w,
                     ),
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height / AppPadding.p30,
-                      left: MediaQuery.of(context).size.width / AppPadding.p12,
-                      right: MediaQuery.of(context).size.width / AppPadding.p12,
-                    ),
-                    child: Column(
-                      children: [
-                        BlocProvider(
-                          create: (context) => LayoutBloc(),
-                          child: BlocBuilder<LayoutBloc, LayoutStates>(
-                            builder: (context, state) {
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    AppStrings.calendar.tr(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium,
-                                  ),
-                                  const Spacer(),
-                                  Row(
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {
-                                          SharedWidget.showPopupFilter(context);
-                                        },
-                                        icon: Image(
-                                          image: const AssetImage(
-                                            AssetsManager.filter,
-                                          ),
-                                          width: AppSize.s22.w,
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / AppPadding.p30,
+                    left: MediaQuery.of(context).size.width / AppPadding.p20,
+                    right: MediaQuery.of(context).size.width / AppPadding.p20,
+                  ),
+                  child: Column(
+                    children: [
+                      BlocProvider(
+                        create: (context) => LayoutBloc(),
+                        child: BlocBuilder<LayoutBloc, LayoutStates>(
+                          builder: (context, state) {
+                            return Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  AppStrings.calendar.tr(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
+                                ),
+                                const Spacer(),
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        SharedWidget.showPopupFilter(context);
+                                      },
+                                      icon: Image(
+                                        image: const AssetImage(
+                                          AssetsManager.filter,
                                         ),
+                                        width: AppSize.s22.w,
                                       ),
-                                      IconButton(
-                                        onPressed: () {
-                                          screen = AddTask();
-                                          LayoutBloc.get(context)
-                                              .changeBottomNavBar(5);
-                                          Navigator.pushNamed(
-                                            context,
-                                            Routes.layoutRoute,
-                                          );
-                                        },
-                                        icon: Image(
-                                          image: const AssetImage(
-                                            AssetsManager.addTask,
-                                          ),
-                                          width: AppSize.s22.w,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height:
-                              MediaQuery.of(context).size.height / AppSize.s50,
-                        ),
-                        Expanded(
-                          child: SfCalendar(
-                            view: CalendarView.day,
-                            dataSource: MeetingDataSource(
-                              _getDataSource(),
-                            ),
-                            todayHighlightColor: ColorManager.primaryColor,
-                            appointmentTextStyle:
-                                Theme.of(context).textTheme.displaySmall!,
-                            todayTextStyle:
-                                Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                      fontSize: FontSizeManager.s32,
                                     ),
-                            headerHeight: AppSize.s60.h,
-                            headerStyle: CalendarHeaderStyle(
-                              textStyle:
-                                  Theme.of(context).textTheme.displayLarge,
-                            ),
+                                    IconButton(
+                                      onPressed: () {
+                                        screen = AddTask();
+                                        LayoutBloc.get(context)
+                                            .changeBottomNavBar(5);
+                                        Navigator.pushNamed(
+                                          context,
+                                          Routes.layoutRoute,
+                                        );
+                                      },
+                                      icon: Image(
+                                        image: const AssetImage(
+                                          AssetsManager.addTask,
+                                        ),
+                                        width: AppSize.s22.w,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height:
+                            MediaQuery.of(context).size.height / AppSize.s50,
+                      ),
+                      Expanded(
+                        child: SfCalendar(
+                          view: CalendarView.day,
+                          dataSource: MeetingDataSource(
+                            _getDataSource(),
+                          ),
+                          todayHighlightColor: ColorManager.primaryColor,
+                          appointmentTextStyle:
+                              Theme.of(context).textTheme.displaySmall!,
+                          todayTextStyle:
+                              Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                    fontSize: FontSizeManager.s32,
+                                  ),
+                          headerHeight: AppSize.s60.h,
+                          headerStyle: CalendarHeaderStyle(
+                            textStyle:
+                                Theme.of(context).textTheme.displayLarge,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -198,9 +176,9 @@ List<Meeting> _getDataSource() {
       DateTime(today.year, today.month, today.day, 9, 0, 0);
   final DateTime endTime = startTime.add(const Duration(hours: 2));
   meetings.add(Meeting(
-      'Conference', startTime, endTime, ColorManager.primaryColor, false));
+      'Conference', startTime, endTime, ColorManager.grey, false));
   meetings.add(Meeting(
-      'Conference', startTime, endTime, ColorManager.primaryColor, false));
+      'Conference', startTime, endTime, ColorManager.grey, false));
 
   return meetings;
 }

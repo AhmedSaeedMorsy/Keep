@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,68 +18,47 @@ class InsightsScreen extends StatelessWidget {
     return Scaffold(
       key: scaffoldKey,
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            end: Alignment.bottomCenter,
-            begin: Alignment.topCenter,
-            colors: [
-              ColorManager.primaryColor,
-              ColorManager.primaryColor,
-              ColorManager.primaryColor,
-              ColorManager.white,
-            ],
-          ),
-        ),
+        color: ColorManager.white,
         child: Column(
           children: [
             Expanded(
               flex: 1,
-              child: FadeInDown(
-                duration: const Duration(
-                  milliseconds: AppIntDuration.duration500,
-                ),
-                child: SharedWidget.header(
-                  context,
-                ),
+              child: SharedWidget.header(
+                context,
               ),
             ),
             Expanded(
               flex: 4,
-              child: FadeInUp(
-                duration: const Duration(
-                  milliseconds: AppIntDuration.duration500,
-                ),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: ColorManager.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(
-                          AppSize.s40.w,
-                        ),
-                        topRight: Radius.circular(
-                          AppSize.s40.w,
-                        ),
-                      )),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height / AppPadding.p30,
-                      left: MediaQuery.of(context).size.width / AppPadding.p12,
-                      right: MediaQuery.of(context).size.width / AppPadding.p12,
-                    ),
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return insightsItem(context: context);
-                      },
-                      semanticChildCount: 2,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: AppSize.s20.w,
-                        crossAxisSpacing: AppSize.s20.h,
-                        childAspectRatio: 1 / 1.1,
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: ColorManager.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(
+                        AppSize.s40.w,
                       ),
+                      topRight: Radius.circular(
+                        AppSize.s40.w,
+                      ),
+                    )),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / AppPadding.p30,
+                    left: MediaQuery.of(context).size.width / AppPadding.p20,
+                    right: MediaQuery.of(context).size.width / AppPadding.p20,
+                  ),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return insightsItem(context: context);
+                    },
+                    semanticChildCount: 2,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: AppSize.s20.w,
+                      crossAxisSpacing: AppSize.s20.h,
+                      childAspectRatio: 1 / 1.1,
                     ),
                   ),
                 ),

@@ -38,7 +38,7 @@ class LayoutScreen extends StatelessWidget {
               bottomNavigationBar: BottomAppBar(
                 shape: const CircularNotchedRectangle(),
                 clipBehavior: Clip.antiAlias,
-                color: ColorManager.primaryColor,
+                color: ColorManager.grey,
                 notchMargin: constraints.minWidth.toInt() <= 550
                     ? AppSize.s8.w
                     : AppSize.s5.w,
@@ -65,8 +65,8 @@ class LayoutScreen extends StatelessWidget {
                             child: Image.asset(
                               AssetsManager.Knowledge,
                               color: LayoutBloc.get(context).currentIndex == 1
-                                  ? ColorManager.white
-                                  : ColorManager.whiteWithOpacity,
+                                  ? ColorManager.primaryColor
+                                  : ColorManager.darkGrey,
                               width: AppSize.s22.w,
                               height: AppSize.s22.h,
                             ),
@@ -74,7 +74,7 @@ class LayoutScreen extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        color: ColorManager.white,
+                        color: ColorManager.primaryColor,
                         width: 1,
                         height: double.infinity,
                       ),
@@ -93,8 +93,8 @@ class LayoutScreen extends StatelessWidget {
                             child: Image.asset(
                               AssetsManager.insight,
                               color: LayoutBloc.get(context).currentIndex == 2
-                                  ? ColorManager.white
-                                  : ColorManager.whiteWithOpacity,
+                                  ? ColorManager.primaryColor
+                                  : ColorManager.darkGrey,
                               width: AppSize.s22.w,
                               height: AppSize.s22.h,
                             ),
@@ -116,8 +116,8 @@ class LayoutScreen extends StatelessWidget {
                             child: Image.asset(
                               AssetsManager.customer,
                               color: LayoutBloc.get(context).currentIndex == 3
-                                  ? ColorManager.white
-                                  : ColorManager.whiteWithOpacity,
+                                  ? ColorManager.primaryColor
+                                  : ColorManager.darkGrey,
                               width: AppSize.s22.w,
                               height: AppSize.s22.h,
                             ),
@@ -125,7 +125,7 @@ class LayoutScreen extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        color: ColorManager.white,
+                        color: ColorManager.primaryColor,
                         width: 1,
                         height: double.infinity,
                       ),
@@ -146,8 +146,8 @@ class LayoutScreen extends StatelessWidget {
                             child: Image.asset(
                               AssetsManager.scanner,
                               color: LayoutBloc.get(context).currentIndex == 4
-                                  ? ColorManager.white
-                                  : ColorManager.whiteWithOpacity,
+                                  ? ColorManager.primaryColor
+                                  : ColorManager.darkGrey,
                               width: AppSize.s22.w,
                               height: AppSize.s22.h,
                             ),
@@ -162,7 +162,7 @@ class LayoutScreen extends StatelessWidget {
                   ? null
                   : constraints.minWidth.toInt() <= 550
                       ? FloatingActionButton(
-                          backgroundColor: ColorManager.primaryColor,
+                          backgroundColor: ColorManager.grey,
                           onPressed: () {
                             LayoutBloc.get(context).changeBottomNavBar(0);
                             screen = HomeScreen();
@@ -173,8 +173,8 @@ class LayoutScreen extends StatelessWidget {
                             ),
                             width: AppSize.s24.w,
                             color: LayoutBloc.get(context).currentIndex == 0
-                                ? ColorManager.white
-                                : ColorManager.whiteWithOpacity,
+                                ? ColorManager.primaryColor
+                                : ColorManager.darkGrey,
                           ),
                         )
                       : FloatingActionButton.large(
