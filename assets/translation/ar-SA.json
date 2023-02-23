@@ -33,8 +33,10 @@
       "jobTitle": "اسم الوظيفة",
       "phoneNumber": "رقم التليفون",
       "address": "العنوان",
-      "time": "الوقت",
-      "date": "التاريخ",
+      "startTime": "وقت البداية",
+      "startDate": "تاريخ البداية",
+      "endTime": "وقت النهاية",
+      "endDate": "تاريخ النهاية",
       "meetingDescription": "وصف المهام",
       "shareWithTeam": "مشاركة مع مجموعة",
       "team": "الفريق",
@@ -63,5 +65,9 @@
       "saveContact": "حفظ جهة الاتصال",
       "edit": "تعديل",
       "editLead": "تعديل بيانات العميل",
-      "meetingSummary": "ملخص الاجتماع"
+      "meetingSummary": "ملخص الاجتماع",
+      "time": "الوقت",
+      "date": "التاريخ",
+      "selectMember": "اختيار الاعضاء",
+      "search": "بحث"
 }

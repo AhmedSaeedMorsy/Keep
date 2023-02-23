@@ -36,8 +36,8 @@ class AppStrings {
   static String phoneNumber = "phoneNumber";
   static String email = "e-mail@sample.com";
   static String address = "address";
-  static String date = "date";
-  static String time = "time";
+  static String startDate = "startDate";
+  static String startTime = "startTime";
   static String meetingDescription = "meetingDescription";
   static String shareWithTeam = "shareWithTeam";
   static String team = "team";
@@ -69,4 +69,10 @@ class AppStrings {
   static String edit = "edit";
   static String name = "name";
   static String meetingSummary = "meetingSummary";
+  static String endTime = "endTime";
+  static String endDate = "endDate";
+  static String time = "time";
+  static String date = "date";
+  static String selectMember = "selectMember";
+  static String search = "search";
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, library_prefixes
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';

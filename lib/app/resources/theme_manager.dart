@@ -39,37 +39,38 @@ ThemeData getAppTheme() {
     //text theme
 
     textTheme: TextTheme(
-        displayMedium: getMediumStyle(
-          color: ColorManager.primaryColor,
-          fontSize: FontSizeManager.s16.sp,
-        ),
-        displayLarge: getRegularStyle(
-          color: ColorManager.primaryColor,
-          fontSize: FontSizeManager.s20.sp,
-        ),
-        headlineLarge: getBoldStyle(
-          color: ColorManager.primaryColor,
-          fontSize: FontSizeManager.s20.sp,
-        ),
-        headlineMedium: getSemiBoldStyle(
-          color: ColorManager.primaryColor,
-          fontSize: FontSizeManager.s22.sp,
-        ),
-        displaySmall: getLightStyle(
-          color: ColorManager.primaryColor,
-          fontSize: FontSizeManager.s16.sp,
-        ),
-        bodySmall: getRegularStyle(
-          color: ColorManager.primaryColor,
-          fontSize: FontSizeManager.s10.sp,
-        ),
-        headlineSmall: getMediumStyle(
-          fontSize: FontSizeManager.s16.sp,
-          color: ColorManager.darkGrey,
-        ),
-        bodyLarge: getExtraBoldStyle(
-          fontSize: FontSizeManager.s20.sp,
-          color: ColorManager.white,
-        )),
+      displayMedium: getMediumStyle(
+        color: ColorManager.primaryColor,
+        fontSize: FontSizeManager.s16.sp,
+      ),
+      displayLarge: getRegularStyle(
+        color: ColorManager.primaryColor,
+        fontSize: FontSizeManager.s20.sp,
+      ),
+      headlineLarge: getBoldStyle(
+        color: ColorManager.primaryColor,
+        fontSize: FontSizeManager.s20.sp,
+      ),
+      headlineMedium: getSemiBoldStyle(
+        color: ColorManager.primaryColor,
+        fontSize: FontSizeManager.s22.sp,
+      ),
+      displaySmall: getLightStyle(
+        color: ColorManager.primaryColor,
+        fontSize: FontSizeManager.s16.sp,
+      ),
+      bodySmall: getRegularStyle(
+        color: ColorManager.primaryColor,
+        fontSize: FontSizeManager.s10.sp,
+      ),
+      headlineSmall: getMediumStyle(
+        fontSize: FontSizeManager.s16.sp,
+        color: ColorManager.darkGrey,
+      ),
+      bodyLarge: getExtraBoldStyle(
+        fontSize: FontSizeManager.s20.sp,
+        color: ColorManager.white,
+      ),
+    ),
   );
 }

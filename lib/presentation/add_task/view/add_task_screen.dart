@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,12 +9,10 @@ import 'package:keep/app/resources/values_manager.dart';
 import 'package:keep/presentation/home/view/home_screen.dart';
 import 'package:keep/presentation/layout/controller/layout_bloc.dart';
 import 'package:keep/presentation/layout/view/layout_screen.dart';
-import '../../../app/resources/assets_manager.dart';
 import '../../../app/resources/font_manager.dart';
-import '../../../app/resources/language_manager.dart';
 import '../../../app/resources/strings_manager.dart';
 import '../../../app/resources/styles_manager.dart';
-import '../../../app/services/shared_prefrences/cache_helper.dart';
+import '../../select_member_in_teams/view/select_member_in_teams_screen.dart';
 
 class AddTask extends StatelessWidget {
   AddTask({super.key});
@@ -138,7 +135,7 @@ class AddTask extends StatelessWidget {
                   child: SharedWidget.addTaskFormField(
                       textInputType: TextInputType.none,
                       controller: TextEditingController(),
-                      hint: AppStrings.date.tr(),
+                      hint: AppStrings.startDate.tr(),
                       onTap: () {
                         showDatePicker(
                           context: context,
@@ -159,7 +156,49 @@ class AddTask extends StatelessWidget {
                   child: SharedWidget.addTaskFormField(
                     textInputType: TextInputType.none,
                     controller: TextEditingController(),
-                    hint: AppStrings.time.tr(),
+                    hint: AppStrings.startTime.tr(),
+                    onTap: () {
+                      showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / AppSize.s100,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: SharedWidget.addTaskFormField(
+                    textInputType: TextInputType.none,
+                    controller: TextEditingController(),
+                    hint: AppStrings.endDate.tr(),
+                    onTap: () {
+                      showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(
+                          const Duration(
+                            days: 1000,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / AppSize.s18,
+                ),
+                Expanded(
+                  child: SharedWidget.addTaskFormField(
+                    textInputType: TextInputType.none,
+                    controller: TextEditingController(),
+                    hint: AppStrings.endTime.tr(),
                     onTap: () {
                       showTimePicker(
                         context: context,
@@ -192,23 +231,18 @@ class AddTask extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height / AppSize.s100,
             ),
-            dropDownItem(
-              context: context,
-              title: AppStrings.department.tr(),
+            Wrap(
+              children: departmentItem(context: context, name: name),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height / AppSize.s30,
-            ),
-            dropDownItem(
-              context: context,
-              title: AppStrings.team.tr(),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height / AppSize.s18,
+              height: MediaQuery.of(context).size.height / AppSize.s100,
             ),
             SharedWidget.defaultButton(
               context: context,
-              function: () {},
+              function: () {
+                screen = const SelectMemberInTeamsScreen();
+                LayoutBloc.get(context).changeBottomNavBar(0);
+              },
               text: AppStrings.submit.tr(),
               backgroundColor: ColorManager.white,
               style: getExtraBoldStyle(
@@ -254,99 +288,51 @@ class AddTask extends StatelessWidget {
           AppStrings.shareWithTeam.tr(),
           style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                 fontSize: FontSizeManager.s16.sp,
-                color: ColorManager.grey,
+                color: ColorManager.darkGrey,
               ),
         )
       ],
     );
   }
 
-  Widget dropDownItem({
-    required BuildContext context,
-    required String title,
-  }) {
-    return DropdownButtonHideUnderline(
-      child: DropdownButton2(
-        iconOnClick: Image(
-          image: const AssetImage(
-            AssetsManager.arrowUp,
-          ),
-          width: AppSize.s16.w,
-          height: AppSize.s16.h,
+  List<Widget> departmentItem(
+      {required BuildContext context, required List name}) {
+    return List.generate(
+      name.length,
+      (index) => Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / AppSize.s80,
         ),
-        isExpanded: true,
-        hint: Row(
-          children: [
-            Expanded(
-              child: Text(
-                title,
-                style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                      color: ColorManager.darkGrey,
-                      fontSize: FontSizeManager.s18.sp,
-                    ),
-              ),
-            ),
-          ],
+        child: Chip(
+          backgroundColor: ColorManager.grey,
+          onDeleted: () {},
+          label: Text(
+            name[index],
+            style: Theme.of(context).textTheme.headlineSmall,
+          ), //Text
         ),
-        items: items
-            .map(
-              (item) => DropdownMenuItem<String>(
-                value: item,
-                child: Text(
-                  item,
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-              ),
-            )
-            .toList(),
-        value: selectedValue,
-        onChanged: (value) {
-          // setState(() {
-          //   selectedValue = value as String;
-          // });
-        },
-        icon: Image(
-          image: const AssetImage(
-            AssetsManager.arrowDown,
-          ),
-          width: AppSize.s16.w,
-          height: AppSize.s16.h,
-        ),
-        buttonHeight: AppSize.s40.h,
-        buttonWidth: double.infinity,
-        buttonDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(
-            AppSize.s55.w,
-          ),
-          color: ColorManager.grey,
-        ),
-        buttonPadding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / AppSize.s22,
-        ),
-        itemHeight: AppSize.s30.h,
-        dropdownMaxHeight: AppSize.s150.h,
-        dropdownWidth: MediaQuery.of(context).size.width / AppSize.s1_3,
-        scrollbarRadius: Radius.circular(
-          AppSize.s10.w,
-        ),
-        dropdownDecoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(
-              AppSize.s20.w,
-            ),
-            bottomRight: Radius.circular(
-              AppSize.s20.w,
-            ),
-          ),
-          color: ColorManager.white,
-        ),
-        scrollbarThickness: AppSize.s8.w,
-        offset: CacheHelper.getData(key: SharedKey.Language) ==
-                    LanguageType.ENGLISH.getValue() ||
-                CacheHelper.getData(key: SharedKey.Language) == null
-            ? Offset(AppSize.s20.w, 0)
-            : Offset(-AppSize.s20.w, 0),
       ),
     );
   }
 }
+
+List<String> name = [
+  "sd;vhksd",
+  "jdwshn",
+  "mkdhc",
+  "ww",
+  "Wjw",
+  "doje",
+  "a",
+  ";nkjdshu hwejfwbjhgfkush",
+  "jdaldkhfnsekjdvhksdfwjedvih",
+  "sd;vhksd",
+  "jdwshn",
+  "mkdhc",
+  "ادارة المالية والموارد الشريه",
+  "ww",
+  "jdaldkhfnsekjdvhksdfwjedvihjdaldk hfnsekjdvhksdfwjedvihjdaldkhfnsekjdvhksdfwjedvihjda ldkhfnsekjdvhksdfwjedvih"
+      "Wjw",
+  "doje",
+  "a",
+];

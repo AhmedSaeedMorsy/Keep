@@ -91,9 +91,51 @@ class EditTaskScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: SharedWidget.addTaskFormField(
+                        textInputType: TextInputType.none,
+                        controller: TextEditingController(),
+                        hint: AppStrings.startDate.tr(),
+                        onTap: () {
+                          showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime.now().add(
+                              const Duration(
+                                days: 1000,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / AppSize.s18,
+                    ),
+                    Expanded(
+                      child: SharedWidget.addTaskFormField(
+                        textInputType: TextInputType.none,
+                        controller: TextEditingController(),
+                        hint: AppStrings.startTime.tr(),
+                        onTap: () {
+                          showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.now(),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / AppSize.s100,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: SharedWidget.addTaskFormField(
                           textInputType: TextInputType.none,
                           controller: TextEditingController(),
-                          hint: AppStrings.date.tr(),
+                          hint: AppStrings.endDate.tr(),
                           onTap: () {
                             showDatePicker(
                               context: context,
@@ -114,7 +156,7 @@ class EditTaskScreen extends StatelessWidget {
                       child: SharedWidget.addTaskFormField(
                         textInputType: TextInputType.none,
                         controller: TextEditingController(),
-                        hint: AppStrings.time.tr(),
+                        hint: AppStrings.endTime.tr(),
                         onTap: () {
                           showTimePicker(
                             context: context,

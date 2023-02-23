@@ -33,8 +33,10 @@
       "jobTitle": "Job Title",
       "phoneNumber": "Phone Number",
       "address": "Address",
-      "date": "Date",
-      "time": "Time",
+      "startDate": "Start Date",
+      "startTime": "Start Time",
+      "endDate": "End Date",
+      "endTime": "End Time",
       "meetingDescription": "Meeting Description...",
       "shareWithTeam": "Share With Team",
       "team": "Team",
@@ -63,5 +65,9 @@
       "saveContact": "Save Contact",
       "edit": "Edit",
       "editLead": "Edit Lead",
-      "meetingSummary": "Meeting Summary"
+      "meetingSummary": "Meeting Summary",
+      "date": "Date",
+      "time": "Time",
+      "selectMember": "Select Member",
+      "search": "Search"
 }
