@@ -10,6 +10,7 @@ import 'package:keep/presentation/notification/view/notification_view.dart';
 import 'package:keep/presentation/on_boarding/view/on_boarding_screen.dart';
 import 'package:keep/presentation/scanner/view/scanner_screen.dart';
 import 'package:keep/presentation/share/view/share_screen.dart';
+import 'package:keep/presentation/splash/view/splash_screen.dart';
 import '../../presentation/calendar_weekly/view/calendar_weekly_screen.dart';
 import 'strings_manager.dart';
 
@@ -32,6 +33,10 @@ class Routes {
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
     switch (settings.name) {
+      case Routes.splashRoute:
+        return MaterialPageRoute(
+          builder: (_) => const SplashScreen(),
+        );
       case Routes.onBoardingRoute:
         return MaterialPageRoute(
           builder: (_) => const OnBoardingScreen(),

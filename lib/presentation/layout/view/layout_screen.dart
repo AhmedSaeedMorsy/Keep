@@ -6,7 +6,6 @@ import 'package:keep/app/resources/color_manager.dart';
 import 'package:keep/app/resources/values_manager.dart';
 import 'package:keep/presentation/home/view/home_screen.dart';
 import 'package:keep/presentation/layout/controller/layout_bloc.dart';
-
 import '../../../app/resources/routes_manager.dart';
 import '../../Knowledge/view/Knowledge_screen.dart';
 import '../../insights/view/insights_screen.dart';
@@ -32,6 +31,7 @@ class LayoutScreen extends StatelessWidget {
             context,
             BoxConstraints constraints,
           ) {
+
             return Scaffold(
               backgroundColor: ColorManager.white,
               body: SafeArea(child: screen),
@@ -111,7 +111,7 @@ class LayoutScreen extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               LayoutBloc.get(context).changeBottomNavBar(3);
-                              screen =const LeadsLayout();
+                              screen = const LeadsLayout();
                             },
                             child: Image.asset(
                               AssetsManager.customer,

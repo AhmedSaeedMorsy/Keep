@@ -6,7 +6,6 @@ import 'package:keep/app/resources/language_manager.dart';
 import 'package:keep/app/resources/routes_manager.dart';
 import 'package:keep/app/resources/theme_manager.dart';
 
-
 class MyApp extends StatefulWidget {
   MyApp._internal();
 
@@ -37,7 +36,7 @@ class _MyAppState extends State<MyApp> {
           localizationsDelegates: context.localizationDelegates,
           debugShowCheckedModeBanner: false,
           theme: getAppTheme(),
-          initialRoute: Routes.onBoardingRoute,
+          initialRoute: Routes.splashRoute,
           onGenerateRoute: RouteGenerator.getRoute,
         );
       },

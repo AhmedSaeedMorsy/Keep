@@ -1,14 +1,19 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:conditional_builder_rec/conditional_builder_rec.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:keep/app/constant/enums_extentions.dart';
 import 'package:keep/app/resources/assets_manager.dart';
 import 'package:keep/app/resources/font_manager.dart';
+import 'package:keep/app/services/shared_prefrences/cache_helper.dart';
 import 'package:keep/presentation/layout/controller/layout_bloc.dart';
 import 'package:keep/presentation/layout/controller/layout_states.dart';
 import 'package:keep/presentation/layout/view/layout_screen.dart';
+import 'package:keep/presentation/login/controller/bloc.dart';
+import 'package:keep/presentation/login/controller/states.dart';
 import 'package:keep/presentation/notification/view/notification_view.dart';
 import '../resources/color_manager.dart';
 import '../resources/language_manager.dart';
@@ -77,94 +82,120 @@ class SharedWidget {
       create: (context) => LayoutBloc(),
       child: BlocBuilder<LayoutBloc, LayoutStates>(
         builder: (context, state) {
-          return Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width / AppSize.s20,
-            ),
-            child: Row(
-              children: [
-                InkWell(
-                  onTap: () {
-                    profile(context);
-                  },
-                  child: CircleAvatar(
-                    radius: AppSize.s30.w,
-                    backgroundColor: ColorManager.primaryColor,
+          return BlocProvider(
+            create: (context) => LoginCubit()
+              ..getUserData(token: CacheHelper.getData(key: SharedKey.token)),
+            child:
+                BlocBuilder<LoginCubit, LoginStates>(builder: (context, state) {
+              return ConditionalBuilderRec(
+                condition: state is UserSucecessState,
+                builder: (context) => Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / AppSize.s20,
+                  ),
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          profile(context);
+                        },
+                        child: CircleAvatar(
+                          radius: AppSize.s30.w,
+                          backgroundColor: ColorManager.primaryColor,
+                        ),
+                      ),
+                      SizedBox(
+                        width:
+                            MediaQuery.of(context).size.width / AppSize.s30.w,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: MediaQuery.of(context).size.height /
+                                AppSize.s120,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    LoginCubit.get(context)
+                                        .userModel
+                                        .data!
+                                        .name.toCapitalized(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineLarge,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          right: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              AppSize.s30,
+                                        ),
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                              context,
+                                              Routes.layoutRoute,
+                                            );
+                                            screen = const NotificationScreen();
+                                            LayoutBloc.get(context)
+                                                .changeBottomNavBar(5);
+                                          },
+                                          child: Icon(
+                                            Icons.notifications,
+                                            size: AppSize.s18.w,
+                                            color: ColorManager.darkGrey,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          right: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              AppSize.s30,
+                                        ),
+                                        child: InkWell(
+                                          onTap: () {
+                                            showPopupSettings(context);
+                                          },
+                                          child: Icon(
+                                            Icons.settings,
+                                            size: AppSize.s18.w,
+                                            color: ColorManager.darkGrey,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                LoginCubit.get(context).userModel.data!.title,
+                                style: Theme.of(context).textTheme.displaySmall,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / AppSize.s30.w,
+                fallback: (context) => const Center(
+                  child: CircularProgressIndicator(),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical:
-                          MediaQuery.of(context).size.height / AppSize.s120,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              AppStrings.userName.tr(),
-                              style: Theme.of(context).textTheme.headlineLarge,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    right: MediaQuery.of(context).size.width /
-                                        AppSize.s30,
-                                  ),
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, Routes.layoutRoute);
-                                      screen = const NotificationScreen();
-                                      LayoutBloc.get(context)
-                                          .changeBottomNavBar(5);
-                                    },
-                                    child: Icon(
-                                      Icons.notifications,
-                                      size: AppSize.s18.w,
-                                      color: ColorManager.darkGrey,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    right: MediaQuery.of(context).size.width /
-                                        AppSize.s30,
-                                  ),
-                                  child: InkWell(
-                                    onTap: () {
-                                      showPopupSettings(context);
-                                    },
-                                    child: Icon(
-                                      Icons.settings,
-                                      size: AppSize.s18.w,
-                                      color: ColorManager.darkGrey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Text(
-                          AppStrings.jobDescription.tr(),
-                          style: Theme.of(context).textTheme.displaySmall,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              );
+            }),
           );
         },
       ));
@@ -625,40 +656,6 @@ class SharedWidget {
     );
   }
 
-  // static Widget noItemWidget(context) {
-  //   return Column(
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: [
-  //       SvgPicture.asset(AssetsManager.empty,),
-  //       const SizedBox(
-  //         height: AppSize.s30,
-  //       ),
-  //       Text(
-  //         AppStrings.cartEmpty,
-  //         style: Theme.of(context).textTheme.bodyLarge,
-  //       ),
-  //       const SizedBox(
-  //         height: AppSize.s20,
-  //       ),
-  //       Text(
-  //         AppStrings.emptyBio,
-  //         style: Theme.of(context).textTheme.displayLarge,
-  //       ),
-  //     ],
-  //   );
-  // }
-
-  // static toast({required String message,required Color backgroundColor}) {
-  //   return Fluttertoast.showToast(
-  //     msg: message,
-  //     toastLength: Toast.LENGTH_SHORT,
-  //     gravity: ToastGravity.BOTTOM,
-  //     backgroundColor: backgroundColor,
-  //     textColor: ColorManager.white,
-  //     fontSize: FontSizeManager.s16.sp,
-  //   );
-  // }
-
   static void showPopupShare(context) {
     showDialog(
       context: context,
@@ -819,25 +816,35 @@ class SharedWidget {
                           horizontal:
                               MediaQuery.of(context).size.width / AppSize.s18,
                         ),
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              AssetsManager.logOut,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width /
-                                  AppSize.s50,
-                            ),
-                            Text(
-                              AppStrings.logOut.tr(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium!
-                                  .copyWith(
-                                    fontSize: FontSizeManager.s20.sp,
-                                  ),
-                            ),
-                          ],
+                        child: GestureDetector(
+                          onTap: () {
+                            CacheHelper.removeData(key: SharedKey.token);
+                            CacheHelper.removeData(key: SharedKey.loginDate);
+                            Navigator.pushReplacementNamed(
+                              context,
+                              Routes.loginRoute,
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                AssetsManager.logOut,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width /
+                                    AppSize.s50,
+                              ),
+                              Text(
+                                AppStrings.logOut.tr(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium!
+                                    .copyWith(
+                                      fontSize: FontSizeManager.s20.sp,
+                                    ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

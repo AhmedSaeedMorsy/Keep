@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:conditional_builder_rec/conditional_builder_rec.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,8 @@ import 'package:keep/app/constant/enums_extentions.dart';
 import 'package:keep/app/resources/assets_manager.dart';
 import 'package:keep/app/resources/font_manager.dart';
 import 'package:keep/app/resources/strings_manager.dart';
+import 'package:keep/app/services/shared_prefrences/cache_helper.dart';
+import 'package:keep/model/task_model.dart';
 import 'package:keep/presentation/add_task/view/add_task_screen.dart';
 import 'package:keep/presentation/home/controller/home_bloc.dart';
 import 'package:keep/presentation/home/controller/home_states.dart';
@@ -23,13 +26,17 @@ import '../../layout/view/layout_screen.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
   var scaffoldKey = GlobalKey<ScaffoldState>();
-  double sleekValue = 71;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
       body: BlocProvider(
-        create: (context) => HomeBloc(),
+        create: (context) => HomeBloc()
+          ..getTask(
+            token: CacheHelper.getData(
+              key: SharedKey.token,
+            ),
+          ),
         child: BlocBuilder<HomeBloc, HomeStates>(
           builder: (context, state) {
             return Container(
@@ -154,6 +161,9 @@ class HomeScreen extends StatelessWidget {
                                   InkWell(
                                     onTap: () {
                                       HomeBloc.get(context).decressDate();
+                                      HomeBloc.get(context).getTask(
+                                          token: CacheHelper.getData(
+                                              key: SharedKey.token));
                                     },
                                     child: Icon(
                                       Icons.arrow_back_ios,
@@ -171,6 +181,9 @@ class HomeScreen extends StatelessWidget {
                                   InkWell(
                                     onTap: () {
                                       HomeBloc.get(context).incressDate();
+                                      HomeBloc.get(context).getTask(
+                                          token: CacheHelper.getData(
+                                              key: SharedKey.token));
                                     },
                                     child: Icon(
                                       Icons.arrow_forward_ios,
@@ -209,16 +222,35 @@ class HomeScreen extends StatelessWidget {
                                 height: MediaQuery.of(context).size.height /
                                     AppSize.s50,
                               ),
-                              ListView.separated(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) =>
-                                    taskItem(context, index),
-                                separatorBuilder: (context, index) => SizedBox(
-                                  height: MediaQuery.of(context).size.height /
-                                      AppSize.s50,
+                              ConditionalBuilderRec(
+                                condition: state is! GetTaskSuccessState,
+                                builder: (context) => const Center(
+                                  child: CircularProgressIndicator(),
                                 ),
-                                itemCount: 10,
+                                fallback: (context) {
+                                  return ListView.separated(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) => taskItem(
+                                      context,
+                                      index,
+                                      HomeBloc.get(context).taskList[index],
+                                    ),
+                                    separatorBuilder: (context, index) =>
+                                        SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              AppSize.s50,
+                                    ),
+                                    itemCount:
+                                        HomeBloc.get(context).taskList.length,
+                                  );
+                                },
+                              ),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height /
+                                    AppSize.s50,
                               ),
                             ],
                           ),
@@ -238,6 +270,7 @@ class HomeScreen extends StatelessWidget {
   Widget taskItem(
     BuildContext context,
     int index,
+    TaskData model,
   ) =>
       InkWell(
         onTap: () {
@@ -262,7 +295,7 @@ class HomeScreen extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                AppStrings.taskName.toTitleCase(),
+                model.label!.toTitleCase(),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
                 style: HomeBloc.get(context).taskState[index] == "agree"
@@ -370,7 +403,11 @@ class HomeScreen extends StatelessWidget {
                                   },
                                   text: AppStrings.submit.tr(),
                                   backgroundColor: ColorManager.white,
-                                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ColorManager.primaryColor),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                          color: ColorManager.primaryColor),
                                 );
                               },
                             )),
