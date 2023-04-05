@@ -20,3 +20,9 @@ class GetTaskErrorState extends HomeStates {
     this.error,
   );
 }
+
+class ChangeTaskLoadingStatus extends HomeStates {}
+
+class ChangeTaskSuccessStatus extends HomeStates {}
+
+class ChangeTaskErrorState extends HomeStates {}

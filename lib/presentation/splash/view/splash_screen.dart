@@ -16,7 +16,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   Timer? _timer;
- 
 
   final dateNow = DateTime.now();
 
@@ -66,10 +65,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _nextScreen() {
+    //  CacheHelper.removeData(key: SharedKey.token);
     if (CacheHelper.getData(key: SharedKey.token) != null) {
       if (CacheHelper.getData(key: SharedKey.loginDate) != null) {
-         final loginDate =
-      DateTime.parse(CacheHelper.getData(key: SharedKey.loginDate));
+        final loginDate =
+            DateTime.parse(CacheHelper.getData(key: SharedKey.loginDate));
         final difference = dateNow.difference(loginDate).inHours;
         if (difference > 12) {
           CacheHelper.removeData(key: SharedKey.loginDate);
@@ -79,6 +79,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Routes.onBoardingRoute,
           );
         } else {
+          print(CacheHelper.getData(key: SharedKey.token));
           Navigator.pushReplacementNamed(
             context,
             Routes.layoutRoute,
@@ -90,13 +91,11 @@ class _SplashScreenState extends State<SplashScreen> {
           Routes.onBoardingRoute,
         );
       }
-      } 
-      else {
-        Navigator.pushReplacementNamed(
-          context,
-          Routes.onBoardingRoute,
-        );
-      }
+    } else {
+      Navigator.pushReplacementNamed(
+        context,
+        Routes.onBoardingRoute,
+      );
     }
   }
-
+}

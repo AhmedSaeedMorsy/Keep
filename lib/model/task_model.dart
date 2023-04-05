@@ -1,4 +1,3 @@
-
 class TaskModel {
   List<TaskData> data = [];
   TaskModel();
@@ -17,15 +16,23 @@ class TaskData {
   late String startDate;
   late String endDate;
   late String clientName;
+  String? summary;
+  late String status;
   late String clientMail;
   late String companyName;
   late String clientLocation;
   late String clientAddress;
+  late String approve;
+  String? clientTitle;
+  String? clientPhone;
+  
+
   TaskData();
   TaskData.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     title = json["title"];
     label = json["label"];
+    status = json["status"];
     desc = json["desc"];
     startDate = json["start_date"];
     endDate = json["end_date"];
@@ -34,5 +41,9 @@ class TaskData {
     clientAddress = json["client_address"];
     clientLocation = json["client_location"];
     companyName = json["company_name"];
+    approve = json["approve"];
+    summary = json["summary"];
+    clientTitle = json["client_title"];
+    clientPhone = json["client_phone"];
   }
 }

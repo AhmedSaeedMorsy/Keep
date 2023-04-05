@@ -6,10 +6,11 @@ import 'package:keep/presentation/calendar_hourly/view/calendar_hourly.dart';
 import 'package:keep/presentation/calendar_monthly/view/calendar_monthly_screen.dart';
 import 'package:keep/presentation/layout/view/layout_screen.dart';
 import 'package:keep/presentation/login/view/login_screen.dart';
+import 'package:keep/presentation/not_approve_task/view/not_approve_task.dart';
 import 'package:keep/presentation/notification/view/notification_view.dart';
 import 'package:keep/presentation/on_boarding/view/on_boarding_screen.dart';
+import 'package:keep/presentation/profile/view/profile_screen.dart';
 import 'package:keep/presentation/scanner/view/scanner_screen.dart';
-import 'package:keep/presentation/share/view/share_screen.dart';
 import 'package:keep/presentation/splash/view/splash_screen.dart';
 import '../../presentation/calendar_weekly/view/calendar_weekly_screen.dart';
 import 'strings_manager.dart';
@@ -24,10 +25,11 @@ class Routes {
   static const String calendarMonthlyRoute = "/calendarMonthlyRoute";
   static const String calendarDailyRoute = "/calendarDailyRoute";
   static const String calendarWeeklyRoute = "/calendarWeeklyRoute";
-  static const String shareRoute = "/shareRoute";
   static const String mapRoute = "/mapRoute";
   static const String addTaskRoute = "/addTaskRoute";
   static const String scannerRoute = "/scannerRoute";
+  static const String notApproveTaskRoute = "/notApproveTaskRoute";
+  static const String profileRoute = "/profileRoute";
 }
 
 class RouteGenerator {
@@ -61,10 +63,7 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => CalendarMonthlyScreen(),
         );
-      case Routes.shareRoute:
-        return MaterialPageRoute(
-          builder: (_) => ShareScreen(),
-        );
+
       case Routes.mapRoute:
         return MaterialPageRoute(
           builder: (_) => MapScreen(),
@@ -80,6 +79,14 @@ class RouteGenerator {
       case Routes.scannerRoute:
         return MaterialPageRoute(
           builder: (_) => const ScannerScreen(),
+        );
+      case Routes.notApproveTaskRoute:
+        return MaterialPageRoute(
+          builder: (_) => const NotApproveTask(),
+        );
+      case Routes.profileRoute:
+        return MaterialPageRoute(
+          builder: (_) => ProfileScreen(),
         );
       default:
         return unDefiendRoute();

@@ -8,7 +8,7 @@ class LoginModel {
 
 class UserModel {
   late String status;
-  UserDataModel? data;
+  UserDataModel data = UserDataModel();
   UserModel();
   UserModel.fromJson(Map<String, dynamic> json) {
     status = json["status"];

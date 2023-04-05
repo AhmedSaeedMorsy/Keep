@@ -53,7 +53,7 @@ class SelectMemberInTeamsScreen extends StatelessWidget {
                   SizedBox(
                     height: MediaQuery.of(context).size.height / AppSize.s100,
                   ),
-                  ListView.separated(
+                  ListView.separated(padding: EdgeInsets.zero,
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) => taskItem(context, index),
@@ -74,7 +74,7 @@ class SelectMemberInTeamsScreen extends StatelessWidget {
                     text: AppStrings.submit.tr(),
                     backgroundColor: ColorManager.white,
                     style: getExtraBoldStyle(
-                      fontSize: FontSizeManager.s24.sp,
+                      fontSize: FontSizeManager.s20.sp,
                       color: ColorManager.primaryColor,
                     ),
                   ),
@@ -90,7 +90,7 @@ class SelectMemberInTeamsScreen extends StatelessWidget {
                     text: AppStrings.cancel.tr(),
                     backgroundColor: ColorManager.white,
                     style: getExtraBoldStyle(
-                      fontSize: FontSizeManager.s24.sp,
+                      fontSize: FontSizeManager.s20.sp,
                       color: ColorManager.primaryColor,
                     ),
                   ),

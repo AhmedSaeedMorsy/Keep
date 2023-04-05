@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable, library_prefixes
 
+import 'package:conditional_builder_rec/conditional_builder_rec.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +10,8 @@ import 'package:keep/app/constant/enums_extentions.dart';
 import 'package:keep/app/resources/assets_manager.dart';
 import 'package:keep/app/resources/font_manager.dart';
 import 'package:keep/app/services/shared_prefrences/cache_helper.dart';
-import 'package:keep/presentation/share/controller/share_controller.dart';
+import 'package:keep/presentation/share/controller/share_bloc.dart';
 import 'package:keep/presentation/share/controller/share_states.dart';
-
 import '../../../app/common/widget.dart';
 import '../../../app/resources/color_manager.dart';
 import '../../../app/resources/language_manager.dart';
@@ -20,26 +20,28 @@ import '../../../app/resources/values_manager.dart';
 import 'dart:ui' as UI;
 
 class ShareScreen extends StatelessWidget {
-  ShareScreen({super.key});
+  ShareScreen({
+    super.key,
+    required this.id,
+    required this.shareType,
+  });
   UI.TextDirection direction = UI.TextDirection.ltr;
-
-  final List<String> items = [
-    'Item1',
-    'Item2',
-    'Item3',
-    'Item4',
-    'Item5',
-    'Item6',
-    'Item7',
-    'Item8',
-  ];
+  final int id;
+  final String shareType;
   String? selectedValue;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => ShareBloc(),
-        child: BlocBuilder<ShareBloc, ShareStates>(
+        create: (context) => ShareBloc()..getTeams(),
+        child: BlocConsumer<ShareBloc, ShareStates>(
+          listener: (context, state) {
+            if (state is ShareLeadsSuccessState ||
+                state is ShareKitsSuccessState ||
+                state is ShareMeetingSuccessState) {
+              Navigator.pop(context);
+            }
+          },
           builder: (context, state) {
             return Container(
               color: ColorManager.white,
@@ -114,40 +116,78 @@ class ShareScreen extends StatelessWidget {
                                 right: MediaQuery.of(context).size.width /
                                     AppSize.s30,
                                 bottom: MediaQuery.of(context).size.height /
-                                    AppSize.s20,
+                                    AppSize.s50,
                               ),
-                              child: dropDownItem(
-                                context: context,
-                              ),
+                              child: ShareBloc.get(context)
+                                      .teamsNameList
+                                      .isNotEmpty
+                                  ? dropDownItem(
+                                      context: context,
+                                    )
+                                  : null,
                             ),
                             Expanded(
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        MediaQuery.of(context).size.width /
-                                            AppSize.s8),
-                                child: ListView.builder(
-                                  physics: const BouncingScrollPhysics(),
-                                  itemBuilder: (context, index) =>
-                                      checkboxItem(context: context),
-                                  itemCount: 10,
+                                  horizontal:
+                                      MediaQuery.of(context).size.width /
+                                          AppSize.s8,
+                                ),
+                                child: ConditionalBuilderRec(
+                                  condition: ShareBloc.get(context)
+                                      .usersModel
+                                      .users
+                                      .isNotEmpty,
+                                  builder: (context) => ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    physics: const BouncingScrollPhysics(),
+                                    itemBuilder: (context, index) =>
+                                        checkboxItem(
+                                            context: context,
+                                            name: ShareBloc.get(context)
+                                                .usersModel
+                                                .users[index]
+                                                .name,
+                                            index: ShareBloc.get(context)
+                                                .usersModel
+                                                .users[index]
+                                                .id),
+                                    itemCount: ShareBloc.get(context)
+                                        .usersModel
+                                        .users
+                                        .length,
+                                  ),
+                                  fallback: (context) => Center(
+                                    child: Text(
+                                      AppStrings.notUsersYet.tr(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width /
+                              padding: EdgeInsets.symmetric(
+                                horizontal: MediaQuery.of(context).size.width /
                                     AppSize.s30,
-                                right: MediaQuery.of(context).size.width /
-                                    AppSize.s30,
-                                top: MediaQuery.of(context).size.height /
-                                    AppSize.s50,
-                                bottom: MediaQuery.of(context).size.height /
+                                vertical: MediaQuery.of(context).size.height /
                                     AppSize.s50,
                               ),
                               child: SharedWidget.defaultButton(
                                 context: context,
-                                function: () {},
+                                function: () {
+                                  print(shareType);
+                                  print(id);
+                                  if (shareType == "lead") {
+                                    ShareBloc.get(context).shareLead(id: id);
+                                  } else if (shareType == "kit") {
+                                    ShareBloc.get(context).shareKit(id: id);
+                                  } else if (shareType == "meeting") {
+                                    ShareBloc.get(context).shareMeeting(id: id);
+                                  }
+                                },
                                 text: AppStrings.share.tr().toTitleCase(),
                                 backgroundColor: ColorManager.white,
                                 style: Theme.of(context)
@@ -169,7 +209,9 @@ class ShareScreen extends StatelessWidget {
                               ),
                               child: SharedWidget.defaultButton(
                                 context: context,
-                                function: () {},
+                                function: () {
+                                  Navigator.pop(context);
+                                },
                                 text: AppStrings.cancel.tr().toTitleCase(),
                                 backgroundColor: ColorManager.white,
                                 style: Theme.of(context)
@@ -211,13 +253,14 @@ class ShareScreen extends StatelessWidget {
                 AppStrings.department.tr(),
                 style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                       color: ColorManager.darkGrey,
-                      fontSize: FontSizeManager.s18.sp,
+                      fontSize: FontSizeManager.s16.sp,
                     ),
               ),
             ),
           ],
         ),
-        items: items
+        items: ShareBloc.get(context)
+            .teamsNameList
             .map(
               (item) => DropdownMenuItem<String>(
                 value: item,
@@ -228,11 +271,9 @@ class ShareScreen extends StatelessWidget {
               ),
             )
             .toList(),
-        value: selectedValue,
+        value: ShareBloc.get(context).selectedValue,
         onChanged: (value) {
-          // setState(() {
-          //   selectedValue = value as String;
-          // });
+          ShareBloc.get(context).changeDropDownItem(value: value!);
         },
         icon: Image(
           image: const AssetImage(
@@ -279,21 +320,29 @@ class ShareScreen extends StatelessWidget {
     );
   }
 
-  Widget checkboxItem({
-    required BuildContext context,
-  }) {
+  Widget checkboxItem(
+      {required BuildContext context,
+      required String name,
+      required int index}) {
     return Row(
       children: [
         Checkbox(
-          value: false,
-          onChanged: (value) {},
+          value: ShareBloc.get(context).selectedUsers.contains(index)
+              ? true
+              : false,
+          onChanged: (value) {
+            ShareBloc.get(context).changeCheckBoxState(
+              value: value!,
+              index: index,
+            );
+          },
         ),
         Text(
-          "name".toTitleCase(),
+          name.toTitleCase(),
           style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                fontSize: FontSizeManager.s18.sp,
+                fontSize: FontSizeManager.s16.sp,
               ),
-        )
+        ),
       ],
     );
   }

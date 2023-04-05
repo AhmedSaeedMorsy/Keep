@@ -5,15 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keep/app/resources/font_manager.dart';
+import 'package:keep/presentation/home/controller/home_bloc.dart';
+import 'package:keep/presentation/home/controller/home_states.dart';
 import 'package:keep/presentation/layout/controller/layout_states.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
 import '../../../app/common/widget.dart';
 import '../../../app/resources/assets_manager.dart';
 import '../../../app/resources/color_manager.dart';
 import '../../../app/resources/routes_manager.dart';
 import '../../../app/resources/strings_manager.dart';
 import '../../../app/resources/values_manager.dart';
+import '../../../app/services/calender_helper/calender_helper.dart';
 import '../../add_task/view/add_task_screen.dart';
 import '../../layout/controller/layout_bloc.dart';
 import '../../layout/view/layout_screen.dart';
@@ -86,8 +88,7 @@ class CalendarHorlyScreen extends StatelessWidget {
                         child: BlocBuilder<LayoutBloc, LayoutStates>(
                           builder: (context, state) {
                             return Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   AppStrings.calendar.tr(),
@@ -138,22 +139,37 @@ class CalendarHorlyScreen extends StatelessWidget {
                             MediaQuery.of(context).size.height / AppSize.s50,
                       ),
                       Expanded(
-                        child: SfCalendar(
-                          view: CalendarView.day,
-                          dataSource: MeetingDataSource(
-                            _getDataSource(),
-                          ),
-                          todayHighlightColor: ColorManager.primaryColor,
-                          appointmentTextStyle:
-                              Theme.of(context).textTheme.displaySmall!,
-                          todayTextStyle:
-                              Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                    fontSize: FontSizeManager.s32,
-                                  ),
-                          headerHeight: AppSize.s60.h,
-                          headerStyle: CalendarHeaderStyle(
-                            textStyle:
-                                Theme.of(context).textTheme.displayLarge,
+                        child: BlocProvider(
+                          create: (context) => HomeBloc()..getTask(),
+                          child: BlocBuilder<HomeBloc, HomeStates>(
+                            builder: (context, state) {
+                              return SfCalendar(
+                                viewNavigationMode: ViewNavigationMode.snap,
+                                headerHeight: 0,
+                                view: CalendarView.day,
+                                dataSource: MeetingDataSource(
+                                    HomeBloc.get(context).meetings),
+                                todayHighlightColor: ColorManager.primaryColor,
+                                appointmentTextStyle: Theme.of(context)
+                                    .textTheme
+                                    .displayLarge!
+                                    .copyWith(
+                                      color: ColorManager.white,
+                                    ),
+                                todayTextStyle: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                      fontSize: FontSizeManager.s26,
+                                    ),
+                                headerStyle: CalendarHeaderStyle(
+                                  textStyle: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge!
+                                      .copyWith(color: ColorManager.white),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),
@@ -167,59 +183,4 @@ class CalendarHorlyScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-List<Meeting> _getDataSource() {
-  final List<Meeting> meetings = <Meeting>[];
-  final DateTime today = DateTime.now();
-  final DateTime startTime =
-      DateTime(today.year, today.month, today.day, 9, 0, 0);
-  final DateTime endTime = startTime.add(const Duration(hours: 2));
-  meetings.add(Meeting(
-      'Conference', startTime, endTime, ColorManager.grey, false));
-  meetings.add(Meeting(
-      'Conference', startTime, endTime, ColorManager.grey, false));
-
-  return meetings;
-}
-
-class MeetingDataSource extends CalendarDataSource {
-  MeetingDataSource(List<Meeting> source) {
-    appointments = source;
-  }
-
-  @override
-  DateTime getStartTime(int index) {
-    return appointments![index].from;
-  }
-
-  @override
-  DateTime getEndTime(int index) {
-    return appointments![index].to;
-  }
-
-  @override
-  String getSubject(int index) {
-    return appointments![index].eventName;
-  }
-
-  @override
-  Color getColor(int index) {
-    return appointments![index].background;
-  }
-
-  @override
-  bool isAllDay(int index) {
-    return appointments![index].isAllDay;
-  }
-}
-
-class Meeting {
-  Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
-
-  String eventName;
-  DateTime from;
-  DateTime to;
-  Color background;
-  bool isAllDay;
 }

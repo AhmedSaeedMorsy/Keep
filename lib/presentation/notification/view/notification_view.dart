@@ -59,7 +59,7 @@ class NotificationScreen extends StatelessWidget {
                           MediaQuery.of(context).size.height / AppSize.s22,
                     ),
                     Expanded(
-                      child: ListView.separated(
+                      child: ListView.separated(padding: EdgeInsets.zero,
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (context, index) =>
                             notificationItem(context: context),
@@ -118,7 +118,7 @@ class NotificationScreen extends StatelessWidget {
             """Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s""",
             style: Theme.of(context).textTheme.displaySmall!.copyWith(
                 color: ColorManager.primaryColor,
-                fontSize: FontSizeManager.s16.sp),
+                fontSize: FontSizeManager.s14.sp),
             overflow: TextOverflow.ellipsis,
             maxLines: 3,
           ),
@@ -168,7 +168,7 @@ class NotificationScreen extends StatelessWidget {
                                     .textTheme
                                     .headlineMedium!
                                     .copyWith(
-                                      fontSize: FontSizeManager.s22.sp,
+                                      fontSize: FontSizeManager.s18.sp,
                                     ),
                               ),
                             ],
@@ -202,7 +202,7 @@ class NotificationScreen extends StatelessWidget {
                                   .textTheme
                                   .headlineMedium!
                                   .copyWith(
-                                    fontSize: FontSizeManager.s22.sp,
+                                    fontSize: FontSizeManager.s18.sp,
                                   ),
                             ),
                           ],

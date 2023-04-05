@@ -5,16 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:keep/app/constant/enums_extentions.dart';
 import 'package:keep/app/resources/assets_manager.dart';
 import 'package:keep/app/resources/font_manager.dart';
 import 'package:keep/app/services/shared_prefrences/cache_helper.dart';
 import 'package:keep/presentation/layout/controller/layout_bloc.dart';
 import 'package:keep/presentation/layout/controller/layout_states.dart';
-import 'package:keep/presentation/layout/view/layout_screen.dart';
 import 'package:keep/presentation/login/controller/bloc.dart';
 import 'package:keep/presentation/login/controller/states.dart';
-import 'package:keep/presentation/notification/view/notification_view.dart';
+import 'package:keep/presentation/share/view/share_screen.dart';
+import '../../model/leads_model.dart';
+import '../../presentation/edit_lead/view/edit_lead_screen.dart';
+import '../../presentation/view_lead/view/view_lead_screen.dart';
 import '../resources/color_manager.dart';
 import '../resources/language_manager.dart';
 import '../resources/routes_manager.dart';
@@ -64,7 +68,7 @@ class SharedWidget {
             // hint style
             hintStyle: getBoldStyle(
               color: ColorManager.grey,
-              fontSize: FontSizeManager.s16.sp,
+              fontSize: FontSizeManager.s14.sp,
             ),
           ),
           onFieldSubmitted: onFieldSubmitted,
@@ -102,6 +106,16 @@ class SharedWidget {
                         child: CircleAvatar(
                           radius: AppSize.s30.w,
                           backgroundColor: ColorManager.primaryColor,
+                          backgroundImage: LoginCubit.get(context)
+                                      .userModel
+                                      .data
+                                      .imageProfile !=
+                                  null
+                              ? NetworkImage(LoginCubit.get(context)
+                                  .userModel
+                                  .data
+                                  .imageProfile!)
+                              : null,
                         ),
                       ),
                       SizedBox(
@@ -125,8 +139,9 @@ class SharedWidget {
                                   Text(
                                     LoginCubit.get(context)
                                         .userModel
-                                        .data!
-                                        .name.toCapitalized(),
+                                        .data
+                                        .name
+                                        .toCapitalized(),
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineLarge,
@@ -147,9 +162,9 @@ class SharedWidget {
                                               context,
                                               Routes.layoutRoute,
                                             );
-                                            screen = const NotificationScreen();
-                                            LayoutBloc.get(context)
-                                                .changeBottomNavBar(5);
+
+                                            Navigator.pushNamed(
+                                                context, Routes.profileRoute);
                                           },
                                           child: Icon(
                                             Icons.notifications,
@@ -181,7 +196,7 @@ class SharedWidget {
                                 ],
                               ),
                               Text(
-                                LoginCubit.get(context).userModel.data!.title,
+                                LoginCubit.get(context).userModel.data.title,
                                 style: Theme.of(context).textTheme.displaySmall,
                               ),
                             ],
@@ -210,10 +225,12 @@ class SharedWidget {
     void Function(String)? onFieldSubmitted,
     int maxLines = 1,
     int minLines = 1,
+    bool enabled = true,
   }) =>
       SizedBox(
         height: AppSize.s50.h,
         child: TextFormField(
+          enabled: enabled,
           controller: controller,
           cursorHeight: 5,
           cursorColor: ColorManager.primaryColor,
@@ -243,7 +260,7 @@ class SharedWidget {
             // hint style
             hintStyle: getMediumStyle(
               color: ColorManager.grey,
-              fontSize: FontSizeManager.s16.sp,
+              fontSize: FontSizeManager.s14.sp,
             ),
           ),
           onTap: onTap,
@@ -277,7 +294,7 @@ class SharedWidget {
             // hint style
             hintStyle: getMediumStyle(
               color: ColorManager.grey,
-              fontSize: FontSizeManager.s16.sp,
+              fontSize: FontSizeManager.s14.sp,
             ),
           ),
           onFieldSubmitted: onFieldSubmitted,
@@ -322,7 +339,7 @@ class SharedWidget {
                                 .textTheme
                                 .headlineMedium!
                                 .copyWith(
-                                  fontSize: FontSizeManager.s20.sp,
+                                  fontSize: FontSizeManager.s18.sp,
                                 ),
                           ),
                         ),
@@ -354,7 +371,7 @@ class SharedWidget {
                                 .textTheme
                                 .headlineMedium!
                                 .copyWith(
-                                  fontSize: FontSizeManager.s20.sp,
+                                  fontSize: FontSizeManager.s18.sp,
                                 ),
                           ),
                         ),
@@ -386,7 +403,7 @@ class SharedWidget {
                                 .textTheme
                                 .headlineMedium!
                                 .copyWith(
-                                  fontSize: FontSizeManager.s20.sp,
+                                  fontSize: FontSizeManager.s18.sp,
                                 ),
                           ),
                         ),
@@ -418,7 +435,7 @@ class SharedWidget {
                                 .textTheme
                                 .headlineMedium!
                                 .copyWith(
-                                  fontSize: FontSizeManager.s20.sp,
+                                  fontSize: FontSizeManager.s18.sp,
                                 ),
                           ),
                         ),
@@ -439,188 +456,151 @@ class SharedWidget {
       context: context,
       builder: (BuildContext context) {
         return FadeInDown(
-          duration: const Duration(
-            milliseconds: AppIntDuration.duration500,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height / AppSize.s1_7,
-                color: ColorManager.white,
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
+            duration: const Duration(
+              milliseconds: AppIntDuration.duration500,
+            ),
+            child: BlocProvider(
+              create: (context) => LoginCubit()
+                ..getUserData(token: CacheHelper.getData(key: SharedKey.token)),
+              child: BlocBuilder<LoginCubit, LoginStates>(
+                builder: (context, state) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height / AppSize.s3,
-                        child: Stack(
-                          alignment: AlignmentDirectional.bottomCenter,
-                          children: [
-                            Align(
-                              alignment: AlignmentDirectional.topCenter,
-                              child: Stack(
-                                alignment: AlignmentDirectional.topEnd,
-                                children: [
-                                  Container(
-                                    width: double.infinity,
-                                    height: MediaQuery.of(context).size.height /
-                                        AppSize.s4_3,
-                                    color: ColorManager.primaryColor,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Stack(
-                              alignment: AlignmentDirectional.bottomEnd,
-                              children: [
-                                CircleAvatar(
-                                  radius: MediaQuery.of(context).size.height /
-                                      AppSize.s10,
-                                  backgroundColor: ColorManager.grey,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height / AppSize.s80,
-                      ),
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height / AppSize.s50,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal:
-                              MediaQuery.of(context).size.width / AppSize.s18,
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                width: double.infinity,
-                                height: AppSize.s1.w,
-                                color: ColorManager.darkGrey,
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        MediaQuery.of(context).size.width /
-                                            AppSize.s80),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                      Container(
+                        height: MediaQuery.of(context).size.height / AppSize.s2,
+                        color: ColorManager.white,
+                        child: SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height /
+                                    AppSize.s3,
+                                child: Stack(
+                                  alignment: AlignmentDirectional.bottomCenter,
                                   children: [
-                                    Image(
-                                      image: const AssetImage(
-                                        AssetsManager.facebook,
+                                    Align(
+                                      alignment: AlignmentDirectional.topCenter,
+                                      child: Stack(
+                                        alignment: AlignmentDirectional.topEnd,
+                                        children: [
+                                          Container(
+                                            width: double.infinity,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                AppSize.s4_3,
+                                            color: ColorManager.primaryColor,
+                                            child: LoginCubit.get(context)
+                                                        .userModel
+                                                        .data
+                                                        .imageCover ==
+                                                    null
+                                                ? 
+                                                 null :Image(
+                                                    image: NetworkImage(
+                                                        LoginCubit.get(context)
+                                                            .userModel
+                                                            .data
+                                                            .imageCover!)),
+                                          ),
+                                        ],
                                       ),
-                                      width: AppSize.s32.w,
-                                      height: AppSize.s32.h,
                                     ),
-                                    Image(
-                                      image: const AssetImage(
-                                        AssetsManager.instagram,
-                                      ),
-                                      width: AppSize.s32.w,
-                                      height: AppSize.s32.h,
-                                    ),
-                                    Image(
-                                      image: const AssetImage(
-                                        AssetsManager.linkedin,
-                                      ),
-                                      width: AppSize.s32.w,
-                                      height: AppSize.s32.h,
+                                    Stack(
+                                      alignment: AlignmentDirectional.bottomEnd,
+                                      children: [
+                                        CircleAvatar(
+                                          radius: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              AppSize.s10,
+                                          backgroundColor: ColorManager.grey,
+                                          backgroundImage:
+                                              LoginCubit.get(context)
+                                                          .userModel
+                                                          .data
+                                                          .imageProfile ==
+                                                      null
+                                                  ? null
+                                                  : NetworkImage(
+                                                      LoginCubit.get(context)
+                                                          .userModel
+                                                          .data
+                                                          .imageProfile!,
+                                                    ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                width: double.infinity,
-                                height: AppSize.s1.w,
-                                color: ColorManager.darkGrey,
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height /
+                                    AppSize.s80,
                               ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal:
-                              MediaQuery.of(context).size.width / AppSize.s18,
-                          vertical:
-                              MediaQuery.of(context).size.height / AppSize.s30,
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  showPopupScannerProfile(context);
-                                },
-                                child: Image(
-                                  image: const AssetImage(
-                                    AssetsManager.scanner,
-                                  ),
-                                  color: ColorManager.primaryColor,
-                                  width: AppSize.s36.w,
-                                  height: AppSize.s36.h,
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height /
+                                    AppSize.s50,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      MediaQuery.of(context).size.width /
+                                          AppSize.s18,
+                                  vertical: MediaQuery.of(context).size.height /
+                                      AppSize.s60,
                                 ),
-                              ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.pushNamed(
-                                    context,
-                                    Routes.mapRoute,
-                                  );
-                                },
-                                child: Image(
-                                  image: const AssetImage(
-                                    AssetsManager.mapIcon,
-                                  ),
-                                  color: ColorManager.primaryColor,
-                                  width: AppSize.s36.w,
-                                  height: AppSize.s36.h,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          showPopupScannerProfile(context);
+                                        },
+                                        child: Image(
+                                          image: const AssetImage(
+                                            AssetsManager.scanner,
+                                          ),
+                                          color: ColorManager.primaryColor,
+                                          width: AppSize.s36.w,
+                                          height: AppSize.s36.h,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          Navigator.pushNamed(
+                                            context,
+                                            Routes.mapRoute,
+                                          );
+                                        },
+                                        child: Image(
+                                          image: const AssetImage(
+                                            AssetsManager.mapIcon,
+                                          ),
+                                          color: ColorManager.primaryColor,
+                                          width: AppSize.s36.w,
+                                          height: AppSize.s36.h,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  showPopupShare(context);
-                                },
-                                child: Image(
-                                  image: const AssetImage(
-                                    AssetsManager.share,
-                                  ),
-                                  color: ColorManager.primaryColor,
-                                  width: AppSize.s36.w,
-                                  height: AppSize.s36.h,
-                                ),
-                              ),
-                            ),
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                       )
                     ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        );
+                  );
+                },
+              ),
+            ));
       },
     );
   }
@@ -637,17 +617,14 @@ class SharedWidget {
               Container(
                 width: double.infinity,
                 height: AppSize.s220.h,
-                color: ColorManager.grey,
+                color: ColorManager.white,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: MediaQuery.of(context).size.height / AppSize.s22,
-                  ),
-                  child: const Image(
-                    image: AssetImage(
-                      AssetsManager.qrCode,
+                    padding: EdgeInsets.symmetric(
+                      vertical:
+                          MediaQuery.of(context).size.height / AppSize.s22,
                     ),
-                  ),
-                ),
+                    child: SvgPicture.string(
+                        CacheHelper.getData(key: SharedKey.qr))),
               ),
             ],
           ),
@@ -656,7 +633,7 @@ class SharedWidget {
     );
   }
 
-  static void showPopupShare(context) {
+  static void showPopupShare(context, id, String shareType) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -685,8 +662,15 @@ class SharedWidget {
                                 child: GestureDetector(
                                   onTap: () {
                                     Navigator.pop(context);
-                                    Navigator.pushNamed(
-                                        context, Routes.shareRoute);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ShareScreen(
+                                          id: id,
+                                          shareType: shareType,
+                                        ),
+                                      ),
+                                    );
                                   },
                                   child: Row(
                                     children: [
@@ -704,7 +688,7 @@ class SharedWidget {
                                             .textTheme
                                             .headlineMedium!
                                             .copyWith(
-                                              fontSize: FontSizeManager.s20.sp,
+                                              fontSize: FontSizeManager.s18.sp,
                                             ),
                                       ),
                                     ],
@@ -739,7 +723,7 @@ class SharedWidget {
                                           .textTheme
                                           .headlineMedium!
                                           .copyWith(
-                                            fontSize: FontSizeManager.s20.sp,
+                                            fontSize: FontSizeManager.s18.sp,
                                           ),
                                     ),
                                   ],
@@ -797,7 +781,7 @@ class SharedWidget {
                                     .textTheme
                                     .headlineMedium!
                                     .copyWith(
-                                      fontSize: FontSizeManager.s20.sp,
+                                      fontSize: FontSizeManager.s18.sp,
                                     ),
                               ),
                             ],
@@ -819,6 +803,8 @@ class SharedWidget {
                         child: GestureDetector(
                           onTap: () {
                             CacheHelper.removeData(key: SharedKey.token);
+                            CacheHelper.removeData(key: SharedKey.qr);
+                            CacheHelper.removeData(key: SharedKey.id);
                             CacheHelper.removeData(key: SharedKey.loginDate);
                             Navigator.pushReplacementNamed(
                               context,
@@ -840,7 +826,7 @@ class SharedWidget {
                                     .textTheme
                                     .headlineMedium!
                                     .copyWith(
-                                      fontSize: FontSizeManager.s20.sp,
+                                      fontSize: FontSizeManager.s18.sp,
                                     ),
                               ),
                             ],
@@ -890,6 +876,177 @@ class SharedWidget {
           style: style,
         ),
       ),
+    );
+  }
+
+  static Widget leadItem({
+    required BuildContext context,
+    required DataLeadMedel model,
+  }) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ViewLeadScreen(
+                model: model,
+              ),
+            ));
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: MediaQuery.of(context).size.height / AppSize.s50,
+          horizontal: MediaQuery.of(context).size.width / AppSize.s30,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(
+            AppSize.s18.w,
+          ),
+          color: ColorManager.grey,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              model.name!.toTitleCase(),
+              style: Theme.of(context).textTheme.displayLarge,
+            ),
+            Text(
+              "${AppStrings.ip} : ${model.ip}",
+              style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                    fontSize: FontSizeManager.s12.sp,
+                  ),
+            ),
+            Text(
+              "${AppStrings.location.tr()} : ${model.latitude},${model.longitude}",
+              style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                    fontSize: FontSizeManager.s12.sp,
+                  ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.height / AppSize.s50,
+              ),
+              child: Container(
+                width: double.infinity,
+                height: AppSize.s1.h,
+                color: ColorManager.darkGrey,
+              ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditLeadScreen(
+                            model: model,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.edit,
+                          size: AppSize.s18.w,
+                        ),
+                        SizedBox(
+                          width:
+                              MediaQuery.of(context).size.width / AppSize.s100,
+                        ),
+                        Text(
+                          AppStrings.edit.tr(),
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal:
+                          MediaQuery.of(context).size.width / AppSize.s200),
+                  color: ColorManager.darkGrey,
+                  width: 1,
+                  height: AppSize.s24.h,
+                ),
+                Expanded(
+                  flex: 3,
+                  child: InkWell(
+                    onTap: () {},
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          AssetsManager.download,
+                          width: AppSize.s12.w,
+                        ),
+                        SizedBox(
+                          width:
+                              MediaQuery.of(context).size.width / AppSize.s100,
+                        ),
+                        Text(
+                          AppStrings.download.tr(),
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal:
+                          MediaQuery.of(context).size.width / AppSize.s200),
+                  color: ColorManager.darkGrey,
+                  width: 1,
+                  height: AppSize.s24.h,
+                ),
+                Expanded(
+                  flex: 2,
+                  child: InkWell(
+                    onTap: () {
+                      SharedWidget.showPopupShare(context, model.id, "lead");
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.share,
+                          size: AppSize.s18.w,
+                        ),
+                        SizedBox(
+                          width:
+                              MediaQuery.of(context).size.width / AppSize.s100,
+                        ),
+                        Text(
+                          AppStrings.share.tr(),
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static toast({required String message, required Color backgroundColor}) {
+    return Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: backgroundColor,
+      textColor: ColorManager.white,
+      fontSize: FontSizeManager.s14.sp,
     );
   }
 

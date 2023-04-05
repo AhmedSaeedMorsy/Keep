@@ -69,5 +69,17 @@
       "time": "الوقت",
       "date": "التاريخ",
       "selectMember": "اختيار الاعضاء",
-      "search": "بحث"
+      "search": "بحث",
+      "thisIsRequired": "مطلوب",
+      "notTaskesYet": "لايوجد مهام بعد",
+      "notLeadsYet": "لا يوجد اشخاص بعد",
+      "notApproveTask": "المهام غير معتمدة ",
+      "emailOrPasswordInCorrect": "البريد الالكتروني او الرقم السري غير صحيح",
+      "email": "الايميل",
+      "city": "المدينة",
+      "country": "الدولة",
+      "industry": "الصناعة",
+      "gender": "النوع",
+      "notUsersYet": "لا يوجد اشخاص بعد",
+      "notKitsYet": "لا توجد ملفات بعد"
 }

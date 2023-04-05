@@ -6,7 +6,7 @@ class DioHelper {
     dio = Dio(
       BaseOptions(
         receiveDataWhenStatusError: true,
-        baseUrl: "http://apis.linemedia.space/api/",
+        baseUrl: "https://api.keepbi.com/api/v1/",
       ),
     );
   }

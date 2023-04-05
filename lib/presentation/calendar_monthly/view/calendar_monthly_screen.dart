@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keep/app/resources/routes_manager.dart';
 import 'package:keep/presentation/add_task/view/add_task_screen.dart';
+import 'package:keep/presentation/home/controller/home_bloc.dart';
+import 'package:keep/presentation/home/controller/home_states.dart';
 import 'package:keep/presentation/layout/controller/layout_bloc.dart';
 import 'package:keep/presentation/layout/controller/layout_states.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -14,6 +16,7 @@ import '../../../app/resources/assets_manager.dart';
 import '../../../app/resources/color_manager.dart';
 import '../../../app/resources/strings_manager.dart';
 import '../../../app/resources/values_manager.dart';
+import '../../../app/services/calender_helper/calender_helper.dart';
 import '../../layout/view/layout_screen.dart';
 import '../controller/calendar_monthly_bloc.dart';
 import '../controller/calendar_monthly_states.dart';
@@ -22,7 +25,7 @@ import 'dart:ui' as UI;
 class CalendarMonthlyScreen extends StatelessWidget {
   CalendarMonthlyScreen({super.key});
   UI.TextDirection direction = UI.TextDirection.ltr;
-
+  var calendarController = CalendarController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,6 +124,7 @@ class CalendarMonthlyScreen extends StatelessWidget {
                                     onTap: () {
                                       CalendarMonthlyBloc.get(context)
                                           .decressDate();
+                                      calendarController.backward!();
                                     },
                                     child: Icon(
                                       Icons.arrow_back_ios,
@@ -143,6 +147,7 @@ class CalendarMonthlyScreen extends StatelessWidget {
                                     onTap: () {
                                       CalendarMonthlyBloc.get(context)
                                           .incressDate();
+                                      calendarController.forward!();
                                     },
                                     child: Icon(
                                       Icons.arrow_forward_ios,
@@ -151,8 +156,8 @@ class CalendarMonthlyScreen extends StatelessWidget {
                                   ),
                                   BlocProvider(
                                       create: (context) => LayoutBloc(),
-                                      child: BlocBuilder<LayoutBloc,
-                                          LayoutStates>(
+                                      child:
+                                          BlocBuilder<LayoutBloc, LayoutStates>(
                                         builder: (context, state) {
                                           return IconButton(
                                             onPressed: () {
@@ -179,28 +184,37 @@ class CalendarMonthlyScreen extends StatelessWidget {
                                 height: MediaQuery.of(context).size.height /
                                     AppSize.s50,
                               ),
-                              SizedBox(
-                                height: AppSize.s700.h,
-                                child: SfCalendar(
-                                  view: CalendarView.month,
-                                  firstDayOfWeek: 7,
-                                  viewNavigationMode: ViewNavigationMode.none,
-                                  dataSource: MeetingDataSource(
-                                    _getDataSource(),
-                                  ),
-                                  monthViewSettings: const MonthViewSettings(
-                                    numberOfWeeksInView: 6,
-                                    appointmentDisplayMode:
-                                        MonthAppointmentDisplayMode
-                                            .appointment,
-                                  ),
-                                  headerHeight: AppSize.s1,
-                                  headerStyle: const CalendarHeaderStyle(
-                                    textStyle: TextStyle(
-                                      color: ColorManager.white,
-                                      height: 0,
-                                    ),
-                                  ),
+                              BlocProvider(
+                                create: (context) => HomeBloc()..getTask(),
+                                child: BlocBuilder<HomeBloc, HomeStates>(
+                                  builder: (context, state) {
+                                    return SizedBox(
+                                      height: AppSize.s700.h,
+                                      child: SfCalendar(
+                                        controller: calendarController,
+                                        view: CalendarView.month,
+                                        firstDayOfWeek: 7,
+                                        viewNavigationMode:
+                                            ViewNavigationMode.none,
+                                        dataSource: MeetingDataSource(
+                                            HomeBloc.get(context).meetings),
+                                        monthViewSettings:
+                                            const MonthViewSettings(
+                                          numberOfWeeksInView: 6,
+                                          appointmentDisplayMode:
+                                              MonthAppointmentDisplayMode
+                                                  .appointment,
+                                        ),
+                                        headerHeight: AppSize.s1,
+                                        headerStyle: const CalendarHeaderStyle(
+                                          textStyle: TextStyle(
+                                            color: ColorManager.white,
+                                            height: 0,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             ],
@@ -217,61 +231,4 @@ class CalendarMonthlyScreen extends StatelessWidget {
       ),
     );
   }
-
-  /// filter dialog
-
-  List<Meeting> _getDataSource() {
-    final List<Meeting> meetings = <Meeting>[];
-    final DateTime today = DateTime.now();
-    final DateTime startTime =
-        DateTime(today.year, today.month, today.day, 9, 0, 0);
-    final DateTime endTime = startTime.add(const Duration(hours: 2));
-    meetings.add(Meeting(
-        'Conference', startTime, endTime, ColorManager.primaryColor, false));
-    meetings.add(Meeting(
-        'Conference', startTime, endTime, ColorManager.primaryColor, false));
-
-    return meetings;
-  }
-}
-
-class MeetingDataSource extends CalendarDataSource {
-  MeetingDataSource(List<Meeting> source) {
-    appointments = source;
-  }
-
-  @override
-  DateTime getStartTime(int index) {
-    return appointments![index].from;
-  }
-
-  @override
-  DateTime getEndTime(int index) {
-    return appointments![index].to;
-  }
-
-  @override
-  String getSubject(int index) {
-    return appointments![index].eventName;
-  }
-
-  @override
-  Color getColor(int index) {
-    return appointments![index].background;
-  }
-
-  @override
-  bool isAllDay(int index) {
-    return appointments![index].isAllDay;
-  }
-}
-
-class Meeting {
-  Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
-
-  String eventName;
-  DateTime from;
-  DateTime to;
-  Color background;
-  bool isAllDay;
 }

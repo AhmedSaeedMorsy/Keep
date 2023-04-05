@@ -31,14 +31,14 @@ class LayoutScreen extends StatelessWidget {
             context,
             BoxConstraints constraints,
           ) {
-
             return Scaffold(
               backgroundColor: ColorManager.white,
               body: SafeArea(child: screen),
               bottomNavigationBar: BottomAppBar(
+                elevation: AppSize.s20.h,
                 shape: const CircularNotchedRectangle(),
                 clipBehavior: Clip.antiAlias,
-                color: ColorManager.grey,
+                color: ColorManager.white,
                 notchMargin: constraints.minWidth.toInt() <= 550
                     ? AppSize.s8.w
                     : AppSize.s5.w,
@@ -60,7 +60,7 @@ class LayoutScreen extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               LayoutBloc.get(context).changeBottomNavBar(1);
-                              screen = const KnowledgeScreen();
+                              screen =const KnowledgeScreen();
                             },
                             child: Image.asset(
                               AssetsManager.Knowledge,
@@ -162,7 +162,8 @@ class LayoutScreen extends StatelessWidget {
                   ? null
                   : constraints.minWidth.toInt() <= 550
                       ? FloatingActionButton(
-                          backgroundColor: ColorManager.grey,
+                          heroTag: null,
+                          backgroundColor: ColorManager.white,
                           onPressed: () {
                             LayoutBloc.get(context).changeBottomNavBar(0);
                             screen = HomeScreen();
@@ -183,6 +184,7 @@ class LayoutScreen extends StatelessWidget {
                             screen = HomeScreen();
                             LayoutBloc.get(context).changeBottomNavBar(0);
                           },
+                          heroTag: null,
                           child: Image(
                             image: const AssetImage(
                               AssetsManager.home,

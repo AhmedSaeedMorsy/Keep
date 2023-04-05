@@ -75,4 +75,16 @@ class AppStrings {
   static String date = "date";
   static String selectMember = "selectMember";
   static String search = "search";
+  static String thisIsRequired = "thisIsRequired";
+  static String notTaskesYet = "notTaskesYet";
+  static String notLeadsYet = "notLeadsYet";
+  static String notKitsYet = "notKitsYet";
+  static String notUsersYet = "notUsersYet";
+  static String notApproveTask = "notApproveTask";
+  static String emailOrPasswordInCorrect = "emailOrPasswordInCorrect";
+  static String emailAddress = "email";
+  static String country = "country";
+  static String city = "city";
+  static String industry = "industry";
+  static String gender = "gender";
 }

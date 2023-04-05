@@ -1,5 +1,6 @@
-// ignore_for_file: must_be_immutable, library_prefixes
+// ignore_for_file: must_be_immutable, library_prefixes, prefer_final_fields
 
+import 'package:conditional_builder_rec/conditional_builder_rec.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,7 @@ import '../../../app/resources/color_manager.dart';
 import '../../../app/resources/routes_manager.dart';
 import '../../../app/resources/strings_manager.dart';
 import '../../../app/resources/values_manager.dart';
+import '../../../model/task_model.dart';
 import '../../add_task/view/add_task_screen.dart';
 import '../../edit_task/view/edit_task_screen.dart';
 import '../../home/controller/home_bloc.dart';
@@ -23,13 +25,13 @@ import 'dart:ui' as UI;
 
 class CalendarDailyScreen extends StatelessWidget {
   CalendarDailyScreen({super.key});
-  var scaffoldKey = GlobalKey<ScaffoldState>();
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
   UI.TextDirection direction = UI.TextDirection.ltr;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
+      key: _scaffoldKey,
       body: Container(
         color: ColorManager.white,
         child: Column(
@@ -45,7 +47,8 @@ class CalendarDailyScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: Directionality(textDirection: direction,
+                  child: Directionality(
+                    textDirection: direction,
                     child: const Icon(
                       Icons.arrow_back_ios,
                       color: ColorManager.primaryColor,
@@ -143,7 +146,7 @@ class CalendarDailyScreen extends StatelessWidget {
                                         .textTheme
                                         .bodyLarge!
                                         .copyWith(
-                                          fontSize: FontSizeManager.s24.sp,
+                                          fontSize: FontSizeManager.s20.sp,
                                         ),
                                   ),
                                 ),
@@ -167,19 +170,42 @@ class CalendarDailyScreen extends StatelessWidget {
                               MediaQuery.of(context).size.height / AppSize.s50,
                         ),
                         BlocProvider(
-                          create: (context) => HomeBloc(),
+                          create: (context) => HomeBloc()
+                            ..getTask(
+                              ),
                           child: BlocBuilder<HomeBloc, HomeStates>(
                             builder: (context, state) {
-                              return ListView.separated(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) =>
-                                    taskItem(context, index),
-                                separatorBuilder: (context, index) => SizedBox(
-                                  height: MediaQuery.of(context).size.height /
-                                      AppSize.s50,
+                              return ConditionalBuilderRec(
+                                condition:
+                                    HomeBloc.get(context).taskList.isNotEmpty,
+                                builder: (context) {
+                                  return ListView.separated(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) => taskItem(
+                                      context,
+                                      index,
+                                      HomeBloc.get(context).taskList[index],
+                                    ),
+                                    separatorBuilder: (context, index) =>
+                                        SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              AppSize.s50,
+                                    ),
+                                    itemCount:
+                                        HomeBloc.get(context).taskList.length,
+                                  );
+                                },
+                                fallback: (context) => Center(
+                                  child: Text(
+                                    AppStrings.notTaskesYet.tr(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall,
+                                  ),
                                 ),
-                                itemCount: 10,
                               );
                             },
                           ),
@@ -196,14 +222,22 @@ class CalendarDailyScreen extends StatelessWidget {
     );
   }
 
-  Widget taskItem(
+  var bottomSheetController = TextEditingController();
+ Widget taskItem(
     BuildContext context,
     int index,
+    TaskData model,
   ) =>
       InkWell(
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const EditTaskScreen()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => EditTaskScreen(
+                task: model,
+              ),
+            ),
+          );
         },
         child: Container(
           padding: EdgeInsets.symmetric(
@@ -211,9 +245,11 @@ class CalendarDailyScreen extends StatelessWidget {
             vertical: MediaQuery.of(context).size.height / AppSize.s30,
           ),
           decoration: BoxDecoration(
-            color: HomeBloc.get(context).taskState[index] == "agree"
+            color: HomeBloc.get(context).taskState[index] == "agree" ||
+                    model.status == "completed"
                 ? ColorManager.agree
-                : HomeBloc.get(context).taskState[index] == "decline"
+                : HomeBloc.get(context).taskState[index] == "decline" ||
+                        model.status == "rejected"
                     ? ColorManager.error
                     : ColorManager.grey,
             borderRadius: BorderRadius.circular(
@@ -223,22 +259,27 @@ class CalendarDailyScreen extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                AppStrings.taskName.toTitleCase(),
+                model.title!.toTitleCase(),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
-                style: HomeBloc.get(context).taskState[index] == "agree"
-                    ? Theme.of(context).textTheme.headlineSmall
-                    : HomeBloc.get(context).taskState[index] == "decline"
+                style: HomeBloc.get(context).taskState[index] == "agree" ||
+                        model.status == "completed"
+                    ? Theme.of(context).textTheme.headlineSmall!.copyWith(
+                              color: ColorManager.white,
+                            )
+                    : HomeBloc.get(context).taskState[index] == "decline" ||
+                            model.status == "rejected"
                         ? Theme.of(context).textTheme.headlineSmall!.copyWith(
                               color: ColorManager.white,
                             )
                         : Theme.of(context).textTheme.headlineSmall,
               ),
               const Spacer(),
-              if (HomeBloc.get(context).taskState[index] == "agree")
+              if (HomeBloc.get(context).taskState[index] == "agree" ||
+                  model.status == "completed")
                 InkWell(
                   onTap: () {
-                    bottomSheetItem(context, index);
+                    bottomSheetItem(context, index, model.id, "rejected");
 
                     HomeBloc.get(context).addToDecline(index);
                   },
@@ -248,10 +289,12 @@ class CalendarDailyScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-              if (HomeBloc.get(context).taskState[index] == "decline")
+              if (HomeBloc.get(context).taskState[index] == "decline" ||
+                  model.status == "rejected")
                 InkWell(
                   onTap: () {
                     HomeBloc.get(context).addToAgree(index);
+                    bottomSheetItem(context, index, model.id, "completed");
                   },
                   child: const Image(
                     image: AssetImage(
@@ -259,12 +302,12 @@ class CalendarDailyScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-              if (HomeBloc.get(context).taskState[index] == null)
+              if (HomeBloc.get(context).taskState[index] == null&&model.status!="completed"&&model.status!="rejected")
                 Row(
                   children: [
                     InkWell(
                       onTap: () {
-                        bottomSheetItem(context, index);
+                        bottomSheetItem(context, index, model.id, "rejected");
 
                         HomeBloc.get(context).addToDecline(index);
                       },
@@ -280,6 +323,12 @@ class CalendarDailyScreen extends StatelessWidget {
                     InkWell(
                       onTap: () {
                         HomeBloc.get(context).addToAgree(index);
+                        bottomSheetItem(
+                          context,
+                          index,
+                          model.id,
+                          "completed",
+                        );
                       },
                       child: const Image(
                         image: AssetImage(
@@ -293,8 +342,8 @@ class CalendarDailyScreen extends StatelessWidget {
           ),
         ),
       );
-  void bottomSheetItem(context, index) {
-    scaffoldKey.currentState!
+   void bottomSheetItem(context, index, int id, String status) {
+    _scaffoldKey.currentState!
         .showBottomSheet(
           (context) => Padding(
             padding: const EdgeInsets.all(AppPadding.p8),
@@ -309,7 +358,7 @@ class CalendarDailyScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SharedWidget.addReasonFormField(
-                          controller: TextEditingController()),
+                          controller: bottomSheetController),
                       SizedBox(
                         height:
                             MediaQuery.of(context).size.height / AppSize.s20,
@@ -326,7 +375,10 @@ class CalendarDailyScreen extends StatelessWidget {
                                 return SharedWidget.defaultButton(
                                   context: context,
                                   function: () {
-                                    HomeBloc.get(context).addToDecline(index);
+                                    HomeBloc.get(context).changeTaskStatus(
+                                        id: id,
+                                        status: status,
+                                        summary: bottomSheetController.text);
                                     Navigator.pop(context);
                                   },
                                   text: AppStrings.submit.tr(),

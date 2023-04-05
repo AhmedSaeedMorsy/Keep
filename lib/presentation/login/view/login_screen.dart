@@ -28,16 +28,28 @@ class LoginScreen extends StatelessWidget {
           create: (context) => LoginCubit(),
           child: BlocConsumer<LoginCubit, LoginStates>(
             listener: (context, state) {
+              if (state is LoginErrorState) {
+                SharedWidget.toast(
+                  message: AppStrings.emailOrPasswordInCorrect.tr(),
+                  backgroundColor: ColorManager.error,
+                );
+              }
               if (state is UserSucecessState) {
                 CacheHelper.setData(
                   key: SharedKey.token,
                   value: LoginCubit.get(context).loginModel.accessToken,
                 );
                 CacheHelper.setData(
+                    key: SharedKey.qr,
+                    value: LoginCubit.get(context).userModel.data.qr);
+
+                CacheHelper.setData(
                   key: SharedKey.loginDate,
                   value: DateTime.now().toString(),
                 );
-
+                CacheHelper.setData(
+                    key: SharedKey.id,
+                    value: LoginCubit.get(context).userModel.data.id);
                 Navigator.pushNamed(
                   context,
                   Routes.layoutRoute,
@@ -201,7 +213,7 @@ class LoginScreen extends StatelessWidget {
                                                       .copyWith(
                                                         fontSize:
                                                             FontSizeManager
-                                                                .s16.sp,
+                                                                .s14.sp,
                                                         decoration:
                                                             TextDecoration
                                                                 .underline,
@@ -247,7 +259,7 @@ class LoginScreen extends StatelessWidget {
                                                     .headlineLarge!
                                                     .copyWith(
                                                       fontSize: FontSizeManager
-                                                          .s22.sp,
+                                                          .s18.sp,
                                                     ),
                                               ),
                                             ),

@@ -17,7 +17,7 @@ ThemeData getAppTheme() {
       hourMinuteTextColor: ColorManager.primaryColor,
       dayPeriodTextColor: ColorManager.darkGrey,
       helpTextStyle: getSemiBoldStyle(
-        fontSize: FontSizeManager.s20.sp,
+        fontSize: FontSizeManager.s16.sp,
         color: ColorManager.darkGrey,
       ),
       dayPeriodBorderSide: BorderSide.none,
@@ -45,30 +45,30 @@ ThemeData getAppTheme() {
       ),
       displayLarge: getRegularStyle(
         color: ColorManager.primaryColor,
-        fontSize: FontSizeManager.s20.sp,
+        fontSize: FontSizeManager.s18.sp,
       ),
       headlineLarge: getBoldStyle(
         color: ColorManager.primaryColor,
-        fontSize: FontSizeManager.s20.sp,
+        fontSize: FontSizeManager.s18.sp,
       ),
       headlineMedium: getSemiBoldStyle(
         color: ColorManager.primaryColor,
-        fontSize: FontSizeManager.s22.sp,
+        fontSize: FontSizeManager.s18.sp,
       ),
       displaySmall: getLightStyle(
         color: ColorManager.primaryColor,
-        fontSize: FontSizeManager.s16.sp,
+        fontSize: FontSizeManager.s14.sp,
       ),
       bodySmall: getRegularStyle(
         color: ColorManager.primaryColor,
         fontSize: FontSizeManager.s10.sp,
       ),
       headlineSmall: getMediumStyle(
-        fontSize: FontSizeManager.s16.sp,
+        fontSize: FontSizeManager.s14.sp,
         color: ColorManager.darkGrey,
       ),
       bodyLarge: getExtraBoldStyle(
-        fontSize: FontSizeManager.s20.sp,
+        fontSize: FontSizeManager.s18.sp,
         color: ColorManager.white,
       ),
     ),

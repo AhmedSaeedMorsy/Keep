@@ -2,6 +2,7 @@
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../app/common/widget.dart';
@@ -10,6 +11,10 @@ import '../../../app/resources/font_manager.dart';
 import '../../../app/resources/strings_manager.dart';
 import '../../../app/resources/values_manager.dart';
 import 'dart:ui' as UI;
+
+import '../../../model/leads_model.dart';
+import '../../lead_layout/controller/bloc.dart';
+import '../../lead_layout/controller/states.dart';
 
 class MapScreen extends StatelessWidget {
   MapScreen({super.key});
@@ -49,36 +54,65 @@ class MapScreen extends StatelessWidget {
                 context,
               ),
             ),
-            Expanded(
-              flex: 4,
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: ColorManager.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(
-                      AppSize.s40.w,
-                    ),
-                    topRight: Radius.circular(
-                      AppSize.s40.w,
-                    ),
-                  ),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width / AppSize.s20,
-                  ),
-                  child: ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) => leadItem(context: context),
-                    separatorBuilder: (context, index) => SizedBox(
-                      height: MediaQuery.of(context).size.height / AppSize.s32,
-                    ),
-                    itemCount: 10,
-                  ),
-                ),
-              ),
-            ),
+            BlocProvider(
+                create: (context) => LeadsBloc()..getLeads(),
+                child: BlocBuilder<LeadsBloc, LeadsStates>(
+                  builder: (context, state) {
+                    return Expanded(
+                      flex: 4,
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: ColorManager.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(
+                              AppSize.s40.w,
+                            ),
+                            topRight: Radius.circular(
+                              AppSize.s40.w,
+                            ),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal:
+                                MediaQuery.of(context).size.width / AppSize.s20,
+                          ),
+                          child: LeadsBloc.get(context)
+                                  .notAsignedLeads
+                                  .isNotEmpty
+                              ? ListView.separated(
+                                  padding: EdgeInsets.only(
+                                      bottom:
+                                          MediaQuery.of(context).size.height /
+                                              AppSize.s50),
+                                  physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) => leadItem(
+                                      context: context,
+                                      model: LeadsBloc.get(context)
+                                          .notAsignedLeads[index]),
+                                  separatorBuilder: (context, index) =>
+                                      SizedBox(
+                                    height: MediaQuery.of(context).size.height /
+                                        AppSize.s32,
+                                  ),
+                                  itemCount: LeadsBloc.get(context)
+                                      .notAsignedLeads
+                                      .length,
+                                )
+                              : Center(
+                                  child: Text(
+                                    AppStrings.notLeadsYet.tr(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall,
+                                  ),
+                                ),
+                        ),
+                      ),
+                    );
+                  },
+                )),
           ],
         ),
       ),
@@ -87,6 +121,7 @@ class MapScreen extends StatelessWidget {
 
   Widget leadItem({
     required BuildContext context,
+    required DataLeadMedel model,
   }) {
     return Container(
       padding: EdgeInsets.symmetric(
@@ -102,34 +137,32 @@ class MapScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                radius: AppSize.s30.w,
+              Text(
+                "${AppStrings.ip} : ${model.ip}",
+                style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                      fontSize: FontSizeManager.s12.sp,
+                    ),
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width / AppSize.s50,
+              Text(
+                "${AppStrings.location.tr()} : ${model.latitude},${model.longitude}",
+                style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                      fontSize: FontSizeManager.s12.sp,
+                    ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    AppStrings.leadName,
-                    style: Theme.of(context).textTheme.displayLarge,
-                  ),
-                  Text(
-                    "${AppStrings.ip} : 123452212633512",
-                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          fontSize: FontSizeManager.s12.sp,
-                        ),
-                  ),
-                  Text(
-                    "${AppStrings.location.tr()} : 123452212633512",
-                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          fontSize: FontSizeManager.s12.sp,
-                        ),
-                  ),
-                ],
+              Text(
+                "${AppStrings.country.tr()} : ${model.country}",
+                style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                      fontSize: FontSizeManager.s12.sp,
+                    ),
+              ),
+              Text(
+                "${AppStrings.city.tr()} : ${model.city}",
+                style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                      fontSize: FontSizeManager.s12.sp,
+                    ),
               ),
             ],
           ),

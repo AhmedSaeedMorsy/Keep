@@ -32,15 +32,16 @@ class InsightsScreen extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    color: ColorManager.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(
-                        AppSize.s40.w,
-                      ),
-                      topRight: Radius.circular(
-                        AppSize.s40.w,
-                      ),
-                    )),
+                  color: ColorManager.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(
+                      AppSize.s40.w,
+                    ),
+                    topRight: Radius.circular(
+                      AppSize.s40.w,
+                    ),
+                  ),
+                ),
                 child: Padding(
                   padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height / AppPadding.p30,
@@ -105,7 +106,7 @@ class InsightsScreen extends StatelessWidget {
                   Text(
                     "0",
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                          fontSize: FontSizeManager.s32.sp,
+                          fontSize: FontSizeManager.s24.sp,
                         ),
                   ),
                   Text(
@@ -148,7 +149,7 @@ class InsightsScreen extends StatelessWidget {
                   child: Text(
                     """Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book It has survived not only five centuries but also the leap into electronic """,
                     style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          fontSize: FontSizeManager.s18.sp,
+                          fontSize: FontSizeManager.s16.sp,
                         ),
                   ),
                 ),

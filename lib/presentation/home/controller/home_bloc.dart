@@ -1,10 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/animation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keep/app/constant/api_constant.dart';
 import 'package:keep/app/services/dio_helper/dio_helper.dart';
+import 'package:keep/app/services/shared_prefrences/cache_helper.dart';
 import 'package:keep/model/task_model.dart';
 import '../../../app/resources/color_manager.dart';
+import '../../../app/services/calender_helper/calender_helper.dart';
 import 'home_states.dart';
 
 class HomeBloc extends Cubit<HomeStates> {
@@ -43,60 +44,78 @@ class HomeBloc extends Cubit<HomeStates> {
     emit(ChangeBottomSheetState());
   }
 
-  double goalValue = 0.249;
-  Color getSleekSliderColor(double value) {
-    if (value < 0.25) {
-      return ColorManager.error;
-    } else if (value >= 0.25 && value < 0.75) {
-      return ColorManager.orange;
-    } else if (value >= 0.75) {
-      return ColorManager.agree;
-    }
-    return ColorManager.primaryColor;
-  }
-
   TaskModel taskModel = TaskModel();
   List<TaskData> taskList = [];
-
-  List<TaskData> taskDaily = [];
-  void getTask({
-    required String token,
-  }) {
+  List<Meeting> meetings = <Meeting>[];
+  List<TaskData> notApproveTask = [];
+  void getTask() {
     emit(GetTaskLoadingState());
-    DioHelper.postData(path: ApiConstant.getTaskPath, token: token)
-        .then((value) {
-      taskModel = TaskModel.fromJson(
-        value.data,
-      );
-      taskList = [];
-      for (var element in taskModel.data) {
-        if (DateFormat("yyyy-MM-dd")
-                .format(DateTime.parse(element.startDate)) ==
-            DateFormat("yyyy-MM-dd").format(dateTime)) {
-          taskList.add(element);
+    DioHelper.getData(
+        path: ApiConstant.getTaskPath,
+        token: CacheHelper.getData(
+          key: SharedKey.token,
+        )).then(
+      (value) {
+        taskModel = TaskModel.fromJson(
+          value.data,
+        );
+        taskList = [];
+        meetings = [];
+        notApproveTask = [];
+        for (var element in taskModel.data) {
+          if (element.approve == "approved") {
+            if (DateFormat("yyyy-MM-dd")
+                    .format(DateTime.parse(element.startDate)) ==
+                DateFormat("yyyy-MM-dd").format(dateTime)) {
+              taskList.add(element);
+            } else if (DateTime.parse(DateFormat("yyyy-MM-dd")
+                        .format(DateTime.parse(element.endDate)))
+                    .isAfter(DateTime.parse(
+                        DateFormat("yyyy-MM-dd").format(dateTime))) &&
+                DateTime.parse(DateFormat("yyyy-MM-dd")
+                        .format(DateTime.parse(element.startDate)))
+                    .isBefore(DateTime.parse(
+                        DateFormat("yyyy-MM-dd").format(dateTime)))) {
+              taskList = [];
+              taskList.add(element);
+            }
+            meetings.add(Meeting(
+                element.title!,
+                DateTime.parse(element.startDate),
+                DateTime.parse(element.endDate),
+                ColorManager.darkGrey,
+                false));
+          } else if (element.approve == "not approved") {
+            notApproveTask.add(element);
+          }
         }
-      }
-
-      emit(GetTaskSuccessState());
-    }).catchError((error) {
-      emit(
-        GetTaskErrorState(error.toString()),
-      );
-    });
+        emit(GetTaskSuccessState());
+      },
+    ).catchError(
+      (error) {
+        emit(
+          GetTaskErrorState(error.toString()),
+        );
+      },
+    );
   }
 
-  // List<TaskData> taskesPerDate({
-  //   required DateTime date,
-  //   required List<TaskData> list,
-  // }) {
-  //   List<TaskData> taskList = [];
-  //   for (var element in list) {
-  //     if (DateTime.parse(element.startDate) == date) {
-  //       taskList.add(element);
-  //     }
-  //   }
-  //   print(list);
-  //   print(taskList);
-  //   return taskList;
-  // }
+  void changeTaskStatus(
+      {required int id, required String status, required String summary}) {
+    emit(ChangeTaskLoadingStatus());
+    DioHelper.postData(
+      path: ApiConstant.changeTaskStatus(id: id),
+      data: {
+        "status": status,
+        "summary": summary,
+      },
+      token: CacheHelper.getData(
+        key: SharedKey.token,
+      ),
+    ).then((value) {
+      emit(ChangeTaskSuccessStatus());
+    }).catchError((error) {
+      emit(ChangeTaskErrorState());
+    });
+  }
 }
