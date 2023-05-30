@@ -1,10 +1,15 @@
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keep/app/constant/api_constant.dart';
 import 'package:keep/app/services/dio_helper/dio_helper.dart';
 import 'package:keep/app/services/shared_prefrences/cache_helper.dart';
 import 'package:keep/model/task_model.dart';
+import '../../../app/common/widget.dart';
 import '../../../app/resources/color_manager.dart';
+import '../../../app/resources/routes_manager.dart';
+import '../../../app/resources/strings_manager.dart';
 import '../../../app/services/calender_helper/calender_helper.dart';
 import 'home_states.dart';
 
@@ -31,6 +36,7 @@ class HomeBloc extends Cubit<HomeStates> {
 
   void addToAgree(int index) {
     taskState.addAll({index: "agree"});
+
     emit(ChangeTaskItemState());
   }
 
@@ -48,7 +54,7 @@ class HomeBloc extends Cubit<HomeStates> {
   List<TaskData> taskList = [];
   List<Meeting> meetings = <Meeting>[];
   List<TaskData> notApproveTask = [];
-  void getTask() {
+  void getTask({required BuildContext context}) {
     emit(GetTaskLoadingState());
     DioHelper.getData(
         path: ApiConstant.getTaskPath,
@@ -63,7 +69,7 @@ class HomeBloc extends Cubit<HomeStates> {
         meetings = [];
         notApproveTask = [];
         for (var element in taskModel.data) {
-          if (element.approve == "approved") {
+          if (element.user[0].pivot.status == "approved") {
             if (DateFormat("yyyy-MM-dd")
                     .format(DateTime.parse(element.startDate)) ==
                 DateFormat("yyyy-MM-dd").format(dateTime)) {
@@ -85,7 +91,7 @@ class HomeBloc extends Cubit<HomeStates> {
                 DateTime.parse(element.endDate),
                 ColorManager.darkGrey,
                 false));
-          } else if (element.approve == "not approved") {
+          } else if (element.user[0].pivot.status == "not approved") {
             notApproveTask.add(element);
           }
         }
@@ -93,6 +99,27 @@ class HomeBloc extends Cubit<HomeStates> {
       },
     ).catchError(
       (error) {
+        if (error is DioError) {
+        if (error.response!.statusCode == 401) {
+          SharedWidget.toast(
+            message: AppStrings.logInAgain.tr(),
+            backgroundColor: ColorManager.error,
+          );
+          CacheHelper.removeData(key: SharedKey.token);
+          CacheHelper.removeData(key: SharedKey.qr);
+          CacheHelper.removeData(key: SharedKey.id);
+          CacheHelper.removeData(key: SharedKey.loginDate);
+          CacheHelper.removeData(key: SharedKey.bio);
+          CacheHelper.removeData(key: SharedKey.email);
+          CacheHelper.removeData(key: SharedKey.name);
+          CacheHelper.removeData(key: SharedKey.title);
+          CacheHelper.removeData(key: SharedKey.phone);
+          Navigator.pushReplacementNamed(
+            context,
+            Routes.loginRoute,
+          );
+        }
+      }
         emit(
           GetTaskErrorState(error.toString()),
         );
@@ -101,7 +128,7 @@ class HomeBloc extends Cubit<HomeStates> {
   }
 
   void changeTaskStatus(
-      {required int id, required String status, required String summary}) {
+      {required int id, required String status, required String summary,required BuildContext context}) {
     emit(ChangeTaskLoadingStatus());
     DioHelper.postData(
       path: ApiConstant.changeTaskStatus(id: id),
@@ -115,6 +142,27 @@ class HomeBloc extends Cubit<HomeStates> {
     ).then((value) {
       emit(ChangeTaskSuccessStatus());
     }).catchError((error) {
+       if (error is DioError) {
+        if (error.response!.statusCode == 401) {
+          SharedWidget.toast(
+            message: AppStrings.logInAgain.tr(),
+            backgroundColor: ColorManager.error,
+          );
+          CacheHelper.removeData(key: SharedKey.token);
+          CacheHelper.removeData(key: SharedKey.qr);
+          CacheHelper.removeData(key: SharedKey.id);
+          CacheHelper.removeData(key: SharedKey.loginDate);
+          CacheHelper.removeData(key: SharedKey.bio);
+          CacheHelper.removeData(key: SharedKey.email);
+          CacheHelper.removeData(key: SharedKey.name);
+          CacheHelper.removeData(key: SharedKey.title);
+          CacheHelper.removeData(key: SharedKey.phone);
+          Navigator.pushReplacementNamed(
+            context,
+            Routes.loginRoute,
+          );
+        }
+      }
       emit(ChangeTaskErrorState());
     });
   }

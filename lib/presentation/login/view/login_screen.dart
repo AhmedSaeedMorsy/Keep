@@ -50,7 +50,7 @@ class LoginScreen extends StatelessWidget {
                 CacheHelper.setData(
                     key: SharedKey.id,
                     value: LoginCubit.get(context).userModel.data.id);
-                Navigator.pushNamed(
+                Navigator.pushReplacementNamed(
                   context,
                   Routes.layoutRoute,
                 );
@@ -200,7 +200,12 @@ class LoginScreen extends StatelessWidget {
                                               hint: AppStrings.password.tr(),
                                             ),
                                             InkWell(
-                                              onTap: () {},
+                                              onTap: () {
+                                                Navigator.pushNamed(
+                                                  context,
+                                                  Routes.forgetPasswordRoute,
+                                                );
+                                              },
                                               child: Align(
                                                 alignment:
                                                     Alignment.bottomRight,

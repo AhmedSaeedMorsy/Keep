@@ -1,12 +1,11 @@
 // ignore_for_file: must_be_immutable, library_prefixes
-
 import 'package:conditional_builder_rec/conditional_builder_rec.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keep/app/common/widget.dart';
-import 'package:keep/app/services/shared_prefrences/cache_helper.dart';
+import 'package:keep/presentation/layout/controller/layout_bloc.dart';
 import 'package:keep/presentation/profile/controller/profile_states.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../app/resources/assets_manager.dart';
@@ -16,33 +15,64 @@ import '../../../app/resources/strings_manager.dart';
 import '../../../app/resources/values_manager.dart';
 import 'dart:ui' as UI;
 import '../../../app/services/calender_helper/calender_helper.dart';
+import '../../add_task/view/add_task_from_profile_screen.dart';
 import '../../calendar_monthly/controller/calendar_monthly_bloc.dart';
 import '../../calendar_monthly/controller/calendar_monthly_states.dart';
-import '../../home/controller/home_bloc.dart';
-import '../../home/controller/home_states.dart';
+import '../../login/controller/bloc.dart';
 import '../controller/profile_bloc.dart';
+import 'form_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  ProfileScreen({super.key});
+  ProfileScreen({
+    super.key,
+    required this.id,
+  });
+  final int id;
   UI.TextDirection direction = UI.TextDirection.ltr;
   var calendarController = CalendarController();
-
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ProfileBloc()
-        ..getProfile(
-          id: CacheHelper.getData(key: SharedKey.id),
-        ),
-      child: BlocBuilder<ProfileBloc, ProfileStates>(
-        builder: (context, state) {
-          return Scaffold(
-            backgroundColor: ColorManager.white,
-            body: SingleChildScrollView(
-              child: ConditionalBuilderRec(
-                condition: state is ProfileSuccessState,
-                builder: (context) {
-                  return Column(
+    return Scaffold(
+      backgroundColor: ColorManager.white,
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => LoginCubit()),
+          BlocProvider(
+            create: (context) => ProfileBloc()
+              ..getProfile(
+                context: context,
+                id: id,
+              )
+              ..getTask(
+                context: context,
+              )
+              ..createUnAssignedLead(
+                id: id,
+                context: context,
+              )
+              ..isAssignLead(
+                id: id,
+              ),
+          ),
+          BlocProvider(
+            create: (context) => LayoutBloc(),
+          ),
+        ],
+        child: BlocConsumer<ProfileBloc, ProfileStates>(
+          listener: (context, state) {
+            if (state is AddContactSuccessState) {
+              SharedWidget.toast(
+                message: AppStrings.saved.tr(),
+                backgroundColor: ColorManager.agree,
+              );
+            }
+          },
+          builder: (context, state) {
+            return ConditionalBuilderRec(
+              condition: ProfileBloc.get(context).profileModel.user != null,
+              builder: (context) {
+                return SingleChildScrollView(
+                  child: Column(
                     children: [
                       SizedBox(
                         height: MediaQuery.of(context).size.height / AppSize.s3,
@@ -59,30 +89,37 @@ class ProfileScreen extends StatelessWidget {
                                     height: MediaQuery.of(context).size.height /
                                         AppSize.s4_3,
                                     color: ColorManager.primaryColor,
-                                    child: Image(
-                                      image: NetworkImage(
-                                        ProfileBloc.get(context)
+                                    child: ProfileBloc.get(context)
                                                 .profileModel
-                                                .user
-                                                .cover ??
-                                            "",
-                                      ),
-                                      fit: BoxFit.cover,
-                                    ),
+                                                .user!
+                                                .cover ==
+                                            null
+                                        ? null
+                                        : Image(
+                                            fit: BoxFit.fill,
+                                            image: NetworkImage(
+                                              ProfileBloc.get(context)
+                                                  .profileModel
+                                                  .user!
+                                                  .cover!,
+                                            ),
+                                          ),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(
                                       top: MediaQuery.of(context).size.height /
-                                          AppPadding.p12,
+                                          AppSize.s18,
                                       left: MediaQuery.of(context).size.width /
-                                          AppPadding.p12,
+                                          AppSize.s18,
                                     ),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: InkWell(
                                         onTap: () {
                                           Navigator.pushNamed(
-                                              context, Routes.layoutRoute);
+                                            context,
+                                            Routes.layoutRoute,
+                                          );
                                         },
                                         child: Directionality(
                                           textDirection: direction,
@@ -109,20 +146,56 @@ class ProfileScreen extends StatelessWidget {
                                               AppSize.s9_4,
                                       backgroundColor: ColorManager.white,
                                     ),
-                                    CircleAvatar(
-                                      radius:
-                                          MediaQuery.of(context).size.height /
+                                    Stack(
+                                      alignment: AlignmentDirectional.bottomEnd,
+                                      children: [
+                                        CircleAvatar(
+                                          radius: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
                                               AppSize.s10,
-                                      backgroundColor: ColorManager.grey,
-                                      child: Image(
-                                        fit: BoxFit.cover,
-                                        image: NetworkImage(
-                                            ProfileBloc.get(context)
-                                                    .profileModel
-                                                    .user
-                                                    .profile ??
-                                                ""),
-                                      ),
+                                          backgroundColor: ColorManager.white,
+                                          backgroundImage:
+                                              ProfileBloc.get(context)
+                                                          .profileModel
+                                                          .user!
+                                                          .profile !=
+                                                      null
+                                                  ? NetworkImage(
+                                                      ProfileBloc.get(context)
+                                                          .profileModel
+                                                          .user!
+                                                          .profile!,
+                                                    )
+                                                  : null,
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            ProfileBloc.get(context).openLink(
+                                              link: ProfileBloc.get(context)
+                                                      .profileModel
+                                                      .company[0]
+                                                      .website ??
+                                                  "",
+                                            );
+                                          },
+                                          child: CircleAvatar(
+                                            radius: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                AppSize.s36,
+                                            backgroundColor:
+                                                ColorManager.darkGrey,
+                                            backgroundImage: NetworkImage(
+                                              ProfileBloc.get(context)
+                                                      .profileModel
+                                                      .company[0]
+                                                      .logo ??
+                                                  "",
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -136,11 +209,11 @@ class ProfileScreen extends StatelessWidget {
                             MediaQuery.of(context).size.height / AppSize.s80,
                       ),
                       Text(
-                        ProfileBloc.get(context).profileModel.user.name,
+                        ProfileBloc.get(context).profileModel.user!.name,
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       Text(
-                        ProfileBloc.get(context).profileModel.user.title!,
+                        ProfileBloc.get(context).profileModel.user!.title ?? "",
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       SizedBox(
@@ -154,7 +227,46 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         child: SharedWidget.defaultButton(
                           backgroundColor: ColorManager.white,
-                          function: () {},
+                          function: () {
+                            if (ProfileBloc.get(context).isAssignedModel.data !=
+                                null) {
+                              ProfileBloc.get(context).saveContact(
+                                name: ProfileBloc.get(context)
+                                    .profileModel
+                                    .user!
+                                    .name,
+                                email: ProfileBloc.get(context)
+                                    .profileModel
+                                    .user!
+                                    .email,
+                                title: ProfileBloc.get(context)
+                                        .profileModel
+                                        .user!
+                                        .title ??
+                                    "",
+                                phone: ProfileBloc.get(context)
+                                        .profileModel
+                                        .user!
+                                        .phone ??
+                                    "",
+                              );
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => FormScreen(
+                                    name: ProfileBloc.get(context)
+                                        .profileModel
+                                        .user!
+                                        .name,
+                                    isMetting: false,
+                                    form: ProfileBloc.get(context).form,
+                                    id: id,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
                           text: AppStrings.saveContact.tr(),
                           context: context,
                           style:
@@ -181,9 +293,9 @@ class ProfileScreen extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal:
-                              MediaQuery.of(context).size.width / AppSize.s12,
+                              MediaQuery.of(context).size.width / AppSize.s8,
                           vertical:
-                              MediaQuery.of(context).size.height / AppSize.s50,
+                              MediaQuery.of(context).size.height / AppSize.s120,
                         ),
                         child: GridView.builder(
                           shrinkWrap: true,
@@ -222,62 +334,66 @@ class ProfileScreen extends StatelessWidget {
                               MediaQuery.of(context).size.width / AppSize.s10,
                         ),
                         child: BlocProvider(
-                            create: (context) => CalendarMonthlyBloc(),
-                            child: BlocBuilder<CalendarMonthlyBloc,
-                                CalendarMonthlyStates>(
-                              builder: (context, state) {
-                                return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        CalendarMonthlyBloc.get(context)
-                                            .decressDate();
-                                        calendarController.backward!();
-                                      },
-                                      child: Icon(
-                                        Icons.arrow_back_ios,
-                                        size: AppSize.s18.w,
-                                      ),
-                                    ),
-                                    Text(
-                                      DateFormat.yMMMM().format(
-                                        DateTime(
-                                          DateTime.now().year,
-                                          CalendarMonthlyBloc.get(context)
-                                              .dateTimeMonth,
+                          create: (context) => CalendarMonthlyBloc(),
+                          child: BlocBuilder<CalendarMonthlyBloc,
+                              CalendarMonthlyStates>(
+                            builder: (context, state) {
+                              return ProfileBloc.get(context)
+                                          .profileModel
+                                          .user!
+                                          .calendar ==
+                                      1
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            CalendarMonthlyBloc.get(context)
+                                                .decressDate();
+                                            calendarController.backward!();
+                                          },
+                                          child: Icon(
+                                            Icons.arrow_back_ios,
+                                            size: AppSize.s18.w,
+                                          ),
                                         ),
-                                      ),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineMedium,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        CalendarMonthlyBloc.get(context)
-                                            .incressDate();
-                                        calendarController.forward!();
-                                      },
-                                      child: Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: AppSize.s18.w,
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            )),
+                                        Text(
+                                          DateFormat.yMMMM().format(
+                                            DateTime(
+                                              DateTime.now().year,
+                                              CalendarMonthlyBloc.get(context)
+                                                  .dateTimeMonth,
+                                            ),
+                                          ),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineMedium,
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            CalendarMonthlyBloc.get(context)
+                                                .incressDate();
+                                            calendarController.forward!();
+                                          },
+                                          child: Icon(
+                                            Icons.arrow_forward_ios,
+                                            size: AppSize.s18.w,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : Container();
+                            },
+                          ),
+                        ),
                       ),
                       SizedBox(
                         height:
                             MediaQuery.of(context).size.height / AppSize.s50,
                       ),
-                      BlocProvider(
-                        create: (context) => HomeBloc()..getTask(),
-                        child: BlocBuilder<HomeBloc, HomeStates>(
-                          builder: (context, state) {
-                            return Padding(
+                      ProfileBloc.get(context).profileModel.user!.calendar == 1
+                          ? Padding(
                               padding: EdgeInsets.symmetric(
                                 vertical: MediaQuery.of(context).size.height /
                                     AppSize.s50,
@@ -292,12 +408,50 @@ class ProfileScreen extends StatelessWidget {
                                   firstDayOfWeek: 7,
                                   viewNavigationMode: ViewNavigationMode.none,
                                   dataSource: MeetingDataSource(
-                                      HomeBloc.get(context).meetings),
+                                      ProfileBloc.get(context).meetings),
                                   monthViewSettings: const MonthViewSettings(
                                     numberOfWeeksInView: 6,
                                     appointmentDisplayMode:
                                         MonthAppointmentDisplayMode.appointment,
                                   ),
+                                  onTap:
+                                      (CalendarTapDetails calendarTapDetails) {
+                                    if (ProfileBloc.get(context)
+                                            .isAssignedModel
+                                            .data !=
+                                        null) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              AddTaskFromProfile(
+                                            id: id,
+                                            date: DateFormat("yyyy-MM-dd")
+                                                .format(
+                                                    calendarTapDetails.date!)
+                                                .toString(),
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => FormScreen(
+                                            name: ProfileBloc.get(context)
+                                                .profileModel
+                                                .user!
+                                                .name,
+                                            isMetting: true,
+                                            form: ProfileBloc.get(context).form,
+                                            id: id,
+                                            calendarTapDetails:
+                                                calendarTapDetails,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
                                   headerHeight: AppSize.s1,
                                   headerStyle: const CalendarHeaderStyle(
                                     textStyle: TextStyle(
@@ -307,20 +461,17 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                            );
-                          },
-                        ),
-                      ),
+                            )
+                          : Container(),
                     ],
-                  );
-                },
-                fallback: (context) => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-            ),
-          );
-        },
+                  ),
+                );
+              },
+              fallback: (context) =>
+                  const Center(child: CircularProgressIndicator()),
+            );
+          },
+        ),
       ),
     );
   }
@@ -358,7 +509,7 @@ class ProfileScreen extends StatelessWidget {
                               ? Image.asset(
                                   AssetsManager.instagram,
                                 )
-                              : name == "Facebook"
+                              : name == "facebook"
                                   ? Image.asset(
                                       AssetsManager.facebookIcon,
                                     )
@@ -431,7 +582,11 @@ class ProfileScreen extends StatelessWidget {
                                                                                               ? Image.asset(
                                                                                                   AssetsManager.whatsappBuisness,
                                                                                                 )
-                                                                                              : null,
+                                                                                              : name == "Kit"
+                                                                                                  ? Image.asset(
+                                                                                                      AssetsManager.profileKit,
+                                                                                                    )
+                                                                                                  : null,
     );
   }
 }

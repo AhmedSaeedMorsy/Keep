@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:keep/app/constant/api_constant.dart';
 
 class DioHelper {
   static late Dio dio;
@@ -6,7 +7,7 @@ class DioHelper {
     dio = Dio(
       BaseOptions(
         receiveDataWhenStatusError: true,
-        baseUrl: "https://api.keepbi.com/api/v1/",
+        baseUrl: ApiConstant.baseUrl,
       ),
     );
   }

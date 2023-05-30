@@ -20,10 +20,9 @@ class UserDataModel {
   late int id;
   late String name;
   late String email;
-  late String title;
-  late String bio;
+  String ? title;
+  String? bio;
   late String phone;
-  late String ip;
   late String qr;
   String? imageProfile;
   String? imageCover;
@@ -40,7 +39,6 @@ class UserDataModel {
     title = json["title"];
     bio = json["bio"];
     phone = json["phone"];
-    ip = json["ip"];
     qr = json["qr"];
     imageProfile = json["profile"];
     imageCover = json["cover"];

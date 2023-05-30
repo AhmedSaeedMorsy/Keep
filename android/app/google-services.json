@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "870242358494",
+    "project_id": "keep-8c459",
+    "storage_bucket": "keep-8c459.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870242358494:android:dfb80bc8feb4c64babde4f",
+        "android_client_info": {
+          "package_name": "com.keep"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870242358494-4dioucgadl3r8d98b953rqh5fth32nab.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4iba6wLT9aXO1vOs0qynDL2jkBRUsD-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "870242358494-4dioucgadl3r8d98b953rqh5fth32nab.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

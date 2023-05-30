@@ -34,15 +34,15 @@ class EditLeadScreen extends StatelessWidget {
   final noteController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    nameController.text = model.name!;
-    emailController.text = model.email!;
-    phoneController.text = model.phone!;
-    industryController.text = model.industry!.toTitleCase();
-    genderController.text = model.gender!.toTitleCase();
-    jobController.text = model.position!.toTitleCase();
-    companyController.text = model.companyName!.toTitleCase();
+    nameController.text = model.name ?? "";
+    emailController.text = model.email ?? "";
+    phoneController.text = model.phone ?? "";
+    industryController.text = model.industry ?? "".toTitleCase();
+    genderController.text = model.gender ?? "".toTitleCase();
+    jobController.text = model.position ?? "".toTitleCase();
+    companyController.text = model.companyName ?? "".toTitleCase();
     addressController.text =
-        "${model.country.toTitleCase()} , ${model.city.toTitleCase()}";
+        "${model.country??"".toTitleCase()} , ${model.city??"".toTitleCase()}";
     noteController.text = model.note ?? "";
     return MultiBlocProvider(
         providers: [
@@ -265,32 +265,35 @@ class EditLeadScreen extends StatelessWidget {
                             height: MediaQuery.of(context).size.height /
                                 AppSize.s18,
                           ),
-                          SharedWidget.defaultButton(
-                            context: context,
-                            function: () {
-                              if (formKey.currentState!.validate()) {
-                                EditLeadBloc.get(context).editLead(
-                                  id: model.id,
-                                  name: nameController.text,
-                                  email: emailController.text,
-                                  phone: phoneController.text,
-                                  companyName: companyController.text,
-                                  position: jobController.text,
-                                  industry: industryController.text,
-                                  note: model.note!,
-                                  custom: model.custom!,
-                                  type: "app",
-                                  gender: model.gender!,
-                                );
-                              }
-                            },
-                            text: AppStrings.submit.tr(),
-                            backgroundColor: ColorManager.white,
-                            style: getExtraBoldStyle(
-                              fontSize: FontSizeManager.s20.sp,
-                              color: ColorManager.primaryColor,
-                            ),
-                          ),
+                          state is EditLeadLoadingState
+                              ? const Center(child: CircularProgressIndicator())
+                              : SharedWidget.defaultButton(
+                                  context: context,
+                                  function: () {
+                                    if (formKey.currentState!.validate()) {
+                                      EditLeadBloc.get(context).editLead(
+                                        context: context,
+                                        id: model.id,
+                                        name: nameController.text,
+                                        email: emailController.text,
+                                        phone: phoneController.text,
+                                        companyName: companyController.text,
+                                        position: jobController.text,
+                                        industry: industryController.text,
+                                        note: noteController.text,
+                                        custom: model.custom!,
+                                        type: "app",
+                                        gender: genderController.text,
+                                      );
+                                    }
+                                  },
+                                  text: AppStrings.submit.tr(),
+                                  backgroundColor: ColorManager.white,
+                                  style: getExtraBoldStyle(
+                                    fontSize: FontSizeManager.s20.sp,
+                                    color: ColorManager.primaryColor,
+                                  ),
+                                ),
                           SizedBox(
                             height: MediaQuery.of(context).size.height /
                                 AppSize.s100,

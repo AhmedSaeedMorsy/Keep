@@ -34,7 +34,6 @@ class AddTask extends StatelessWidget {
   final endTimeController = TextEditingController();
   final descriptionController = TextEditingController();
   var _formKey = GlobalKey<FormState>();
-  var _ScaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -61,373 +60,358 @@ class AddTask extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          return Scaffold(
-            key: _ScaffoldKey,
-            body: Form(
-              key: _formKey,
-              child: Container(
-                color: ColorManager.white,
-                padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width / AppSize.s20,
-                  right: MediaQuery.of(context).size.width / AppSize.s20,
-                  top: MediaQuery.of(context).size.height / AppSize.s26,
-                ),
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppStrings.addTask.tr(),
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height / AppSize.s50,
-                      ),
-                      SharedWidget.addTaskFormField(
-                          textInputType: TextInputType.name,
-                          controller: titleController,
-                          hint: AppStrings.meetingTitle.tr(),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return AppStrings.thisIsRequired.tr();
-                            }
-                            return null;
-                          }),
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height / AppSize.s100,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: SharedWidget.addTaskFormField(
-                                textInputType: TextInputType.name,
-                                controller: clintNameController,
-                                hint: AppStrings.clientName.tr(),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return AppStrings.thisIsRequired.tr();
-                                  }
-                                  return null;
-                                }),
-                          ),
-                          SizedBox(
-                            width:
-                                MediaQuery.of(context).size.width / AppSize.s18,
-                          ),
-                          Expanded(
-                            child: SharedWidget.addTaskFormField(
-                                textInputType: TextInputType.name,
-                                controller: companyNameController,
-                                hint: AppStrings.companyName.tr(),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return AppStrings.thisIsRequired.tr();
-                                  }
-                                  return null;
-                                }),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height / AppSize.s100,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: SharedWidget.addTaskFormField(
-                                textInputType: TextInputType.name,
-                                controller: jopTitleController,
-                                hint: AppStrings.jobTitle.tr(),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return AppStrings.thisIsRequired.tr();
-                                  }
-                                  return null;
-                                }),
-                          ),
-                          SizedBox(
-                            width:
-                                MediaQuery.of(context).size.width / AppSize.s18,
-                          ),
-                          Expanded(
-                            child: SharedWidget.addTaskFormField(
-                                textInputType: TextInputType.phone,
-                                controller: phoneNumberController,
-                                hint: AppStrings.phoneNumber.tr(),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return AppStrings.thisIsRequired.tr();
-                                  }
-                                  return null;
-                                }),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height / AppSize.s100,
-                      ),
-                      SharedWidget.addTaskFormField(
-                          textInputType: TextInputType.emailAddress,
-                          controller: clintEmailController,
-                          hint: AppStrings.email.tr(),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return AppStrings.thisIsRequired.tr();
-                            }
-                            return null;
-                          }),
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height / AppSize.s100,
-                      ),
-                      SharedWidget.addTaskFormField(
-                          textInputType: TextInputType.streetAddress,
-                          controller: addressController,
-                          hint: AppStrings.address.tr(),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return AppStrings.thisIsRequired.tr();
-                            }
-                            return null;
-                          }),
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height / AppSize.s100,
-                      ),
-                      SharedWidget.addTaskFormField(
-                          textInputType: TextInputType.streetAddress,
-                          controller: locationController,
-                          hint: AppStrings.location.tr(),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return AppStrings.thisIsRequired.tr();
-                            }
-                            return null;
-                          }),
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height / AppSize.s100,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: SharedWidget.addTaskFormField(
-                              textInputType: TextInputType.none,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return AppStrings.thisIsRequired.tr();
-                                }
-                                return null;
-                              },
-                              controller: startDateController,
-                              hint: AppStrings.startDate.tr(),
-                              onTap: () {
-                                showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime.now(),
-                                  lastDate: DateTime.now().add(
-                                    const Duration(
-                                      days: 1000,
-                                    ),
-                                  ),
-                                ).then((value) {
-                                  startDateController.text =
-                                      DateFormat("yyyy-MM-dd")
-                                          .format(value!)
-                                          .toString();
-                                });
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width:
-                                MediaQuery.of(context).size.width / AppSize.s18,
-                          ),
-                          Expanded(
-                            child: SharedWidget.addTaskFormField(
-                              textInputType: TextInputType.none,
-                              controller: startTimeController,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return AppStrings.thisIsRequired.tr();
-                                }
-                                return null;
-                              },
-                              hint: AppStrings.startTime.tr(),
-                              onTap: () {
-                                showTimePicker(
-                                  context: context,
-                                  initialTime: TimeOfDay.now(),
-                                ).then((value) {
-                                  startTimeController.text =
-                                      "${value!.hour}:${value.minute}:00";
-                                });
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height / AppSize.s100,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: SharedWidget.addTaskFormField(
-                              textInputType: TextInputType.none,
-                              controller: endDateController,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return AppStrings.thisIsRequired.tr();
-                                }
-                                return null;
-                              },
-                              hint: AppStrings.endDate.tr(),
-                              onTap: () {
-                                showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime.now(),
-                                  lastDate: DateTime.now().add(
-                                    const Duration(
-                                      days: 1000,
-                                    ),
-                                  ),
-                                ).then((value) {
-                                  endDateController.text =
-                                      DateFormat("yyyy-MM-dd")
-                                          .format(value!)
-                                          .toString();
-                                });
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width:
-                                MediaQuery.of(context).size.width / AppSize.s18,
-                          ),
-                          Expanded(
-                            child: SharedWidget.addTaskFormField(
-                              textInputType: TextInputType.none,
-                              controller: endTimeController,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return AppStrings.thisIsRequired.tr();
-                                }
-                                return null;
-                              },
-                              hint: AppStrings.endTime.tr(),
-                              onTap: () {
-                                showTimePicker(
-                                  context: context,
-                                  initialTime: TimeOfDay.now(),
-                                ).then((value) {
-                                  endTimeController.text =
-                                      "${value!.hour}:${value.minute}:00";
-                                });
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height / AppSize.s100,
-                      ),
-                      SizedBox(
-                        height: AppSize.s120.h,
-                        child: SharedWidget.addTaskFormField(
-                          textInputType: TextInputType.text,
-                          controller: descriptionController,
-                          hint: AppStrings.meetingDescription.tr(),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return AppStrings.thisIsRequired.tr();
-                            }
-                            return null;
-                          },
-                          maxLines: 20,
-                          minLines: 20,
-                        ),
-                      ),
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height / AppSize.s100,
-                      ),
-                      checkboxItem(
-                        context: context,
-                        checkBoxValue: AddTaskBloc.get(context).checkBoxValue,
-                        onChanged: (value) =>
-                            AddTaskBloc.get(context).changeCheckBoxstate(
-                          value!,
-                        ),
-                      ),
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height / AppSize.s100,
-                      ),
-                      SharedWidget.defaultButton(
-                        context: context,
-                        function: () {
-                          if (_formKey.currentState!.validate()) {
-                            AddTaskBloc.get(context).addTask(
-                              startDate:
-                                  "${startDateController.text} ${startTimeController.text}",
-                              endDate:
-                                  "${endDateController.text} ${endTimeController.text}",
-                              title: titleController.text,
-                              label: "null",
-                              desc: descriptionController.text,
-                              clientName: clintNameController.text,
-                              clientMail: clintEmailController.text,
-                              clientTitle: titleController.text,
-                              clientPhone: phoneNumberController.text,
-                              clientAddress: addressController.text,
-                              clientLocation: locationController.text,
-                              companyName: companyNameController.text,
-                              token: CacheHelper.getData(key: SharedKey.token)
-                                  .toString(),
-                            );
+          return Form(
+            key: _formKey,
+            child: Container(
+              color: ColorManager.white,
+              padding: EdgeInsets.only(
+                left: MediaQuery.of(context).size.width / AppSize.s20,
+                right: MediaQuery.of(context).size.width / AppSize.s20,
+                top: MediaQuery.of(context).size.height / AppSize.s26,
+              ),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      AppStrings.addTask.tr(),
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / AppSize.s50,
+                    ),
+                    SharedWidget.addTaskFormField(
+                        textInputType: TextInputType.name,
+                        controller: titleController,
+                        hint: AppStrings.meetingTitle.tr(),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return AppStrings.thisIsRequired.tr();
                           }
-                        },
-                        text: AppStrings.submit.tr(),
-                        backgroundColor: ColorManager.white,
-                        style: getExtraBoldStyle(
-                          fontSize: FontSizeManager.s20.sp,
-                          color: ColorManager.primaryColor,
+                          return null;
+                        }),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / AppSize.s100,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: SharedWidget.addTaskFormField(
+                              textInputType: TextInputType.name,
+                              controller: clintNameController,
+                              hint: AppStrings.clientName.tr(),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return AppStrings.thisIsRequired.tr();
+                                }
+                                return null;
+                              }),
                         ),
-                      ),
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height / AppSize.s50,
-                      ),
-                      SharedWidget.defaultButton(
-                        context: context,
-                        function: () {
-                          screen = HomeScreen();
-                          LayoutBloc.get(context).changeBottomNavBar(0);
-                        },
-                        text: AppStrings.cancel.tr(),
-                        backgroundColor: ColorManager.white,
-                        style: getExtraBoldStyle(
-                          fontSize: FontSizeManager.s20.sp,
-                          color: ColorManager.primaryColor,
+                        SizedBox(
+                          width:
+                              MediaQuery.of(context).size.width / AppSize.s18,
                         ),
+                        Expanded(
+                          child: SharedWidget.addTaskFormField(
+                              textInputType: TextInputType.name,
+                              controller: companyNameController,
+                              hint: AppStrings.companyName.tr(),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return AppStrings.thisIsRequired.tr();
+                                }
+                                return null;
+                              }),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / AppSize.s100,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: SharedWidget.addTaskFormField(
+                              textInputType: TextInputType.name,
+                              controller: jopTitleController,
+                              hint: AppStrings.jobTitle.tr(),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return AppStrings.thisIsRequired.tr();
+                                }
+                                return null;
+                              }),
+                        ),
+                        SizedBox(
+                          width:
+                              MediaQuery.of(context).size.width / AppSize.s18,
+                        ),
+                        Expanded(
+                          child: SharedWidget.addTaskFormField(
+                              textInputType: TextInputType.phone,
+                              controller: phoneNumberController,
+                              hint: AppStrings.phoneNumber.tr(),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return AppStrings.thisIsRequired.tr();
+                                }
+                                return null;
+                              }),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / AppSize.s100,
+                    ),
+                    SharedWidget.addTaskFormField(
+                        textInputType: TextInputType.emailAddress,
+                        controller: clintEmailController,
+                        hint: AppStrings.email.tr(),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return AppStrings.thisIsRequired.tr();
+                          }
+                          return null;
+                        }),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / AppSize.s100,
+                    ),
+                    SharedWidget.addTaskFormField(
+                        textInputType: TextInputType.streetAddress,
+                        controller: addressController,
+                        hint: AppStrings.address.tr(),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return AppStrings.thisIsRequired.tr();
+                          }
+                          return null;
+                        }),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / AppSize.s100,
+                    ),
+                    SharedWidget.addTaskFormField(
+                        textInputType: TextInputType.streetAddress,
+                        controller: locationController,
+                        hint: AppStrings.location.tr(),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return AppStrings.thisIsRequired.tr();
+                          }
+                          return null;
+                        }),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / AppSize.s100,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: SharedWidget.addTaskFormField(
+                            textInputType: TextInputType.none,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return AppStrings.thisIsRequired.tr();
+                              }
+                              return null;
+                            },
+                            controller: startDateController,
+                            hint: AppStrings.startDate.tr(),
+                            onTap: () {
+                              showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime.now().add(
+                                  const Duration(
+                                    days: 1000,
+                                  ),
+                                ),
+                              ).then((value) {
+                                startDateController.text =
+                                    DateFormat("yyyy-MM-dd")
+                                        .format(value!)
+                                        .toString();
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          width:
+                              MediaQuery.of(context).size.width / AppSize.s18,
+                        ),
+                        Expanded(
+                          child: SharedWidget.addTaskFormField(
+                            textInputType: TextInputType.none,
+                            controller: startTimeController,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return AppStrings.thisIsRequired.tr();
+                              }
+                              return null;
+                            },
+                            hint: AppStrings.startTime.tr(),
+                            onTap: () {
+                              showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay.now(),
+                              ).then((value) {
+                                startTimeController.text =
+                                    "${value!.hour}:${value.minute}:00";
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / AppSize.s100,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: SharedWidget.addTaskFormField(
+                            textInputType: TextInputType.none,
+                            controller: endDateController,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return AppStrings.thisIsRequired.tr();
+                              }
+                              return null;
+                            },
+                            hint: AppStrings.endDate.tr(),
+                            onTap: () {
+                              showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime.now().add(
+                                  const Duration(
+                                    days: 1000,
+                                  ),
+                                ),
+                              ).then((value) {
+                                endDateController.text =
+                                    DateFormat("yyyy-MM-dd")
+                                        .format(value!)
+                                        .toString();
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          width:
+                              MediaQuery.of(context).size.width / AppSize.s18,
+                        ),
+                        Expanded(
+                          child: SharedWidget.addTaskFormField(
+                            textInputType: TextInputType.none,
+                            controller: endTimeController,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return AppStrings.thisIsRequired.tr();
+                              }
+                              return null;
+                            },
+                            hint: AppStrings.endTime.tr(),
+                            onTap: () {
+                              showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay.now(),
+                              ).then((value) {
+                                endTimeController.text =
+                                    "${value!.hour}:${value.minute}:00";
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / AppSize.s100,
+                    ),
+                    SizedBox(
+                      height: AppSize.s120.h,
+                      child: SharedWidget.addTaskFormField(
+                        textInputType: TextInputType.text,
+                        controller: descriptionController,
+                        hint: AppStrings.meetingDescription.tr(),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return AppStrings.thisIsRequired.tr();
+                          }
+                          return null;
+                        },
+                        maxLines: 20,
+                        minLines: 20,
                       ),
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height / AppSize.s18,
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / AppSize.s100,
+                    ),
+                    checkboxItem(
+                      context: context,
+                      checkBoxValue: AddTaskBloc.get(context).checkBoxValue,
+                      onChanged: (value) =>
+                          AddTaskBloc.get(context).changeCheckBoxstate(
+                        value!,
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / AppSize.s100,
+                    ),
+                    SharedWidget.defaultButton(
+                      context: context,
+                      function: () {
+                        if (_formKey.currentState!.validate()) {
+                          AddTaskBloc.get(context).addTask(
+                            context: context,
+                            startDate:
+                                "${startDateController.text} ${startTimeController.text}",
+                            endDate:
+                                "${endDateController.text} ${endTimeController.text}",
+                            title: titleController.text,
+                            label: "null",
+                            desc: descriptionController.text,
+                            clientName: clintNameController.text,
+                            clientMail: clintEmailController.text,
+                            clientTitle: titleController.text,
+                            clientPhone: phoneNumberController.text,
+                            clientAddress: addressController.text,
+                            clientLocation: locationController.text,
+                            companyName: companyNameController.text,
+                            token: CacheHelper.getData(key: SharedKey.token)
+                                .toString(),
+                          );
+                        }
+                      },
+                      text: AppStrings.submit.tr(),
+                      backgroundColor: ColorManager.white,
+                      style: getExtraBoldStyle(
+                        fontSize: FontSizeManager.s20.sp,
+                        color: ColorManager.primaryColor,
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / AppSize.s50,
+                    ),
+                    SharedWidget.defaultButton(
+                      context: context,
+                      function: () {
+                        screen = HomeScreen();
+                        LayoutBloc.get(context).changeBottomNavBar(0);
+                      },
+                      text: AppStrings.cancel.tr(),
+                      backgroundColor: ColorManager.white,
+                      style: getExtraBoldStyle(
+                        fontSize: FontSizeManager.s20.sp,
+                        color: ColorManager.primaryColor,
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / AppSize.s18,
+                    ),
+                  ],
                 ),
               ),
             ),

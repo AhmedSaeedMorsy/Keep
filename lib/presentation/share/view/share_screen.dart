@@ -33,12 +33,17 @@ class ShareScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => ShareBloc()..getTeams(),
+        create: (context) => ShareBloc()
+          ..getTeams(
+            context: context,
+          ),
         child: BlocConsumer<ShareBloc, ShareStates>(
           listener: (context, state) {
             if (state is ShareLeadsSuccessState ||
-                state is ShareKitsSuccessState ||
-                state is ShareMeetingSuccessState) {
+                state is ShareKitsSuccessState) {
+              Navigator.pop(context);
+            } else if (state is ShareMeetingSuccessState) {
+              Navigator.pop(context);
               Navigator.pop(context);
             }
           },
@@ -136,7 +141,7 @@ class ShareScreen extends StatelessWidget {
                                 child: ConditionalBuilderRec(
                                   condition: ShareBloc.get(context)
                                       .usersModel
-                                      .users
+                                      .data
                                       .isNotEmpty,
                                   builder: (context) => ListView.builder(
                                     padding: EdgeInsets.zero,
@@ -146,15 +151,18 @@ class ShareScreen extends StatelessWidget {
                                             context: context,
                                             name: ShareBloc.get(context)
                                                 .usersModel
-                                                .users[index]
+                                                .data[0]
+                                                .user[index]
                                                 .name,
                                             index: ShareBloc.get(context)
                                                 .usersModel
-                                                .users[index]
+                                                .data[0]
+                                                .user[index]
                                                 .id),
                                     itemCount: ShareBloc.get(context)
                                         .usersModel
-                                        .users
+                                        .data[0]
+                                        .user
                                         .length,
                                   ),
                                   fallback: (context) => Center(
@@ -178,14 +186,21 @@ class ShareScreen extends StatelessWidget {
                               child: SharedWidget.defaultButton(
                                 context: context,
                                 function: () {
-                                  print(shareType);
-                                  print(id);
                                   if (shareType == "lead") {
-                                    ShareBloc.get(context).shareLead(id: id);
+                                    ShareBloc.get(context).shareLead(
+                                      id: id,
+                                      context: context,
+                                    );
                                   } else if (shareType == "kit") {
-                                    ShareBloc.get(context).shareKit(id: id);
+                                    ShareBloc.get(context).shareKit(
+                                      id: id,
+                                      context: context,
+                                    );
                                   } else if (shareType == "meeting") {
-                                    ShareBloc.get(context).shareMeeting(id: id);
+                                    ShareBloc.get(context).shareMeeting(
+                                      id: id,
+                                      context: context,
+                                    );
                                   }
                                 },
                                 text: AppStrings.share.tr().toTitleCase(),
@@ -267,6 +282,8 @@ class ShareScreen extends StatelessWidget {
                 child: Text(
                   item,
                   style: Theme.of(context).textTheme.headlineSmall!,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             )
@@ -293,7 +310,7 @@ class ShareScreen extends StatelessWidget {
         buttonPadding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width / AppSize.s22,
         ),
-        itemHeight: AppSize.s30.h,
+        itemHeight: AppSize.s46.h,
         dropdownMaxHeight: AppSize.s150.h,
         dropdownWidth: AppSize.s180.w,
         scrollbarRadius: Radius.circular(

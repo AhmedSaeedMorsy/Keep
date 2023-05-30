@@ -1,18 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:keep/presentation/add_task/view/add_task_screen_from_filter.dart';
 import 'package:keep/presentation/calendar_daily/view/calendar_daily_screen.dart';
-import 'package:keep/presentation/map_screen/view/map_screen.dart';
+import 'package:keep/presentation/forget_password/view/forget_password_screen.dart';
+import 'package:keep/presentation/un_assign_lead/view/un_assign_lead.dart';
 import 'package:keep/presentation/calendar_hourly/view/calendar_hourly.dart';
 import 'package:keep/presentation/calendar_monthly/view/calendar_monthly_screen.dart';
 import 'package:keep/presentation/layout/view/layout_screen.dart';
 import 'package:keep/presentation/login/view/login_screen.dart';
-import 'package:keep/presentation/not_approve_task/view/not_approve_task.dart';
 import 'package:keep/presentation/notification/view/notification_view.dart';
 import 'package:keep/presentation/on_boarding/view/on_boarding_screen.dart';
-import 'package:keep/presentation/profile/view/profile_screen.dart';
 import 'package:keep/presentation/scanner/view/scanner_screen.dart';
 import 'package:keep/presentation/splash/view/splash_screen.dart';
 import '../../presentation/calendar_weekly/view/calendar_weekly_screen.dart';
+import '../../presentation/profile/view/profile_screen.dart';
 import 'strings_manager.dart';
 
 class Routes {
@@ -29,11 +30,21 @@ class Routes {
   static const String addTaskRoute = "/addTaskRoute";
   static const String scannerRoute = "/scannerRoute";
   static const String notApproveTaskRoute = "/notApproveTaskRoute";
-  static const String profileRoute = "/profileRoute";
+  static const String addTaskFromFilter = "/addTaskFromFilter";
+  static const String forgetPasswordRoute = "/forgetPasswordRoute";
 }
 
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
+    if (settings.name!.contains("apps/profile")) {
+      return MaterialPageRoute(
+        builder: (context) => ProfileScreen(
+          id: int.parse(
+            settings.name!.split("=").last,
+          ),
+        ),
+      );
+    }
     switch (settings.name) {
       case Routes.splashRoute:
         return MaterialPageRoute(
@@ -63,10 +74,13 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => CalendarMonthlyScreen(),
         );
-
+      case Routes.addTaskFromFilter:
+        return MaterialPageRoute(
+          builder: (_) => AddTaskFromFilter(),
+        );
       case Routes.mapRoute:
         return MaterialPageRoute(
-          builder: (_) => MapScreen(),
+          builder: (_) => UnAssignLead(),
         );
       case Routes.calendarDailyRoute:
         return MaterialPageRoute(
@@ -80,13 +94,9 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => const ScannerScreen(),
         );
-      case Routes.notApproveTaskRoute:
+      case Routes.forgetPasswordRoute:
         return MaterialPageRoute(
-          builder: (_) => const NotApproveTask(),
-        );
-      case Routes.profileRoute:
-        return MaterialPageRoute(
-          builder: (_) => ProfileScreen(),
+          builder: (_) => ForgetPasswordScreen(),
         );
       default:
         return unDefiendRoute();

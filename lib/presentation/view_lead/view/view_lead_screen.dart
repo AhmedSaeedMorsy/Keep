@@ -27,18 +27,18 @@ class ViewLeadScreen extends StatelessWidget {
   final DataLeadMedel model;
   @override
   Widget build(BuildContext context) {
-    emailController.text = model.email!;
-    phoneController.text = model.phone!;
+    emailController.text = model.email??"";
+    phoneController.text = model.phone??"";
     dateController.text = DateFormat("yyyy-MM-dd")
         .format(DateTime.parse(model.createdAt))
         .toString();
     timeController.text =
         model.createdAt.replaceRange(0, 11, "").replaceRange(8, 16, "");
-    jobController.text = model.position!;
-    companyController.text = model.companyName!;
+    jobController.text = model.position??"";
+    companyController.text = model.companyName??"";
     addressController.text = "${model.country} , ${model.city}";
     note.text = model.note ?? "";
-    industryController.text = model.industry!;
+    industryController.text = model.industry??"";
     return Scaffold(
       body: FadeInDown(
         duration: const Duration(
@@ -75,7 +75,7 @@ class ViewLeadScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  model.name!.toTitleCase(),
+                  model.name??"".toTitleCase(),
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 SizedBox(

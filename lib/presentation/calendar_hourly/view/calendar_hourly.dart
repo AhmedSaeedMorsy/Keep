@@ -16,9 +16,7 @@ import '../../../app/resources/routes_manager.dart';
 import '../../../app/resources/strings_manager.dart';
 import '../../../app/resources/values_manager.dart';
 import '../../../app/services/calender_helper/calender_helper.dart';
-import '../../add_task/view/add_task_screen.dart';
 import '../../layout/controller/layout_bloc.dart';
-import '../../layout/view/layout_screen.dart';
 import 'dart:ui' as UI;
 
 class CalendarHorlyScreen extends StatelessWidget {
@@ -112,13 +110,8 @@ class CalendarHorlyScreen extends StatelessWidget {
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                        screen = AddTask();
-                                        LayoutBloc.get(context)
-                                            .changeBottomNavBar(5);
-                                        Navigator.pushNamed(
-                                          context,
-                                          Routes.layoutRoute,
-                                        );
+                                         Navigator.pushNamed(
+                                          context, Routes.addTaskFromFilter);
                                       },
                                       icon: Image(
                                         image: const AssetImage(
@@ -140,7 +133,7 @@ class CalendarHorlyScreen extends StatelessWidget {
                       ),
                       Expanded(
                         child: BlocProvider(
-                          create: (context) => HomeBloc()..getTask(),
+                          create: (context) => HomeBloc()..getTask(context: context),
                           child: BlocBuilder<HomeBloc, HomeStates>(
                             builder: (context, state) {
                               return SfCalendar(

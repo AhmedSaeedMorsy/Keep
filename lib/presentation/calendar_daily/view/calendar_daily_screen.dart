@@ -14,13 +14,11 @@ import '../../../app/resources/routes_manager.dart';
 import '../../../app/resources/strings_manager.dart';
 import '../../../app/resources/values_manager.dart';
 import '../../../model/task_model.dart';
-import '../../add_task/view/add_task_screen.dart';
 import '../../edit_task/view/edit_task_screen.dart';
 import '../../home/controller/home_bloc.dart';
 import '../../home/controller/home_states.dart';
 import '../../layout/controller/layout_bloc.dart';
 import '../../layout/controller/layout_states.dart';
-import '../../layout/view/layout_screen.dart';
 import 'dart:ui' as UI;
 
 class CalendarDailyScreen extends StatelessWidget {
@@ -104,13 +102,8 @@ class CalendarDailyScreen extends StatelessWidget {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      screen = AddTask();
-                                      LayoutBloc.get(context)
-                                          .changeBottomNavBar(5);
                                       Navigator.pushNamed(
-                                        context,
-                                        Routes.layoutRoute,
-                                      );
+                                          context, Routes.addTaskFromFilter);
                                     },
                                     icon: Image(
                                       image: const AssetImage(
@@ -170,9 +163,7 @@ class CalendarDailyScreen extends StatelessWidget {
                               MediaQuery.of(context).size.height / AppSize.s50,
                         ),
                         BlocProvider(
-                          create: (context) => HomeBloc()
-                            ..getTask(
-                              ),
+                          create: (context) => HomeBloc()..getTask(context: context,),
                           child: BlocBuilder<HomeBloc, HomeStates>(
                             builder: (context, state) {
                               return ConditionalBuilderRec(
@@ -223,7 +214,7 @@ class CalendarDailyScreen extends StatelessWidget {
   }
 
   var bottomSheetController = TextEditingController();
- Widget taskItem(
+  Widget taskItem(
     BuildContext context,
     int index,
     TaskData model,
@@ -265,8 +256,8 @@ class CalendarDailyScreen extends StatelessWidget {
                 style: HomeBloc.get(context).taskState[index] == "agree" ||
                         model.status == "completed"
                     ? Theme.of(context).textTheme.headlineSmall!.copyWith(
-                              color: ColorManager.white,
-                            )
+                          color: ColorManager.white,
+                        )
                     : HomeBloc.get(context).taskState[index] == "decline" ||
                             model.status == "rejected"
                         ? Theme.of(context).textTheme.headlineSmall!.copyWith(
@@ -275,74 +266,80 @@ class CalendarDailyScreen extends StatelessWidget {
                         : Theme.of(context).textTheme.headlineSmall,
               ),
               const Spacer(),
-              if (HomeBloc.get(context).taskState[index] == "agree" ||
-                  model.status == "completed")
-                InkWell(
-                  onTap: () {
-                    bottomSheetItem(context, index, model.id, "rejected");
-
-                    HomeBloc.get(context).addToDecline(index);
-                  },
-                  child: const Image(
-                    image: AssetImage(
-                      AssetsManager.delete,
-                    ),
-                  ),
-                ),
-              if (HomeBloc.get(context).taskState[index] == "decline" ||
-                  model.status == "rejected")
-                InkWell(
-                  onTap: () {
-                    HomeBloc.get(context).addToAgree(index);
-                    bottomSheetItem(context, index, model.id, "completed");
-                  },
-                  child: const Image(
-                    image: AssetImage(
-                      AssetsManager.agree,
-                    ),
-                  ),
-                ),
-              if (HomeBloc.get(context).taskState[index] == null&&model.status!="completed"&&model.status!="rejected")
-                Row(
-                  children: [
-                    InkWell(
+              HomeBloc.get(context).taskState[index] == "agree" ||
+                      model.status == "completed"
+                  ? InkWell(
                       onTap: () {
-                        bottomSheetItem(context, index, model.id, "rejected");
-
                         HomeBloc.get(context).addToDecline(index);
+
+                        bottomSheetItem(context, index, model.id, "rejected");
                       },
                       child: const Image(
                         image: AssetImage(
                           AssetsManager.delete,
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / AppSize.s30,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        HomeBloc.get(context).addToAgree(index);
-                        bottomSheetItem(
-                          context,
-                          index,
-                          model.id,
-                          "completed",
-                        );
-                      },
-                      child: const Image(
-                        image: AssetImage(
-                          AssetsManager.agree,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                    )
+                  : HomeBloc.get(context).taskState[index] == "decline" ||
+                          model.status == "rejected"
+                      ? InkWell(
+                          onTap: () {
+                            HomeBloc.get(context).addToAgree(index);
+                            bottomSheetItem(
+                                context, index, model.id, "completed");
+                          },
+                          child: const Image(
+                            image: AssetImage(
+                              AssetsManager.agree,
+                            ),
+                          ),
+                        )
+                      : HomeBloc.get(context).taskState[index] == null &&
+                              model.status != "completed" &&
+                              model.status != "rejected"
+                          ? Row(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    bottomSheetItem(
+                                        context, index, model.id, "rejected");
+
+                                    HomeBloc.get(context).addToDecline(index);
+                                  },
+                                  child: const Image(
+                                    image: AssetImage(
+                                      AssetsManager.delete,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width /
+                                      AppSize.s30,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    HomeBloc.get(context).addToAgree(index);
+                                    bottomSheetItem(
+                                      context,
+                                      index,
+                                      model.id,
+                                      "completed",
+                                    );
+                                  },
+                                  child: const Image(
+                                    image: AssetImage(
+                                      AssetsManager.agree,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Container(),
             ],
           ),
         ),
       );
-   void bottomSheetItem(context, index, int id, String status) {
+  void bottomSheetItem(context, index, int id, String status) {
     _scaffoldKey.currentState!
         .showBottomSheet(
           (context) => Padding(
@@ -376,7 +373,7 @@ class CalendarDailyScreen extends StatelessWidget {
                                   context: context,
                                   function: () {
                                     HomeBloc.get(context).changeTaskStatus(
-                                        id: id,
+                                        id: id,context: context,
                                         status: status,
                                         summary: bottomSheetController.text);
                                     Navigator.pop(context);

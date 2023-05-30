@@ -13,7 +13,6 @@ import 'package:keep/presentation/add_task/view/add_task_screen.dart';
 import 'package:keep/presentation/home/controller/home_bloc.dart';
 import 'package:keep/presentation/home/controller/home_states.dart';
 import 'package:keep/presentation/layout/controller/layout_bloc.dart';
-import 'package:keep/presentation/not_approve_task/view/not_approve_task.dart';
 import '../../../app/common/widget.dart';
 import '../../../app/resources/color_manager.dart';
 import '../../../app/resources/routes_manager.dart';
@@ -29,7 +28,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       key: scaffoldKey,
       body: BlocProvider(
-        create: (context) => HomeBloc()..getTask(),
+        create: (context) => HomeBloc()..getTask(context: context),
         child: BlocBuilder<HomeBloc, HomeStates>(
           builder: (context, state) {
             return Container(
@@ -91,7 +90,7 @@ class HomeScreen extends StatelessWidget {
                                   InkWell(
                                     onTap: () {
                                       HomeBloc.get(context).decressDate();
-                                      HomeBloc.get(context).getTask();
+                                      HomeBloc.get(context).getTask(context: context);
                                     },
                                     child: Icon(
                                       Icons.arrow_back_ios,
@@ -109,7 +108,7 @@ class HomeScreen extends StatelessWidget {
                                   InkWell(
                                     onTap: () {
                                       HomeBloc.get(context).incressDate();
-                                      HomeBloc.get(context).getTask();
+                                      HomeBloc.get(context).getTask(context:context);
                                     },
                                     child: Icon(
                                       Icons.arrow_forward_ios,
@@ -135,33 +134,14 @@ class HomeScreen extends StatelessWidget {
                                 height: MediaQuery.of(context).size.height /
                                     AppSize.s50,
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    AppStrings.dailyTask.tr(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineLarge!
-                                        .copyWith(
-                                          color: ColorManager.primaryColor,
-                                        ),
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      screen = const NotApproveTask();
-                                      LayoutBloc.get(context)
-                                          .changeBottomNavBar(5);
-                                    },
-                                    child: Image(
-                                      width: AppSize.s30.w,
-                                      image: const AssetImage(
-                                        AssetsManager.declineTask,
-                                      ),
+                              Text(
+                                AppStrings.dailyTask.tr(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge!
+                                    .copyWith(
+                                      color: ColorManager.primaryColor,
                                     ),
-                                  ),
-                                ],
                               ),
                               SizedBox(
                                 height: MediaQuery.of(context).size.height /
@@ -269,71 +249,75 @@ class HomeScreen extends StatelessWidget {
                               )
                           : Theme.of(context).textTheme.headlineSmall),
               const Spacer(),
-              if (HomeBloc.get(context).taskState[index] == "agree" ||
-                  model.status == "completed")
-                InkWell(
-                  onTap: () {
-                    bottomSheetItem(context, index, model.id, "rejected");
-
-                    HomeBloc.get(context).addToDecline(index);
-                  },
-                  child: const Image(
-                    image: AssetImage(
-                      AssetsManager.delete,
-                    ),
-                  ),
-                ),
-              if (HomeBloc.get(context).taskState[index] == "decline" ||
-                  model.status == "rejected")
-                InkWell(
-                  onTap: () {
-                    HomeBloc.get(context).addToAgree(index);
-                    bottomSheetItem(context, index, model.id, "completed");
-                  },
-                  child: const Image(
-                    image: AssetImage(
-                      AssetsManager.agree,
-                    ),
-                  ),
-                ),
-              if (HomeBloc.get(context).taskState[index] == null &&
-                  model.status != "completed" &&
-                  model.status != "rejected")
-                Row(
-                  children: [
-                    InkWell(
+              HomeBloc.get(context).taskState[index] == "agree" ||
+                      model.status == "completed"
+                  ? InkWell(
                       onTap: () {
-                        bottomSheetItem(context, index, model.id, "rejected");
-
                         HomeBloc.get(context).addToDecline(index);
+
+                        bottomSheetItem(context, index, model.id, "rejected");
                       },
                       child: const Image(
                         image: AssetImage(
                           AssetsManager.delete,
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / AppSize.s30,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        HomeBloc.get(context).addToAgree(index);
-                        bottomSheetItem(
-                          context,
-                          index,
-                          model.id,
-                          "completed",
-                        );
-                      },
-                      child: const Image(
-                        image: AssetImage(
-                          AssetsManager.agree,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                    )
+                  : HomeBloc.get(context).taskState[index] == "decline" ||
+                          model.status == "rejected"
+                      ? InkWell(
+                          onTap: () {
+                            HomeBloc.get(context).addToAgree(index);
+                            bottomSheetItem(
+                                context, index, model.id, "completed");
+                          },
+                          child: const Image(
+                            image: AssetImage(
+                              AssetsManager.agree,
+                            ),
+                          ),
+                        )
+                      : HomeBloc.get(context).taskState[index] == null &&
+                              model.status != "completed" &&
+                              model.status != "rejected"
+                          ? Row(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    bottomSheetItem(
+                                        context, index, model.id, "rejected");
+
+                                    HomeBloc.get(context).addToDecline(index);
+                                  },
+                                  child: const Image(
+                                    image: AssetImage(
+                                      AssetsManager.delete,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width /
+                                      AppSize.s30,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    HomeBloc.get(context).addToAgree(index);
+                                    bottomSheetItem(
+                                      context,
+                                      index,
+                                      model.id,
+                                      "completed",
+                                    );
+                                  },
+                                  child: const Image(
+                                    image: AssetImage(
+                                      AssetsManager.agree,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Container(),
             ],
           ),
         ),
@@ -366,29 +350,29 @@ class HomeScreen extends StatelessWidget {
                               MediaQuery.of(context).size.width / AppSize.s30,
                         ),
                         child: BlocProvider(
-                            create: (context) => HomeBloc(),
-                            child: BlocBuilder<HomeBloc, HomeStates>(
-                              builder: (context, state) {
-                                return SharedWidget.defaultButton(
-                                  context: context,
-                                  function: () {
-                                    Navigator.pop(context);
-                                    HomeBloc.get(context).changeTaskStatus(
-                                      id: id,
-                                      status: status,
-                                      summary: bottomSheetController.text,
-                                    );
-                                  },
-                                  text: AppStrings.submit.tr(),
-                                  backgroundColor: ColorManager.white,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .copyWith(
-                                          color: ColorManager.primaryColor),
-                                );
-                              },
-                            )),
+                          create: (context) => HomeBloc(),
+                          child: BlocBuilder<HomeBloc, HomeStates>(
+                            builder: (context, state) {
+                              return SharedWidget.defaultButton(
+                                context: context,
+                                function: () {
+                                  Navigator.pop(context);
+                                  HomeBloc.get(context).changeTaskStatus(
+                                    id: id,context: context,
+                                    status: status,
+                                    summary: bottomSheetController.text,
+                                  );
+                                },
+                                text: AppStrings.submit.tr(),
+                                backgroundColor: ColorManager.white,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(color: ColorManager.primaryColor),
+                              );
+                            },
+                          ),
+                        ),
                       ),
                       SizedBox(
                         height:

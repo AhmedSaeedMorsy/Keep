@@ -87,4 +87,20 @@ class AppStrings {
   static String city = "city";
   static String industry = "industry";
   static String gender = "gender";
+  static String saved = "saved";
+  static String shareYourInfo = "shareYourInfo";
+  static String done = "done";
+  static String numberOfConnects = "numberOfConnects";
+  static String profileVisits = "profileVisits";
+  static String kitsViews = "kitsViews";
+  static String qr = "Qr";
+  static String notFoundNotificationYet = "notFoundNotificationYet";
+  static String unAssignedLead = "unAssignedLead";
+  static String createLead = "createLead";
+  static String logInAgain = "logInAgain";
+  static String resetPassword = "resetPassword";
+  static String send = "send";
+  static String checkYourInboxMail = "checkYourInboxMail";
+  static String emailIsIncorrectPleaseEnterYourEmailAgain =
+      "emailIsIncorrectPleaseEnterYourEmailAgain";
 }

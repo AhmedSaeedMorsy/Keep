@@ -14,10 +14,8 @@ import '../../../app/resources/routes_manager.dart';
 import '../../../app/resources/strings_manager.dart';
 import '../../../app/resources/values_manager.dart';
 import '../../../model/task_model.dart';
-import '../../add_task/view/add_task_screen.dart';
 import '../../layout/controller/layout_bloc.dart';
 import '../../layout/controller/layout_states.dart';
-import '../../layout/view/layout_screen.dart';
 import 'dart:ui' as UI;
 
 import '../controller/calendar_weekly_bloc.dart';
@@ -31,7 +29,7 @@ class CalendarWeeklyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => CalendarWeeklyBloc()
-        ..getTask(
+        ..getTask(context: context,
           token: CacheHelper.getData(
             key: SharedKey.token,
           ),
@@ -114,13 +112,8 @@ class CalendarWeeklyScreen extends StatelessWidget {
                                       const Spacer(),
                                       IconButton(
                                         onPressed: () {
-                                          screen = AddTask();
-                                          LayoutBloc.get(context)
-                                              .changeBottomNavBar(5);
                                           Navigator.pushNamed(
-                                            context,
-                                            Routes.layoutRoute,
-                                          );
+                                          context, Routes.addTaskFromFilter);
                                         },
                                         icon: Image(
                                           image: const AssetImage(

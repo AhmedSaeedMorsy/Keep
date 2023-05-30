@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keep/app/common/widget.dart';
 import 'package:keep/app/constant/enums_extentions.dart';
-import 'package:keep/app/resources/assets_manager.dart';
 import 'package:keep/model/kits_model.dart';
 import 'package:keep/presentation/knowledge/controller/bloc.dart';
 import 'package:keep/presentation/knowledge/controller/states.dart';
@@ -23,7 +22,7 @@ class KnowledgeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => KitsBloc()..getKits(),
+      create: (context) => KitsBloc()..getKits(context: context),
       child: BlocBuilder<KitsBloc, KitsStates>(builder: (context, state) {
         return Container(
           color: ColorManager.white,
@@ -154,7 +153,6 @@ class KnowledgeScreen extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                flex: 2,
                 child: InkWell(
                   onTap: () {
                     KitsBloc.get(context).openFile(
@@ -165,48 +163,13 @@ class KnowledgeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.visibility,
-                        size: AppSize.s18.w,
-                      ),
+                        Icons.visibility_outlined,
+                     size: AppSize.s16.w, ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width / AppSize.s100,
                       ),
                       Text(
                         AppStrings.view.tr(),
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width / AppSize.s200,
-                ),
-                color: ColorManager.darkGrey,
-                width: 1,
-                height: AppSize.s24.h,
-              ),
-              Expanded(
-                flex: 3,
-                child: InkWell(
-                  onTap: () {
-                    KitsBloc.get(context).openFile(
-                      url: model.path,
-                    );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        AssetsManager.download,
-                        width: AppSize.s12.w,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / AppSize.s100,
-                      ),
-                      Text(
-                        AppStrings.download.tr(),
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
@@ -222,10 +185,15 @@ class KnowledgeScreen extends StatelessWidget {
                 height: AppSize.s24.h,
               ),
               Expanded(
-                flex: 2,
                 child: InkWell(
                   onTap: () {
-                    SharedWidget.showPopupShare(context, model.id, "kit");
+                    SharedWidget.showPopupShare(
+                      context,
+                      model.id,
+                      "kit",
+                      model.name,
+                      model.path,model.desc
+                    );
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

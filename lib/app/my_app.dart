@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors_in_immutables
+// ignore_for_file: prefer_const_constructors_in_immutables, deprecated_member_use
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +25,7 @@ class _MyAppState extends State<MyApp> {
     super.didChangeDependencies();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -32,7 +33,8 @@ class _MyAppState extends State<MyApp> {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return BlocProvider(create: (context)=>LayoutBloc(),
+        return BlocProvider(
+          create: (context) => LayoutBloc(),
           child: MaterialApp(
             locale: context.locale,
             supportedLocales: context.supportedLocales,

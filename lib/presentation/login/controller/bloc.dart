@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keep/app/constant/api_constant.dart';
@@ -25,11 +26,13 @@ class LoginCubit extends Cubit<LoginStates> {
   void loginUser({
     required String email,
     required String password,
-  }) {
+  }) async {
     emit(LoginLoadingState());
-    DioHelper.postData(
-        path: ApiConstant.loginPath,
-        data: {"email": email, "password": password}).then(
+    DioHelper.postData(path: ApiConstant.loginPath, data: {
+      "email": email,
+      "password": password,
+      "fcm_token": await FirebaseMessaging.instance.getToken(),
+    }).then(
       (value) {
         loginModel = LoginModel.fromJson(value.data);
         getUserData(token: loginModel.accessToken);

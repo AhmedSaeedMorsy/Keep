@@ -1,8 +1,11 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:animate_do/animate_do.dart';
 import 'package:conditional_builder_rec/conditional_builder_rec.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,8 +19,11 @@ import 'package:keep/presentation/layout/controller/layout_states.dart';
 import 'package:keep/presentation/login/controller/bloc.dart';
 import 'package:keep/presentation/login/controller/states.dart';
 import 'package:keep/presentation/share/view/share_screen.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../model/leads_model.dart';
 import '../../presentation/edit_lead/view/edit_lead_screen.dart';
+import '../../presentation/layout/view/layout_screen.dart';
+import '../../presentation/notification/view/notification_view.dart';
 import '../../presentation/view_lead/view/view_lead_screen.dart';
 import '../resources/color_manager.dart';
 import '../resources/language_manager.dart';
@@ -163,8 +169,9 @@ class SharedWidget {
                                               Routes.layoutRoute,
                                             );
 
-                                            Navigator.pushNamed(
-                                                context, Routes.profileRoute);
+                                            screen = const NotificationScreen();
+                                            LayoutBloc.get(context)
+                                                .changeBottomNavBar(5);
                                           },
                                           child: Icon(
                                             Icons.notifications,
@@ -196,7 +203,8 @@ class SharedWidget {
                                 ],
                               ),
                               Text(
-                                LoginCubit.get(context).userModel.data.title,
+                                LoginCubit.get(context).userModel.data.title ??
+                                    "",
                                 style: Theme.of(context).textTheme.displaySmall,
                               ),
                             ],
@@ -497,8 +505,9 @@ class SharedWidget {
                                                         .data
                                                         .imageCover ==
                                                     null
-                                                ? 
-                                                 null :Image(
+                                                ? null
+                                                : Image(
+                                                    fit: BoxFit.fill,
                                                     image: NetworkImage(
                                                         LoginCubit.get(context)
                                                             .userModel
@@ -555,38 +564,72 @@ class SharedWidget {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                          showPopupScannerProfile(context);
-                                        },
-                                        child: Image(
-                                          image: const AssetImage(
-                                            AssetsManager.scanner,
+                                      child: Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                              showPopupScannerProfile(context);
+                                            },
+                                            child: Image(
+                                              image: const AssetImage(
+                                                AssetsManager.scanner,
+                                              ),
+                                              color: ColorManager.primaryColor,
+                                              width: AppSize.s36.w,
+                                              height: AppSize.s36.h,
+                                            ),
                                           ),
-                                          color: ColorManager.primaryColor,
-                                          width: AppSize.s36.w,
-                                          height: AppSize.s36.h,
-                                        ),
+                                          SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                AppSize.s80,
+                                          ),
+                                          Text(
+                                            AppStrings.qr,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displaySmall,
+                                          ),
+                                        ],
                                       ),
                                     ),
                                     Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                          Navigator.pushNamed(
-                                            context,
-                                            Routes.mapRoute,
-                                          );
-                                        },
-                                        child: Image(
-                                          image: const AssetImage(
-                                            AssetsManager.mapIcon,
+                                      child: Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                              Navigator.pushNamed(
+                                                context,
+                                                Routes.mapRoute,
+                                              );
+                                            },
+                                            child: Image(
+                                              image: const AssetImage(
+                                                AssetsManager.mapIcon,
+                                              ),
+                                              color: ColorManager.primaryColor,
+                                              width: AppSize.s36.w,
+                                              height: AppSize.s36.h,
+                                            ),
                                           ),
-                                          color: ColorManager.primaryColor,
-                                          width: AppSize.s36.w,
-                                          height: AppSize.s36.h,
-                                        ),
+                                          SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                AppSize.s80,
+                                          ),
+                                          Text(
+                                            AppStrings.unAssignedLead.tr(),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displaySmall,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
@@ -633,7 +676,9 @@ class SharedWidget {
     );
   }
 
-  static void showPopupShare(context, id, String shareType) {
+  static void showPopupShare(
+      context, id, String shareType, String name, String path, String desc,
+      [String? email, String? position]) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -708,25 +753,37 @@ class SharedWidget {
                                       MediaQuery.of(context).size.width /
                                           AppSize.s18,
                                 ),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      AssetsManager.share,
-                                    ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width /
-                                          AppSize.s50,
-                                    ),
-                                    Text(
-                                      AppStrings.shareVia.tr(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineMedium!
-                                          .copyWith(
-                                            fontSize: FontSizeManager.s18.sp,
-                                          ),
-                                    ),
-                                  ],
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    if (shareType != "lead") {
+                                      await Share.share(
+                                          "Name: $name\nDescription: $desc\n$path");
+                                    } else {
+                                      await Share.share(
+                                          "Name: $name\nCompany Name: $desc\nPosition:$position\nEmail: $email\nPhone: $path");
+                                    }
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        AssetsManager.share,
+                                      ),
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                AppSize.s50,
+                                      ),
+                                      Text(
+                                        AppStrings.shareVia.tr(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineMedium!
+                                            .copyWith(
+                                              fontSize: FontSizeManager.s18.sp,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -806,6 +863,11 @@ class SharedWidget {
                             CacheHelper.removeData(key: SharedKey.qr);
                             CacheHelper.removeData(key: SharedKey.id);
                             CacheHelper.removeData(key: SharedKey.loginDate);
+                            CacheHelper.removeData(key: SharedKey.bio);
+                            CacheHelper.removeData(key: SharedKey.email);
+                            CacheHelper.removeData(key: SharedKey.name);
+                            CacheHelper.removeData(key: SharedKey.title);
+                            CacheHelper.removeData(key: SharedKey.phone);
                             Navigator.pushReplacementNamed(
                               context,
                               Routes.loginRoute,
@@ -886,12 +948,13 @@ class SharedWidget {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ViewLeadScreen(
-                model: model,
-              ),
-            ));
+          context,
+          MaterialPageRoute(
+            builder: (context) => ViewLeadScreen(
+              model: model,
+            ),
+          ),
+        );
       },
       child: Container(
         padding: EdgeInsets.symmetric(
@@ -978,7 +1041,27 @@ class SharedWidget {
                 Expanded(
                   flex: 3,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () async {
+                      if (await FlutterContacts.requestPermission()) {
+                        // Insert new contact
+                        final newContact = Contact()
+                          ..name.first = model.name ?? ""
+                          ..emails = [
+                            Email(
+                              model.email ?? "",
+                            ),
+                          ]
+                          ..phones = [Phone(model.phone ?? "")];
+                        await newContact.insert().then(
+                          (value) {
+                            toast(
+                              message: AppStrings.saved.tr(),
+                              backgroundColor: ColorManager.agree,
+                            );
+                          },
+                        );
+                      }
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -1010,7 +1093,16 @@ class SharedWidget {
                   flex: 2,
                   child: InkWell(
                     onTap: () {
-                      SharedWidget.showPopupShare(context, model.id, "lead");
+                      SharedWidget.showPopupShare(
+                        context,
+                        model.id,
+                        "lead",
+                        model.name!,
+                        model.phone!,
+                        model.companyName ?? "",
+                        model.email,
+                        model.position,
+                      );
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -1049,144 +1141,4 @@ class SharedWidget {
       fontSize: FontSizeManager.s14.sp,
     );
   }
-
-  // static Widget dropDown({
-  //   required String hintText,
-  //   required List<String> list,
-  //   void Function(String?)? onChanged,
-  //   final FormFieldSetter? onSaved,
-  //   final String? validateText,
-  //   String? Function(String?)? validator,
-  // }) =>
-  //     DropdownButtonFormField2(
-  //       isExpanded: true,
-  //       decoration: InputDecoration(
-  //         contentPadding: EdgeInsets.symmetric(
-  //           vertical: AppSize.s10.h,
-  //           horizontal: AppSize.s10.w,
-  //         ),
-  //         fillColor: ColorManager.white,
-  //         filled: true,
-  //         border: OutlineInputBorder(
-  //           borderRadius: BorderRadius.all(
-  //             Radius.circular(
-  //               AppSize.s100.h,
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //       hint: Text(
-  //         hintText,
-  //         style: TextStyle(
-  //           fontSize: FontSizeManager.s16.sp,
-  //           color: ColorManager.grey,
-  //         ),
-  //       ),
-  //       icon: const Icon(
-  //         Icons.arrow_drop_down,
-  //         color: ColorManager.black,
-  //       ),
-  //       iconSize: AppSize.s20.w,
-  //       buttonHeight: AppSize.s30.w,
-  //       items: list
-  //           .map(
-  //             (item) => DropdownMenuItem<String>(
-  //               value: item,
-  //               child: Text(
-  //                 item,
-  //                 style: TextStyle(
-  //                   fontSize: FontSizeManager.s12.sp,
-  //                   color: ColorManager.black,
-  //                 ),
-  //               ),
-  //             ),
-  //           )
-  //           .toList(),
-  //       onChanged: onChanged,
-  //       onSaved: onSaved,
-  //       validator: validator,
-  //     );
-
-//   static Widget searchItem({
-//     required TextEditingController controller,
-//     required BuildContext context,
-//     required TextInputType textInputType,
-//     bool obscure = false,
-//     void Function(String?)? onChange,
-//     void Function()? onTap,
-//     String? hint,
-//     bool? enabled,
-//     Icon? suffixIcon,
-//     void Function(String)? onFieldSubmitted,
-//     int maxLines = 1,
-//     int minLines = 1,
-//   }) =>
-//       Padding(
-//           padding: EdgeInsets.symmetric(
-//             vertical: MediaQuery.of(context).size.height / AppSize.s180,
-//             horizontal: MediaQuery.of(context).size.width / AppSize.s50,
-//           ),
-//           child: Container(
-//             clipBehavior: Clip.antiAlias,
-//             decoration: BoxDecoration(
-//               color: ColorManager.white,
-//               borderRadius: BorderRadius.all(
-//                 Radius.circular(
-//                   AppSize.s100.h,
-//                 ),
-//               ),
-//               border: Border.all(
-//                 color: ColorManager.grey,
-//               ),
-//             ),
-//             width: double.infinity,
-//             height: AppSize.s40.h,
-//             child: TextFormField(
-//               cursorColor: ColorManager.primaryColor,
-//               obscureText: obscure,
-//               decoration: InputDecoration(
-//                 hintText: hint,
-//                 suffixIcon: suffixIcon,
-//                 border: InputBorder.none,
-
-//                 contentPadding: EdgeInsets.symmetric(
-//                     vertical: AppSize.s10.h, horizontal: AppSize.s10.w),
-//                 // hint style
-//                 hintStyle: getRegularStyle(
-//                   color: ColorManager.grey,
-//                 ),
-//               ),
-//               onFieldSubmitted: onFieldSubmitted,
-//               onChanged: onChange,
-//               onTap: onTap,
-//               enabled: enabled,
-//               minLines: minLines,
-//               controller: controller,
-//               keyboardType: textInputType,
-//               maxLines: maxLines,
-//             ),
-//           ));
-// }
-
-  // number of notification
-  // Container(
-  //   padding: EdgeInsets.all(
-  //     MediaQuery.of(context).size.width /
-  //         AppSize.s100,
-  //   ),
-  //   clipBehavior: Clip.antiAliasWithSaveLayer,
-  //   decoration: BoxDecoration(
-  //     color: ColorManager.error,
-  //     shape: BoxShape.circle,
-  //   ),
-  //   child: Text(
-  //     AppStrings.three,
-  //     style: Theme.of(context)
-  //         .textTheme
-  //         .bodySmall!
-  //         .copyWith(
-  //           fontSize: FontSizeManager.s16.sp,
-  //         ),
-  //   ),
-  // ),
 }

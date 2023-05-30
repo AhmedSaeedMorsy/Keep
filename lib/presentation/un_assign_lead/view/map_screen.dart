@@ -1,9 +1,10 @@
-// ignore_for_file: file_names, must_be_immutable, library_prefixes
+// ignore_for_file: file_names, must_be_immutable, library_prefixes, deprecated_member_use
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../app/common/widget.dart';
 import '../../../app/resources/color_manager.dart';
@@ -55,7 +56,7 @@ class MapScreen extends StatelessWidget {
               ),
             ),
             BlocProvider(
-                create: (context) => LeadsBloc()..getLeads(),
+                create: (context) => LeadsBloc()..getLeads(context: context),
                 child: BlocBuilder<LeadsBloc, LeadsStates>(
                   builder: (context, state) {
                     return Expanded(
@@ -123,50 +124,59 @@ class MapScreen extends StatelessWidget {
     required BuildContext context,
     required DataLeadMedel model,
   }) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: MediaQuery.of(context).size.height / AppSize.s50,
-        horizontal: MediaQuery.of(context).size.width / AppSize.s30,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          AppSize.s18.w,
+    return InkWell(
+      onTap: () async {
+        String googleUrl =
+            "https://www.google.com/maps/search/?api=1&query=${model.latitude},${model.longitude}";
+        if (await canLaunch(googleUrl)) {
+          await launch(googleUrl);
+        }
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: MediaQuery.of(context).size.height / AppSize.s50,
+          horizontal: MediaQuery.of(context).size.width / AppSize.s30,
         ),
-        color: ColorManager.grey,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "${AppStrings.ip} : ${model.ip}",
-                style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                      fontSize: FontSizeManager.s12.sp,
-                    ),
-              ),
-              Text(
-                "${AppStrings.location.tr()} : ${model.latitude},${model.longitude}",
-                style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                      fontSize: FontSizeManager.s12.sp,
-                    ),
-              ),
-              Text(
-                "${AppStrings.country.tr()} : ${model.country}",
-                style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                      fontSize: FontSizeManager.s12.sp,
-                    ),
-              ),
-              Text(
-                "${AppStrings.city.tr()} : ${model.city}",
-                style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                      fontSize: FontSizeManager.s12.sp,
-                    ),
-              ),
-            ],
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(
+            AppSize.s18.w,
           ),
-        ],
+          color: ColorManager.grey,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${AppStrings.ip} : ${model.ip}",
+                  style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                        fontSize: FontSizeManager.s12.sp,
+                      ),
+                ),
+                Text(
+                  "${AppStrings.location.tr()} : ${model.latitude},${model.longitude}",
+                  style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                        fontSize: FontSizeManager.s12.sp,
+                      ),
+                ),
+                Text(
+                  "${AppStrings.country.tr()} : ${model.country}",
+                  style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                        fontSize: FontSizeManager.s12.sp,
+                      ),
+                ),
+                Text(
+                  "${AppStrings.city.tr()} : ${model.city}",
+                  style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                        fontSize: FontSizeManager.s12.sp,
+                      ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

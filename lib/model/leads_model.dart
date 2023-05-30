@@ -21,9 +21,9 @@ class DataLeadMedel {
   String? meetingSummary;
   String? custom;
   late String ip;
-  late String country;
-  late String city;
-  late String region;
+  String? country;
+  String ? city;
+  String ? region;
   String? organisation;
   late String latitude;
   late String longitude;

@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>com.apple.developer.associated-domains</key>
+    <array>
+      <string>applinks:com.dash.keepbi</string>
+    </array>
+</dict>
+<dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -34,6 +40,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+    		<key>NSAllowsLocalNetworking</key>
+    		<true/>
+	</dict>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -51,5 +62,51 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>This app needs camera access to scan QR codes</string>
+	<key>NSContactsUsageDescription</key>
+	<true/>
+	<key>NFCReaderUsageDescription</key>
+    	<string>Allow access to Create Sticker</string>
+    	<key>com.apple.developer.nfc.readersession.felica.systemcodes</key>
+     		<array>
+       		<string>8005</string>
+       		<string>8008</string>
+       		<string>0003</string>
+       		<string>fe00</string>
+       		<string>90b7</string>
+       		<string>927a</string>
+       		<string>86a7</string>
+     		</array>
+    	<key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
+    	<array>
+        	<string>A0000002471001</string>
+        	<string>A000000003101001</string>
+       	<string>A000000003101002</string>
+        	<string>A0000000041010</string>
+        	<string>A0000000042010</string>
+        	<string>A0000000044010</string>
+        	<string>44464D46412E44466172653234313031</string>
+        	<string>D2760000850100</string>
+        	<string>D2760000850101</string>
+        	<string>00000000000000</string>
+    	</array>
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+    		<dict>
+        	<key>CFBundleURLSchemes</key>
+        	<array>
+            <string>com.dash.keepbi</string>
+        	</array>
+        	<key>CFBundleURLName</key>
+        	<string>com.dash.keepbi</string>
+    		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+    		<string>http</string>
+    		<string>https</string>
+    		<string>com.dash.keepbi</string>
+	</array>
 </dict>
 </plist>

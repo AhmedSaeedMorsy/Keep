@@ -1,15 +1,17 @@
-// ignore_for_file: library_prefixes
+// ignore_for_file: library_prefixes, deprecated_member_use
 
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:keep/app/resources/assets_manager.dart';
+import 'package:keep/app/constant/api_constant.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../../../app/resources/color_manager.dart';
 import '../../../app/resources/values_manager.dart';
 import 'dart:ui' as UI;
+
+import '../../profile/view/profile_screen.dart';
 
 class ScannerScreen extends StatefulWidget {
   const ScannerScreen({super.key});
@@ -23,8 +25,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
   Barcode? result;
   QRViewController? controller;
   UI.TextDirection direction = UI.TextDirection.ltr;
-  // In order to get hot reload to work we need to pause the camera if the platform
-  // is android, or resume the camera if the platform is iOS.
+
   @override
   void reassemble() {
     super.reassemble();
@@ -37,10 +38,10 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 150.0
-        : 300.0;
+    var scanArea = (MediaQuery.of(context).size.width < AppSize.s400.w ||
+            MediaQuery.of(context).size.height < AppSize.s400.h)
+        ? AppSize.s200.w
+        : AppSize.s400.w;
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -72,7 +73,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                   child: Padding(
                     padding: const EdgeInsetsDirectional.only(
                       top: AppSize.s10,
-                      ),
+                    ),
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: InkWell(
@@ -99,26 +100,6 @@ class _ScannerScreenState extends State<ScannerScreen> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height / AppPadding.p20,
-                    left: MediaQuery.of(context).size.width / AppPadding.p20,
-                    bottom: MediaQuery.of(context).size.height / AppPadding.p20,
-                  ),
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Image(
-                        image: const AssetImage(AssetsManager.gallery),
-                        width: AppSize.s50.w,
-                        height: AppSize.s50.h,
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -138,16 +119,42 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-      });
-    });
+    controller.scannedDataStream.listen(
+      (scanData) {
+        setState(
+          () async {
+            result = scanData;
+
+            if (result!.code!.contains("dash.keepbi.com")) {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfileScreen(
+                    id: int.parse(result!.code!.split("=").last),
+                  ),
+                ),
+              );
+            } else if (result!.code!.contains(ApiConstant.url) == false) {
+              openLink(link: result!.code!);
+            }
+          },
+        );
+      },
+    );
   }
 
   @override
   void dispose() {
     controller?.dispose();
     super.dispose();
+  }
+
+  Future<void> openLink({
+    required String link,
+  }) async {
+    String googleUrl = link;
+    if (await canLaunch(googleUrl)) {
+      await launch(googleUrl);
+    }
   }
 }

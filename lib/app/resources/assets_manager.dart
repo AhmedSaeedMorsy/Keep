@@ -53,4 +53,5 @@ class AssetsManager {
   static const String whatsapp = "$imagePath/whatsapp.png";
   static const String whatsappBuisness = "$imagePath/whatsappBuisness.png";  
   static const String link = "$imagePath/link.png";  
+  static const String profileKit = "$imagePath/profile-kik.png";
 }

@@ -15,7 +15,7 @@ class LeedThisMonthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LeadsBloc()..getLeads(),
+      create: (context) => LeadsBloc()..getLeads(context: context),
       child: BlocBuilder<LeadsBloc, LeadsStates>(
         builder: (context, state) {
           return Padding(

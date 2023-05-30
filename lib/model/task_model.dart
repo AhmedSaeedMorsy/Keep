@@ -22,10 +22,9 @@ class TaskData {
   late String companyName;
   late String clientLocation;
   late String clientAddress;
-  late String approve;
   String? clientTitle;
   String? clientPhone;
-  
+  List<User> user = [];
 
   TaskData();
   TaskData.fromJson(Map<String, dynamic> json) {
@@ -41,9 +40,27 @@ class TaskData {
     clientAddress = json["client_address"];
     clientLocation = json["client_location"];
     companyName = json["company_name"];
-    approve = json["approve"];
     summary = json["summary"];
     clientTitle = json["client_title"];
     clientPhone = json["client_phone"];
+    json["user"].forEach((element) {
+      user.add(User.fromJson(element));
+    });
+  }
+}
+
+class User {
+  late Pivot pivot;
+  User();
+  User.fromJson(Map<String, dynamic> json) {
+    pivot = Pivot.fromJson(json["pivot"]);
+  }
+}
+
+class Pivot {
+  late String status;
+  Pivot();
+  Pivot.fromJson(Map<String, dynamic> json) {
+    status = json["status"];
   }
 }

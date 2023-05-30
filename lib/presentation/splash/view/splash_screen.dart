@@ -1,7 +1,8 @@
 import 'dart:async';
-
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:keep/app/resources/color_manager.dart';
 import '../../../app/resources/assets_manager.dart';
 import '../../../app/resources/routes_manager.dart';
 import '../../../app/resources/values_manager.dart';
@@ -31,6 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+
     _startDelay();
   }
 
@@ -44,19 +46,17 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.fill,
-            image: AssetImage(
-              AssetsManager.onBoarding,
-            ),
-          ),
-        ),
+        color: ColorManager.white,
         child: Center(
-          child: Image(
-            width: AppSize.s180.w,
-            image: const AssetImage(
-              AssetsManager.logo,
+          child: ZoomIn(
+            duration: const Duration(
+              seconds: AppIntDuration.duration2,
+            ),
+            child: Image(
+              width: AppSize.s180.w,
+              image: const AssetImage(
+                AssetsManager.logo,
+              ),
             ),
           ),
         ),
@@ -65,7 +65,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _nextScreen() {
-    //  CacheHelper.removeData(key: SharedKey.token);
     if (CacheHelper.getData(key: SharedKey.token) != null) {
       if (CacheHelper.getData(key: SharedKey.loginDate) != null) {
         final loginDate =
@@ -79,7 +78,6 @@ class _SplashScreenState extends State<SplashScreen> {
             Routes.onBoardingRoute,
           );
         } else {
-          print(CacheHelper.getData(key: SharedKey.token));
           Navigator.pushReplacementNamed(
             context,
             Routes.layoutRoute,

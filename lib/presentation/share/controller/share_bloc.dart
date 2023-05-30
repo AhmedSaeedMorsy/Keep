@@ -1,5 +1,8 @@
 // ignore_for_file: unused_local_variable
 
+import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keep/app/constant/api_constant.dart';
 import 'package:keep/app/services/dio_helper/dio_helper.dart';
@@ -7,6 +10,10 @@ import 'package:keep/app/services/shared_prefrences/cache_helper.dart';
 import 'package:keep/model/teams_model.dart';
 import 'package:keep/presentation/share/controller/share_states.dart';
 
+import '../../../app/common/widget.dart';
+import '../../../app/resources/color_manager.dart';
+import '../../../app/resources/routes_manager.dart';
+import '../../../app/resources/strings_manager.dart';
 import '../../../model/users_model.dart';
 
 class ShareBloc extends Cubit<ShareStates> {
@@ -21,7 +28,7 @@ class ShareBloc extends Cubit<ShareStates> {
 
   TeamsModel teamsModel = TeamsModel();
   List<String> teamsNameList = [];
-  void getTeams() {
+  void getTeams({required BuildContext context}) {
     emit(TeamsLoadingState());
     DioHelper.getData(
             path: ApiConstant.getTeams,
@@ -33,6 +40,27 @@ class ShareBloc extends Cubit<ShareStates> {
       }
       emit(TeamsSuccessState());
     }).catchError((error) {
+      if (error is DioError) {
+        if (error.response!.statusCode == 401) {
+          SharedWidget.toast(
+            message: AppStrings.logInAgain.tr(),
+            backgroundColor: ColorManager.error,
+          );
+          CacheHelper.removeData(key: SharedKey.token);
+          CacheHelper.removeData(key: SharedKey.qr);
+          CacheHelper.removeData(key: SharedKey.id);
+          CacheHelper.removeData(key: SharedKey.loginDate);
+          CacheHelper.removeData(key: SharedKey.bio);
+          CacheHelper.removeData(key: SharedKey.email);
+          CacheHelper.removeData(key: SharedKey.name);
+          CacheHelper.removeData(key: SharedKey.title);
+          CacheHelper.removeData(key: SharedKey.phone);
+          Navigator.pushReplacementNamed(
+            context,
+            Routes.loginRoute,
+          );
+        }
+      }
       emit(TeamsErrorState());
     });
   }
@@ -56,7 +84,9 @@ class ShareBloc extends Cubit<ShareStates> {
   }
 
   UsersModel usersModel = UsersModel();
-  void getUsersByTeam({required int id}) {
+  void getUsersByTeam({
+    required int id,
+  }) {
     emit(UsersByTeamLoadingState());
     DioHelper.getData(
             path: ApiConstant.getUsersByTeamPath(id: id),
@@ -96,6 +126,7 @@ class ShareBloc extends Cubit<ShareStates> {
 
   void shareLead({
     required int id,
+    required BuildContext context,
   }) {
     emit(ShareLeadsLoadingState());
     DioHelper.getData(
@@ -107,12 +138,34 @@ class ShareBloc extends Cubit<ShareStates> {
     ).then((value) {
       emit(ShareLeadsSuccessState());
     }).catchError((error) {
+      if (error is DioError) {
+        if (error.response!.statusCode == 401) {
+          SharedWidget.toast(
+            message: AppStrings.logInAgain.tr(),
+            backgroundColor: ColorManager.error,
+          );
+          CacheHelper.removeData(key: SharedKey.token);
+          CacheHelper.removeData(key: SharedKey.qr);
+          CacheHelper.removeData(key: SharedKey.id);
+          CacheHelper.removeData(key: SharedKey.loginDate);
+          CacheHelper.removeData(key: SharedKey.bio);
+          CacheHelper.removeData(key: SharedKey.email);
+          CacheHelper.removeData(key: SharedKey.name);
+          CacheHelper.removeData(key: SharedKey.title);
+          CacheHelper.removeData(key: SharedKey.phone);
+          Navigator.pushReplacementNamed(
+            context,
+            Routes.loginRoute,
+          );
+        }
+      }
       emit(ShareLeadsErrorState());
     });
   }
 
   void shareKit({
     required int id,
+    required BuildContext context,
   }) {
     emit(ShareKitsLoadingState());
     DioHelper.getData(
@@ -124,24 +177,66 @@ class ShareBloc extends Cubit<ShareStates> {
     ).then((value) {
       emit(ShareKitsSuccessState());
     }).catchError((error) {
+      if (error is DioError) {
+        if (error.response!.statusCode == 401) {
+          SharedWidget.toast(
+            message: AppStrings.logInAgain.tr(),
+            backgroundColor: ColorManager.error,
+          );
+          CacheHelper.removeData(key: SharedKey.token);
+          CacheHelper.removeData(key: SharedKey.qr);
+          CacheHelper.removeData(key: SharedKey.id);
+          CacheHelper.removeData(key: SharedKey.loginDate);
+          CacheHelper.removeData(key: SharedKey.bio);
+          CacheHelper.removeData(key: SharedKey.email);
+          CacheHelper.removeData(key: SharedKey.name);
+          CacheHelper.removeData(key: SharedKey.title);
+          CacheHelper.removeData(key: SharedKey.phone);
+          Navigator.pushReplacementNamed(
+            context,
+            Routes.loginRoute,
+          );
+        }
+      }
       emit(ShareKitsErrorState());
     });
   }
-   void shareMeeting({
+
+  void shareMeeting({
     required int id,
+    required BuildContext context,
   }) {
     emit(ShareMeetingLoadingState());
     DioHelper.getData(
-      path:
-          ApiConstant.shareMeetingPath(id: id, usersIds: selectedUsers.join(",")),
+      path: ApiConstant.shareMeetingPath(
+          id: id, usersIds: selectedUsers.join(",")),
       token: CacheHelper.getData(
         key: SharedKey.token,
       ),
     ).then((value) {
-      print(value.data);
       emit(ShareMeetingSuccessState());
     }).catchError((error) {
-      print(error.toString());
+      if (error is DioError) {
+        if (error.response!.statusCode == 401) {
+          SharedWidget.toast(
+            message: AppStrings.logInAgain.tr(),
+            backgroundColor: ColorManager.error,
+          );
+          CacheHelper.removeData(key: SharedKey.token);
+          CacheHelper.removeData(key: SharedKey.qr);
+          CacheHelper.removeData(key: SharedKey.id);
+          CacheHelper.removeData(key: SharedKey.loginDate);
+          CacheHelper.removeData(key: SharedKey.bio);
+          CacheHelper.removeData(key: SharedKey.email);
+          CacheHelper.removeData(key: SharedKey.name);
+          CacheHelper.removeData(key: SharedKey.title);
+          CacheHelper.removeData(key: SharedKey.phone);
+          Navigator.pushReplacementNamed(
+            context,
+            Routes.loginRoute,
+          );
+        }
+      }
       emit(ShareMeetingErrorState());
     });
   }
