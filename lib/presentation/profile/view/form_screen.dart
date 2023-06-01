@@ -35,7 +35,7 @@ class FormScreen extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
   List<Map<String, TextEditingController>> myControllerList = [];
   List form = [];
-  List<String> gender = ["Male", "Female"];
+  List<String> gender = ["Mr", "Miss"];
   final bool isMetting;
 
   @override

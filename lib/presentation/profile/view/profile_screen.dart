@@ -483,7 +483,24 @@ class ProfileScreen extends StatelessWidget {
   }) {
     return InkWell(
       onTap: () {
-        ProfileBloc.get(context).openLink(link: link);
+        if (name == "Gmail") {
+          ProfileBloc.get(context).openLink(link: "mailto:$link");
+        } else if (name == "Telegram") {
+          ProfileBloc.get(context).openLink(link: "https://t.me/$link");
+        } else if (name == "Message") {
+          ProfileBloc.get(context).openLink(link: "sms:$link");
+        }
+        if (name == "Phone") {
+          ProfileBloc.get(context).openLink(link: "tel:$link");
+        }
+        if (name == "Whatsapp") {
+          ProfileBloc.get(context).openLink(link: "https://wa.me/$link");
+        }
+        if (name == "Whatsapp Bussniss") {
+          ProfileBloc.get(context).openLink(link: "https://wa.me/$link");
+        } else {
+          ProfileBloc.get(context).openLink(link: link);
+        }
       },
       child: name == "Gmail"
           ? Image.asset(
@@ -509,7 +526,7 @@ class ProfileScreen extends StatelessWidget {
                               ? Image.asset(
                                   AssetsManager.instagram,
                                 )
-                              : name == "facebook"
+                              : name == "Facebook"
                                   ? Image.asset(
                                       AssetsManager.facebookIcon,
                                     )

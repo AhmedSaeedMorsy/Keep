@@ -61,6 +61,7 @@ class ProfileBloc extends Cubit<ProfileStates> {
             );
           }
         }
+
         emit(ProfileErrorState());
       },
     );
@@ -71,7 +72,9 @@ class ProfileBloc extends Cubit<ProfileStates> {
   }) async {
     String googleUrl = link;
     if (await canLaunch(googleUrl)) {
-      await launch(googleUrl);
+      await launch(
+        googleUrl,
+      );
     }
   }
 
@@ -295,7 +298,7 @@ class ProfileBloc extends Cubit<ProfileStates> {
     emit(ChangeDropDownIconState());
   }
 
-  String selectedValue = "Male";
+  String selectedValue = "Mr";
   void changeDropDownItem({required String value}) {
     selectedValue = value;
 
@@ -347,7 +350,6 @@ class ProfileBloc extends Cubit<ProfileStates> {
       emit(IsAssignedLeadSuccessState());
     }).catchError(
       (error) {
-        
         emit(IsAssignedLeadErrorState());
       },
     );
