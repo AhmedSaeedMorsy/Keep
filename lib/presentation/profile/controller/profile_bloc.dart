@@ -74,6 +74,7 @@ class ProfileBloc extends Cubit<ProfileStates> {
     if (await canLaunch(googleUrl)) {
       await launch(
         googleUrl,
+        forceSafariVC: false,
       );
     }
   }
