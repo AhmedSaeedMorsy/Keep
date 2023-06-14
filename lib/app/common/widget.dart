@@ -94,7 +94,10 @@ class SharedWidget {
         builder: (context, state) {
           return BlocProvider(
             create: (context) => LoginCubit()
-              ..getUserData(token: CacheHelper.getData(key: SharedKey.token)),
+              ..getUserData(
+                token: CacheHelper.getData(key: SharedKey.token),
+                context: context,
+              ),
             child:
                 BlocBuilder<LoginCubit, LoginStates>(builder: (context, state) {
               return ConditionalBuilderRec(
@@ -469,7 +472,10 @@ class SharedWidget {
             ),
             child: BlocProvider(
               create: (context) => LoginCubit()
-                ..getUserData(token: CacheHelper.getData(key: SharedKey.token)),
+                ..getUserData(
+                  token: CacheHelper.getData(key: SharedKey.token),
+                  context: context,
+                ),
               child: BlocBuilder<LoginCubit, LoginStates>(
                 builder: (context, state) {
                   return Column(

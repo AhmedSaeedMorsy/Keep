@@ -253,6 +253,7 @@ class LoginScreen extends StatelessWidget {
                                                       password:
                                                           passwordController
                                                               .text,
+                                                      context: context,
                                                     );
                                                   }
                                                 },
